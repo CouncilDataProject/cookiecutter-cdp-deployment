@@ -1,2 +1,2 @@
-cdptools
+cdp-backend~=3.0.0.dev1
 requests~=2.25.0
