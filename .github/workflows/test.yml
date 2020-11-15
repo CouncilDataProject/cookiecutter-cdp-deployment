@@ -32,7 +32,7 @@ jobs:
         rm -Rf example/.github/workflows/
 
     # Check Infra
-    - name: Run Pulumi Preview
+    - name: Run Generated Repo Infrastructure Preview
       uses: docker://pulumi/actions
       with:
         args: preview
@@ -55,15 +55,15 @@ jobs:
         black --check scraper.py
 
     # Check Web
-    - name: Install Generated Web JS Dependencies
+    - name: Install Generated Repo Web App Dependencies
       run: |
         cd example/web/
         npm i
-    - name: Lint and Format Generated Report Web
+    - name: Lint and Format Generated Repo Web App
       run: |
         cd example/web/
         npm run lint
-    - name: Build Generated Repo Build
+    - name: Build Generated Repo Web App
       run: |
         cd example/web/
         npm run build
