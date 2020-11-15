@@ -39,14 +39,14 @@ jobs:
 
     # Check Infra
     - name: Run Pulumi Preview
-        uses: docker://pulumi/actions
-        with:
-          args: preview
-        env:
-          GOOGLE_CREDENTIALS: ${{ secrets.CDP_EXAMPLE_GOOGLE_CREDENTIALS }}
-          PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
-          PULUMI_CI: pr
-          PULUMI_ROOT: example/infra
+      uses: docker://pulumi/actions
+      with:
+        args: preview
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.CDP_EXAMPLE_GOOGLE_CREDENTIALS }}
+        PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+        PULUMI_CI: pr
+        PULUMI_ROOT: example/infra
 
     # Check Python
     - name: Install Generated Repo Python Dependencies
