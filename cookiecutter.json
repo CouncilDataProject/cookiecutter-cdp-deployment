@@ -1,0 +1,6 @@
+{
+  "municipality": "Example",
+  "municipality_slug": "{{ cookiecutter.municipality.lower().replace(' ', '_').replace('-', '_') }}",
+  "maintainer_full_name": "Jackson Maxfield Brown",
+  "github_username_or_org": "CouncilDataProject"
+}

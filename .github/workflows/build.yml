@@ -1,0 +1,80 @@
+name: Build Example Repo
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
+    # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+    # Run every Monday at 23:26:00 UTC (Monday at 15:26:00 PST)
+    # We offset from the hour and half hour to go easy on the servers :)
+    - cron: '26 23 * * 1'
+
+jobs:
+  build-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Setup languages
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    # Run cookiecutter
+    - name: Install Dependencies
+      run: |
+        pip install cookiecutter
+    - name: Generate Repo
+      run: |
+        cookiecutter . --no-input
+        rm -Rf example/.github/workflows/
+
+    # Check Infra
+    - name: Install Generated Repo Infra Dependencies
+      run: |
+        cd example/infra/
+        pip install -r requirements.txt
+
+    # Check Python
+    - name: Install Generated Repo Python Dependencies
+      run: |
+        cd example/python/
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+    - name: Lint and Format Generated Repo Python
+      run: |
+        cd example/python/
+        flake8 scraper.py --count --verbose --show-source --statistics
+        black --check scraper.py
+
+    # Check Web
+    - name: Install Generated Web JS Dependencies
+      run: |
+        cd example/web/
+        npm i
+    - name: Lint and Format Generated Report Web
+      run: |
+        cd example/web/
+        npm run lint
+    - name: Build Generated Repo Build
+      run: |
+        cd example/web/
+        npm run build
+
+    # Publish the generated repo
+    - name: Publish Generated Repo
+      uses: JamesIves/github-pages-deploy-action@releases/v3
+      with:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        BASE_BRANCH: main # The branch the action should deploy from.
+        BRANCH: 'example-build' # The branch the action should deploy to.
+        FOLDER: example/ # The folder the action should deploy
+        CLEAN: true

@@ -1,0 +1,64 @@
+name: Test Repo Construction
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test-repo:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Setup languages
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    # Run cookiecutter
+    - name: Install Dependencies
+      run: |
+        pip install cookiecutter
+    - name: Generate Repo
+      run: |
+        cookiecutter . --no-input
+        rm -Rf example/.github/workflows/
+
+    # Check Infra
+    - name: Install Generated Repo Infra Dependencies
+      run: |
+        cd example/infra/
+        pip install -r requirements.txt
+
+    # Check Python
+    - name: Install Generated Repo Python Dependencies
+      run: |
+        cd example/python/
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+    - name: Lint and Format Generated Repo Python
+      run: |
+        cd example/python/
+        flake8 scraper.py --count --verbose --show-source --statistics
+        black --check scraper.py
+
+    # Check Web
+    - name: Install Generated Web JS Dependencies
+      run: |
+        cd example/web/
+        npm i
+    - name: Lint and Format Generated Report Web
+      run: |
+        cd example/web/
+        npm run lint
+    - name: Build Generated Repo Build
+      run: |
+        cd example/web/
+        npm run build
