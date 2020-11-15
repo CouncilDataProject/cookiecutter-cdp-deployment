@@ -23,7 +23,7 @@ jobs:
         node-version: '12.x'
 
     # Run cookiecutter
-    - name: Install Dependencies
+    - name: Install Cookiecutter
       run: |
         pip install cookiecutter
     - name: Generate Repo
@@ -32,33 +32,38 @@ jobs:
         rm -Rf example/.github/workflows/
 
     # Check Infra
-    - name: Install Generated Repo Infra Dependencies
-      run: |
-        cd example/infra/
-        pip install -r requirements.txt
+    - name: Run Infrastructure Preview
+      uses: docker://pulumi/actions
+      with:
+        args: preview
+      env:
+        GOOGLE_CREDENTIALS: ${{ secrets.CDP_EXAMPLE_GOOGLE_CREDENTIALS }}
+        PULUMI_ACCESS_TOKEN: ${{ secrets.PULUMI_ACCESS_TOKEN }}
+        PULUMI_CI: pr
+        PULUMI_ROOT: example/infra
 
     # Check Python
-    - name: Install Generated Repo Python Dependencies
+    - name: Install Python Dependencies
       run: |
         cd example/python/
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
-    - name: Lint and Format Generated Repo Python
+    - name: Lint and Format Python
       run: |
         cd example/python/
         flake8 scraper.py --count --verbose --show-source --statistics
         black --check scraper.py
 
     # Check Web
-    - name: Install Generated Web JS Dependencies
+    - name: Install Web App Dependencies
       run: |
         cd example/web/
         npm i
-    - name: Lint and Format Generated Report Web
+    - name: Lint and Format Web App
       run: |
         cd example/web/
         npm run lint
-    - name: Build Generated Repo Build
+    - name: Build Web App
       run: |
         cd example/web/
         npm run build
