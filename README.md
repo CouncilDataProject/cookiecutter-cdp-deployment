@@ -52,7 +52,7 @@ repository which contains following:
   * Preconfigured to deploy all required CDP infrastructure
   * Preconfigured to run CDP pipelines using GitHub Actions
 
-To generate a new repository from this template run:
+To generate a new repository from this template, run:
 ```bash
 pip install cookiecutter
 cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
