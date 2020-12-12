@@ -4,7 +4,7 @@
   "homepage": "http://councildataproject.github.io/{{ cookiecutter.municipality_slug }}",
   "license": "MIT",
   "dependencies": {
-    "@councildataproject/cdp-instance": "^0.1.2",
+    "@councildataproject/cdp-frontend": "^0.2.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
