@@ -86,7 +86,7 @@ def _get_example_event(is_minimal: bool) -> EventIngestionModel:
                 decision=f"Example Decision {random.randint(1, 5)}",
                 votes=[
                     Vote(
-                        person=f"{_get_example_person(seat_num)}",
+                        person=_get_example_person(seat_num),
                         decision=f"Example Decision {random.randint(1, 5)}",
                     )
                     for seat_num in range(1, FAKE_COUNCIL_SEAT_NUM + 1)
