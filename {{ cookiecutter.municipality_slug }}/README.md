@@ -54,6 +54,7 @@ These are detailed below.
 ## Initial Repo Setup
 
 -   [ ] Write Python event gather function (`get_events`)
+-   [ ] Turn on GitHub Pages for the `gh-pages` branch ([Repo Settings](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/settings))
 -   [ ] Add [GitHub Actions repository secrets](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/settings/secrets/actions) for:
     -   [ ] Google Cloud (`GOOGLE_CREDENTIALS`)
     -   [ ] Pulumi (`PULUMI_ACCESS_TOKEN`)
