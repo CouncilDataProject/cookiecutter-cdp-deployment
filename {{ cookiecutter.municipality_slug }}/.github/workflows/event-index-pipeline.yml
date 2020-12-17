@@ -1,4 +1,4 @@
-name: Index Events
+{% raw %}name: Index Events
 
 on:
   push:
@@ -39,3 +39,4 @@ jobs:
       run: |
         echo "Creates index for {{ matrix.n-gram }}-grams"
         echo "To be added soon..."
+{% endraw %}
