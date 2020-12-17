@@ -1,4 +1,4 @@
-{% raw %}name: Index Events
+name: Index Events
 
 on:
   push:
@@ -35,8 +35,6 @@ jobs:
         pip install -r requirements.txt
 
     # Run Pipeline
-    - name: Index Events
+    - name: Index Events {% raw %}${{ matrix.n-gram }}{% endraw %}-grams
       run: |
-        echo "Creates index for {{ matrix.n-gram }}-grams"
         echo "To be added soon..."
-{% endraw %}
