@@ -3,8 +3,8 @@
 [![Infrastructure Deployment Status](https://github.com/CouncilDataProject/example/workflows/Deploy%20Infrastructure/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Deploy+Infrastructure%22)
 [![Event Processing Pipeline](https://github.com/CouncilDataProject/example/workflows/Gather%20and%20Process%20Events/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Gather+and+Process+Events%22)
 [![Event Index Pipeline](https://github.com/CouncilDataProject/example/workflows/Index%20Events/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Index+Events%22)
-[![Web Deployment Status](https://github.com/CouncilDataProject/example/workflows/Deploy%20Web/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Deploy+Web%22)
-[![Repo Build Status](https://github.com/CouncilDataProject/example/workflows/Build%20Main/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Build+Main%22)
+[![Web Deployment Status](https://github.com/CouncilDataProject/example/workflows/Deploy%20Web/badge.svg)](https://CouncilDataProject.github.io/example)
+[![Repo Build Status](https://github.com/CouncilDataProject/example/workflows/Build%20Repo/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Build+Repo%22)
 
 ---
 
@@ -53,8 +53,9 @@ These are detailed below.
 
 ## Initial Repo Setup
 
--   [ ] Write Python event gather function (`get_events`)
+-   [ ] Create a GitHub repo under the 'CouncilDataProject' account called 'example'
 -   [ ] Turn on GitHub Pages for the `gh-pages` branch ([Repo Settings](https://github.com/CouncilDataProject/example/settings))
+-   [ ] Write Python event gather function (`get_events`)
 -   [ ] Add [GitHub Actions repository secrets](https://github.com/CouncilDataProject/example/settings/secrets/actions) for:
     -   [ ] Google Cloud (`GOOGLE_CREDENTIALS`)
     -   [ ] Pulumi (`PULUMI_ACCESS_TOKEN`)
