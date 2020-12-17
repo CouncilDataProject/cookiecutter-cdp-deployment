@@ -1,0 +1,44 @@
+name: Deploy Web
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
+    # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+    # Run every Monday at 23:26:00 UTC (Monday at 15:26:00 PST)
+    # We offset from the hour and half hour to go easy on the servers :)
+    - cron: '26 23 * * 1'
+
+jobs:
+  deploy-web:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Setup Node
+    - name: Setup Node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    # Build Web
+    - name: Install Web App Dependencies
+      run: |
+        cd web/
+        npm i
+    - name: Build Web App
+      run: |
+        cd web/
+        npm run build
+
+    # Deploy Web
+    - name: Deploy Web
+      uses: JamesIves/github-pages-deploy-action@3.7.1
+      with:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BASE_BRANCH: main # The branch the action should deploy from.
+        BRANCH: gh-pages # The branch the action should deploy to.
+        FOLDER: web/docs/_build/html/ # The folder the action should deploy.

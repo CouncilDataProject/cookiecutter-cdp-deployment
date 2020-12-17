@@ -1,0 +1,41 @@
+name: Index Events
+
+on:
+  push:
+    branches:
+      - main
+  schedule:
+    # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
+    # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+    # Run every Monday and Thursday at 2:26:00 UTC (Monday and Thursday at 18:26:00 PST)
+    # We offset from the hour and half hour to go easy on the servers :)
+    - cron: '26 2 * * 1,4'
+
+jobs:
+  index-events:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # We fan out on n-gram to make it possible to run on GitHub Actions
+        n-gram: [1, 2, 3]
+
+    steps:
+    - uses: actions/checkout@v2
+
+    # Setup Python
+    - name: Set up Python
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    # Install Python Deps
+    - name: Install Python Dependencies
+      run: |
+        cd python/
+        pip install -r requirements.txt
+
+    # Run Pipeline
+    - name: Index Events
+      run: |
+        echo "Creates index for {{ matrix.n-gram }}-grams"
+        echo "To be added soon..."
