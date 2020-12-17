@@ -1,12 +1,18 @@
-name: Test Repo Construction
+name: Build Repo
 
 on:
-  pull_request:
+  push:
     branches:
       - main
+  schedule:
+    # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
+    # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+    # Run every Monday at 23:26:00 UTC (Monday at 15:26:00 PST)
+    # We offset from the hour and half hour to go easy on the servers :)
+    - cron: '26 23 * * 1'
 
 jobs:
-  test-repo:
+  build-repo:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,37 +28,39 @@ jobs:
       with:
         node-version: '12.x'
 
-    # Run cookiecutter
-    - name: Install Cookiecutter
-      run: |
-        pip install cookiecutter
-    - name: Generate Repo
-      run: |
-        cookiecutter . --no-input
-        rm -Rf example/.github/workflows/
+    # Check Infra
+    - name: Run Infrastructure Preview
+      uses: docker://pulumi/actions
+      with:
+        args: preview
+      env:
+        GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        PULUMI_ACCESS_TOKEN: {% raw %}${{ secrets.PULUMI_ACCESS_TOKEN }}{% endraw %}
+        PULUMI_CI: pr
+        PULUMI_ROOT: infra
 
     # Check Python
     - name: Install Python Dependencies
       run: |
-        cd example/python/
+        cd python/
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
     - name: Lint and Format Python
       run: |
-        cd example/python/
+        cd python/
         flake8 scraper.py --count --verbose --show-source --statistics
         black --check scraper.py
 
     # Check Web
     - name: Install Web App Dependencies
       run: |
-        cd example/web/
+        cd web/
         npm i
     - name: Lint and Format Web App
       run: |
-        cd example/web/
+        cd web/
         npm run lint
     - name: Build Web App
       run: |
-        cd example/web/
+        cd web/
         npm run build

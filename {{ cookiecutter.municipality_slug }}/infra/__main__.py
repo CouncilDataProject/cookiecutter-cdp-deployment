@@ -1,14 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""
-This file is just used for dev setup and CI stack preview.
-It is recommended to use the cookiecutter-cdp-deployment as it
-"""
-
-from pulumi import export, get_stack
-
 from cdp_backend.infrastructure import CDPStack
+from pulumi import export
 
 ###############################################################################
 
