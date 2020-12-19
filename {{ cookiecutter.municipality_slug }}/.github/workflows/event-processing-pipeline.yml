@@ -1,4 +1,4 @@
-name: Gather and Process Events
+name: Event Processing
 
 on:
   push:
@@ -17,20 +17,14 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-
-    # Setup Python
-    - name: Set up Python
-      uses: actions/setup-python@v1
+    - uses: actions/setup-python@v1
       with:
         python-version: 3.8
 
-    # Install Python Deps
     - name: Install Python Dependencies
       run: |
         cd python/
         pip install -r requirements.txt
-
-    # Run Pipeline
     - name: Gather and Process New Events
       run: |
         echo "To be added soon..."

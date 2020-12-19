@@ -1,4 +1,4 @@
-name: Build Repo
+name: Build Main
 
 on:
   push:
@@ -12,34 +12,15 @@ on:
     - cron: '26 23 * * 1'
 
 jobs:
-  build-repo:
+  build-python:
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v2
-
-    # Setup languages
-    - name: Set up Python
-      uses: actions/setup-python@v1
+    - uses: actions/setup-python@v1
       with:
         python-version: 3.8
-    - name: Setup Node
-      uses: actions/setup-node@v1
-      with:
-        node-version: '12.x'
 
-    # Check Infra
-    - name: Run Infrastructure Preview
-      uses: docker://pulumi/actions
-      with:
-        args: preview
-      env:
-        GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
-        PULUMI_ACCESS_TOKEN: {% raw %}${{ secrets.PULUMI_ACCESS_TOKEN }}{% endraw %}
-        PULUMI_CI: pr
-        PULUMI_ROOT: infra
-
-    # Check Python
     - name: Install Python Dependencies
       run: |
         cd python/
@@ -50,8 +31,16 @@ jobs:
         cd python/
         flake8 scraper.py --count --verbose --show-source --statistics
         black --check scraper.py
+  
+  build-web:
+    runs-on: ubuntu-latest
 
-    # Check Web
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
     - name: Install Web App Dependencies
       run: |
         cd web/

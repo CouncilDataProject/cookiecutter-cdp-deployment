@@ -1,2 +1,2 @@
-cdp-backend~=3.0.0.dev1
+cdp-backend~=3.0.0.dev3
 pulumi

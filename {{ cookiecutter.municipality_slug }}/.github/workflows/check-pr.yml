@@ -1,0 +1,49 @@
+name: Check Pull Request
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-python:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    - name: Install Python Dependencies
+      run: |
+        cd python/
+        pip install -r requirements.txt
+        pip install -r requirements-dev.txt
+    - name: Lint and Format Python
+      run: |
+        cd python/
+        flake8 scraper.py --count --verbose --show-source --statistics
+        black --check scraper.py
+  
+  build-web:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: '12.x'
+
+    - name: Install Web App Dependencies
+      run: |
+        cd web/
+        npm i
+    - name: Lint and Format Web App
+      run: |
+        cd web/
+        npm run lint
+    - name: Build Web App
+      run: |
+        cd web/
+        npm run build
