@@ -19,13 +19,12 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: 3.9
 
     - name: Install Python Dependencies
       run: |
         cd python/
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+        pip install .[test]
     - name: Lint and Format Python
       run: |
         cd python/

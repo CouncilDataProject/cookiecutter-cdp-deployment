@@ -19,12 +19,16 @@ jobs:
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: 3.9
 
     - name: Install Python Dependencies
       run: |
         cd python/
-        pip install -r requirements.txt
+        pip install .
+    - name: Dump Credentials to JSON
+      run: |
+        echo {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %} > python/google-creds.json
     - name: Gather and Process New Events
       run: |
-        echo "To be added soon..."
+        cd python/
+        run_cdp_event_gather -g google-creds.json -e cdp_{{ cookiecutter.python_municipality_slug }}_backend.scraper.get_events

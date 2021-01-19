@@ -16,7 +16,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.8
+        python-version: 3.9
     - name: Setup Node
       uses: actions/setup-node@v1
       with:
@@ -35,13 +35,12 @@ jobs:
     - name: Install Python Dependencies
       run: |
         cd example/python/
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+        pip install .[test]
     - name: Lint and Format Python
       run: |
         cd example/python/
-        flake8 scraper.py --count --verbose --show-source --statistics
-        black --check scraper.py
+        flake8 cdp_example_backend --count --verbose --show-source --statistics
+        black --check cdp_example_backend
 
     # Check Web
     - name: Install Web App Dependencies
