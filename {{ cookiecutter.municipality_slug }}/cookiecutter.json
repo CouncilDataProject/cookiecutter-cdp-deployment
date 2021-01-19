@@ -1,7 +1,0 @@
-{
-    "municipality": "{{ cookiecutter.municipality }}",
-    "municipality_slug": "{{ cookiecutter.municipality_slug }}",
-    "python_municipality_slug": "{{ cookiecutter.python_municipality_slug }}",
-    "maintainer_full_name": "{{ cookiecutter.maintainer_full_name }}",
-    "hosting_github_username_or_org": "{{ cookiecutter.hosting_github_username_or_org }}"
-}
