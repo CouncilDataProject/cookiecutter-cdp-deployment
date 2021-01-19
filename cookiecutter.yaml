@@ -1,0 +1,6 @@
+default_context:
+    municipality: "Example"
+    municipality_slug: "example"
+    python_municipality_slug: "example"
+    maintainer_full_name: "Jackson Maxfield Brown"
+    hosting_github_username_or_org: "CouncilDataProject"
