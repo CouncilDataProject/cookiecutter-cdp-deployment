@@ -27,7 +27,9 @@ jobs:
         pip install .
     - name: Dump Credentials to JSON
       run: |
-        echo {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %} > python/google-creds.json
+        echo "$GOOGLE_CREDS" > python/google-creds.json
+      env:
+        GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
     - name: Gather and Process New Events
       run: |
         cd python/
