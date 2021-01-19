@@ -28,8 +28,8 @@ jobs:
     - name: Lint and Format Python
       run: |
         cd python/
-        flake8 scraper.py --count --verbose --show-source --statistics
-        black --check scraper.py
+        flake8 cdp_example_backend --count --verbose --show-source --statistics
+        black --check cdp_example_backend
   
   build-web:
     runs-on: ubuntu-latest
