@@ -15,5 +15,5 @@ export PRINT_HELP_PYSCRIPT
 help:
 	@python -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)
 
-update-from-cookiecutter: ## update this repo from the latest version of cookiecutter
+update-from-cookiecutter: ## update this repo using latest cookiecutter-cdp-deployment
 	cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment --config-file cookiecutter.yaml --no-input --overwrite-if-exists --output-dir ..
