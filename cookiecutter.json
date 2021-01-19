@@ -1,6 +1,7 @@
 {
-  "municipality": "Example",
-  "municipality_slug": "{{ cookiecutter.municipality.lower().replace(' ', '-').replace('_', '-') }}",
-  "maintainer_full_name": "Jackson Maxfield Brown",
-  "hosting_github_username_or_org": "CouncilDataProject"
+    "municipality": "Example",
+    "municipality_slug": "{{ cookiecutter.municipality.lower().replace(' ', '-').replace('_', '-') }}",
+    "python_municipality_slug": "{{ cookiecutter.municipality_slug.replace('-', '_') }}",
+    "maintainer_full_name": "Jackson Maxfield Brown",
+    "hosting_github_username_or_org": "CouncilDataProject"
 }
