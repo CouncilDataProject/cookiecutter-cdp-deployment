@@ -28,9 +28,9 @@ jobs:
     - name: Lint and Format Python
       run: |
         cd python/
-        flake8 cdp_example_backend --count --verbose --show-source --statistics
-        black --check cdp_example_backend
-  
+        flake8 cdp_{{ cookiecutter.python_municipality_slug }}_backend --count --verbose --show-source --statistics
+        black --check cdp_{{ cookiecutter.python_municipality_slug }}_backend
+
   build-web:
     runs-on: ubuntu-latest
 

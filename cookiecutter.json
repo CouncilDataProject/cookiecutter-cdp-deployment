@@ -3,5 +3,7 @@
     "municipality_slug": "{{ cookiecutter.municipality.lower().replace(' ', '-').replace('_', '-') }}",
     "python_municipality_slug": "{{ cookiecutter.municipality_slug.replace('-', '_') }}",
     "maintainer_full_name": "Jackson Maxfield Brown",
-    "hosting_github_username_or_org": "CouncilDataProject"
+    "hosting_github_url": "https://github.com/CouncilDataProject/example",
+    "hosting_github_username_or_org": "{{ cookiecutter.hosting_github_url.replace('https://github.com/', '').split('/')[0] }}",
+    "hosting_github_reponame": "{{ cookiecutter.hosting_github_url.replace('https://github.com/', '').split('/')[1] }}"
 }
