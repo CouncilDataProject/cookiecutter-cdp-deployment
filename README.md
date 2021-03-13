@@ -39,7 +39,7 @@ See the current
 -   Share event at timepoint<br>
     _(jump right to the point in the meeting you want to highlight)_
 -   Full event minute details<br>
-    _(view all documents and presentations related to each event)
+    _(view all documents and presentations related to each event)_
 
 _Note: Some features are dependent on how much data is provided during event gather.
 More information available in our
