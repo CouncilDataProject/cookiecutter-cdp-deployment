@@ -1,10 +1,10 @@
 # CDP - {{ cookiecutter.municipality }}
 
-[![Infrastructure Deployment Status](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/workflows/Infrastructure/badge.svg)](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/actions?query=workflow%3A%22Infrastructure%22)
-[![Event Processing Pipeline](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/workflows/Event%20Processing/badge.svg)](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/actions?query=workflow%3A%22Event+Processing%22)
-[![Event Index Pipeline](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/workflows/Event%20Index/badge.svg)](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/actions?query=workflow%3A%22Event+Index%22)
-[![Web Deployment Status](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/workflows/Web%20App/badge.svg)](https://{{ cookiecutter.hosting_github_username_or_org }}.github.io/{{ cookiecutter.municipality_slug }})
-[![Repo Build Status](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/workflows/Build%20Main/badge.svg)](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/actions?query=workflow%3A%22Build+Main%22)
+[![Infrastructure Deployment Status]({{ cookiecutter.hosting_github_url }}/workflows/Infrastructure/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
+[![Event Processing Pipeline]({{ cookiecutter.hosting_github_url }}/workflows/Event%20Processing/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Event+Processing%22)
+[![Event Index Pipeline]({{ cookiecutter.hosting_github_url }}/workflows/Event%20Index/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Event+Index%22)
+[![Web Deployment Status]({{ cookiecutter.hosting_github_url }}/workflows/Web%20App/badge.svg)](https://{{ cookiecutter.hosting_github_username_or_org }}.github.io/{{ cookiecutter.hosting_github_reponame }})
+[![Repo Build Status]({{ cookiecutter.hosting_github_url }}/workflows/Build%20Main/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Build+Main%22)
 
 ---
 
@@ -53,9 +53,9 @@ These are detailed below.
 
 ## Initial Repo Setup
 
--   [ ] Create a GitHub repo under the '{{ cookiecutter.hosting_github_username_or_org }}' account called '{{ cookiecutter.municipality_slug }}'
--   [ ] Turn on GitHub Pages for the `gh-pages` branch ([Repo Settings](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/settings))
--   [ ] Write Python event gather function (`get_events`)
--   [ ] Add [GitHub Actions repository secrets](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}/settings/secrets/actions) for:
+-   [ ] Create a GitHub repo under the '{{ cookiecutter.hosting_github_username_or_org }}' account called '{{ cookiecutter.hosting_github_reponame }}'
+-   [ ] Turn on GitHub Pages for the `gh-pages` branch ([Repo Settings]({{ cookiecutter.hosting_github_url }}/settings))
+-   [ ] Write Python event gather function [`get_events`](python/cdp_{{ cookiecutter.python_municipality_slug }}_backend/scraper.py)
+-   [ ] Add [GitHub Actions repository secrets]({{ cookiecutter.hosting_github_url }}/settings/secrets/actions) for:
     -   [ ] Google Cloud (`GOOGLE_CREDENTIALS`)
     -   [ ] Pulumi (`PULUMI_ACCESS_TOKEN`)
