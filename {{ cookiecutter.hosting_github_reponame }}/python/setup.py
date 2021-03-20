@@ -49,7 +49,7 @@ setup(
     python_requires=">=3.9",
     tests_require=test_requirements,
     extras_require=extra_requirements,
-    url="https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.municipality_slug }}",
+    url="{{ cookiecutter.hosting_github_url }}",
     version="1.0.0",
     zip_safe=False,
 )
