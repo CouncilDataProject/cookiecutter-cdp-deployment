@@ -55,7 +55,7 @@ These are detailed below.
 
 -   [ ] Create a GitHub repo under the 'CouncilDataProject' account called 'example'
 -   [ ] Turn on GitHub Pages for the `gh-pages` branch ([Repo Settings](https://github.com/CouncilDataProject/example/settings))
--   [ ] Write Python event gather function (`get_events`)
+-   [ ] Write Python event gather function [`get_events`](python/cdp_example_backend/scraper.py)
 -   [ ] Add [GitHub Actions repository secrets](https://github.com/CouncilDataProject/example/settings/secrets/actions) for:
     -   [ ] Google Cloud (`GOOGLE_CREDENTIALS`)
     -   [ ] Pulumi (`PULUMI_ACCESS_TOKEN`)

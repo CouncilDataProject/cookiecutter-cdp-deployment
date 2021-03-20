@@ -3,4 +3,6 @@ default_context:
     municipality_slug: "example"
     python_municipality_slug: "example"
     maintainer_full_name: "Jackson Maxfield Brown"
+    hosting_github_url: "https://github.com/CouncilDataProject/example"
     hosting_github_username_or_org: "CouncilDataProject"
+    hosting_github_reponame: "example"
