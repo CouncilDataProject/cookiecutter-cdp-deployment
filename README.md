@@ -48,24 +48,24 @@ More information available in our
 
 ## Usage
 
-1.  Create (or sign in to) a Google Cloud Platform (GCP) account.
+1.  Create (or sign in to) a Google Cloud Platform (GCP) account.<br>
     ([Google Cloud Console Home](https://console.cloud.google.com/))
     Google Cloud Platform is where all data and files will be stored, and some
     processing will be done using GCP resources.
     More details available in the [Google Cloud](#google-cloud) section.
-2.  Create (or re-use) a [billing account](https://console.cloud.google.com/billing)
+2.  Create (or re-use) a [billing account](https://console.cloud.google.com/billing)<br>
     and attach it to your GCP account. For more details on the
     cost of maintaining a CDP Instance, see [Cost](#cost).
-3.  PLACEHOLDER: GET GOOGLE CLOUD CREDENTIALS
+3.  PLACEHOLDER: GET GOOGLE CLOUD CREDENTIALS<br>
     _I remember this is where things went wrong in setting things up..._
-4.  Create (or sign in to) a Pulumi account.
+4.  Create (or sign in to) a Pulumi account.<br>
     ([Pulumi Account Sign-Up](https://app.pulumi.com/signup))
     Pulumi tracks and manages the state of your instances infrastructure
     (databases, file storage servers, credentials, etc.).
     More details available in the [Pulumi](#pulumi) section.
-5.  [Create a Pulumi Access Token](https://app.pulumi.com/account/tokens).
+5.  [Create a Pulumi Access Token](https://app.pulumi.com/account/tokens).<br>
     Keep this token available. We will use it later.
-6.  Install `cookiecutter` and use this template.
+6.  Install `cookiecutter` and use this template.<br>
     In a terminal with Python 3.5+ installed:
     ```bash
     pip install cookiecutter
@@ -102,13 +102,13 @@ Google Cloud and Pulumi accounts._
 
 | Parameter                      | Description                                                                                                                | Example 1                             | Example 2                                |     |
 | ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------- | --- |
-| municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                        | Seattle                               | King County                              |     |
-| municipality_slug              | The name of the municipality cleaned for use in infrastructure and certain parts of repository naming.                     | seattle                               | king-county                              |     |
-| python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                               | king_county                              |     |
-| maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                    | Jackson Maxfield Brown                | CouncilDataProject                       |     |
-| hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name) | JacksonMaxfield                       | CouncilDataProject                       |     |
-| hosting_github_reponame        | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                           | king-county                              |     |
-| hosting_github_url             | From the provided information, the expected URL of the web application.                                                    | jacksonmaxfield.github.io/cdp-seattle | councildataproject.github.io/king-county |     |
+| municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                        | Seattle                               | King County                              |
+| municipality_slug              | The name of the municipality cleaned for use in infrastructure and certain parts of repository naming.                     | seattle                               | king-county                              |
+| python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                               | king_county                              |
+| maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                    | Jackson Maxfield Brown                | CouncilDataProject                       |
+| hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name) | JacksonMaxfield                       | CouncilDataProject                       |
+| hosting_github_reponame        | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                           | king-county                              |
+| hosting_github_url             | From the provided information, the expected URL of the web application.                                                    | jacksonmaxfield.github.io/cdp-seattle | councildataproject.github.io/king-county |
 
 ### Google Cloud
 
