@@ -63,7 +63,7 @@ More information available in our
     Pulumi tracks and manages the state of your instances infrastructure
     (databases, file storage servers, credentials, etc.).
     More details available in the [Pulumi](#pulumi) section.
-5.  [Create a Pulumi Access Token](https://app.pulumi.com/account/tokens).<br>
+5.  Create a [Pulumi Access Token](https://app.pulumi.com/account/tokens).<br>
     Keep this token available. We will use it later.
 6.  Install `cookiecutter` and use this template.<br>
     In a terminal with Python 3.5+ installed:
