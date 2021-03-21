@@ -1,6 +1,6 @@
 MIT License
 
-Copyright (c) {% now 'local', '%Y' %}, CouncilDataProject, {{ cookiecutter.maintainer_full_name }}. All rights reserved.
+Copyright (c) {% now 'local', '%Y' %}, CouncilDataProject, {{ cookiecutter.maintainer_or_org_full_name }}. All rights reserved.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
