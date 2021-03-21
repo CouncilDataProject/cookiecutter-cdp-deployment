@@ -48,13 +48,13 @@ More information available in our
 
 ## Usage
 
-1.  Create (or sign in to) a Google Cloud Platform (GCP) account.<br>
-    ([Google Cloud Console Home](https://console.cloud.google.com/))
+1.  Create (or sign in to) a Google Cloud Platform (GCP) account.
+    ([Google Cloud Console Home](https://console.cloud.google.com/))<br>
     Google Cloud Platform is where all data and files will be stored, and some
     processing will be done using GCP resources.
     More details available in the [Google Cloud](#google-cloud) section.
 2.  Create (or re-use) a [billing account](https://console.cloud.google.com/billing)
-    and attach it to your GCP account.<br
+    and attach it to your GCP account.<br>
     For more details on the cost of maintaining a CDP Instance, see [Cost](#cost).
 3.  PLACEHOLDER: GET GOOGLE CLOUD CREDENTIALS<br>
     _I remember this is where things went wrong in setting things up..._
@@ -100,8 +100,8 @@ Google Cloud and Pulumi accounts._
 
 #### Cookiecutter Parameters
 
-| Parameter                      | Description                                                                                                                | Example 1                             | Example 2                                |     |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------- | --- |
+| Parameter                      | Description                                                                                                                | Example 1                             | Example 2                                |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------- |
 | municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                        | Seattle                               | King County                              |
 | municipality_slug              | The name of the municipality cleaned for use in infrastructure and certain parts of repository naming.                     | seattle                               | king-county                              |
 | python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                               | king_county                              |
