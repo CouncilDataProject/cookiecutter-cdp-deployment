@@ -48,30 +48,60 @@ More information available in our
 
 ## Usage
 
-1.  Create (or sign in to) a Google Cloud Platform (GCP) account.
-    ([Google Cloud Console Home](https://console.cloud.google.com/))<br>
-    Google Cloud Platform is where all data and files will be stored, and some
-    processing will be done using GCP resources.
-    More details available in the [Google Cloud](#google-cloud) section.
-2.  Create (or re-use) a [billing account](https://console.cloud.google.com/billing)
-    and attach it to your GCP account.<br>
-    For more details on the cost of maintaining a CDP Instance, see [Cost](#cost).
-3.  PLACEHOLDER: GET GOOGLE CLOUD CREDENTIALS<br>
-    _I remember this is where things went wrong in setting things up..._
-4.  Create (or sign in to) a Pulumi account.
-    ([Pulumi Account Sign-Up](https://app.pulumi.com/signup))<br>
-    Pulumi tracks and manages the state of your instances infrastructure
-    (databases, file storage servers, credentials, etc.).
-    More details available in the [Pulumi](#pulumi) section.
-5.  Create a [Pulumi Access Token](https://app.pulumi.com/account/tokens).<br>
-    Keep this token available. We will use it later.
-6.  Install `cookiecutter` and use this template.<br>
-    In a terminal with Python 3.5+ installed:
-    ```bash
-    pip install cookiecutter
-    cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
-    ```
-    For more details see [Cookiecutter Repo Creation](#cookiecutter-repo-generation).
+Install `cookiecutter` and use this template.<br>
+In a terminal with Python 3.5+ installed:
+
+```bash
+pip install cookiecutter
+cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
+```
+
+Following the prompts in the terminal and fill in the details of the repository.
+At the end of the process a new directory will have been created with
+further instructions and all required files to set up your new deployment.
+
+Follow the next steps in the generated repository's "Initial Repo Setup" section
+of the created README.md file.
+
+For more details and examples on each parameter of the cookiecutter, see
+[Cookiecutter Parameters](#cookiecutter-parameters)
+
+For more details on what is created from using this template, see
+[Cookiecutter Repo Generation](#cookiecutter-repo-generation)
+
+### Cookiecutter Parameters
+
+| Parameter                      | Description                                                                                                                | Example 1                             | Example 2                                |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------- |
+| municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                        | Seattle                               | King County                              |
+| municipality_slug              | The name of the municipality cleaned for use in infrastructure and certain parts of repository naming.                     | seattle                               | king-county                              |
+| python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                               | king_county                              |
+| maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                    | Jackson Maxfield Brown                | CouncilDataProject                       |
+| hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name) | JacksonMaxfield                       | CouncilDataProject                       |
+| hosting_github_reponame        | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                           | king-county                              |
+| hosting_github_url             | From the provided information, the expected URL of the web application.                                                    | jacksonmaxfield.github.io/cdp-seattle | councildataproject.github.io/king-county |
+
+### Things to Know
+
+Much of CouncilDataProject processing and resource management can be handled for
+free and purely on GitHub. However we do rely on a select few of resources outside
+of GitHub.
+
+The only service that will require a billing account to management payment for
+resources used, is [Google Cloud](#google-cloud).
+Google Cloud will manage all databases, file storage, and (if needed)
+[speech-to-text](#speech-to-text) for transcription. You can see more about the
+average monthly of running a CDP instance in our [cost](#cost) section.
+
+[Pulumi](#pulumi) is a service to management and track infrastructure deployment state.
+For those familiar with [Terraform](https://www.terraform.io/), the two are quite
+similar. Pulumi's purpose is to ensure that we can move from infrastructure
+upgrade to infrastructure upgrade without breaking anything (and skipping things
+that don't need to be done).
+
+For more details see [Cookiecutter Repo Creation](#cookiecutter-repo-generation).
+_After creating the repo, the following steps will have_
+_instructions and links specific to your deployment in the generated README._
 
 ### Cookiecutter Repo Generation
 
@@ -88,7 +118,8 @@ repository which contains following:
     -   Preconfigured to deploy all required CDP infrastructure
     -   Preconfigured to run CDP pipelines using GitHub Actions
 
-To generate a new repository from this template, run:
+To generate a new repository from this template,
+in a terminal with Python 3.5+ installed, run:
 
 ```bash
 pip install cookiecutter
@@ -97,18 +128,6 @@ cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
 
 _Note: This will only create the basic repository. You will still need to setup
 Google Cloud and Pulumi accounts._
-
-#### Cookiecutter Parameters
-
-| Parameter                      | Description                                                                                                                | Example 1                             | Example 2                                |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------- |
-| municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                        | Seattle                               | King County                              |
-| municipality_slug              | The name of the municipality cleaned for use in infrastructure and certain parts of repository naming.                     | seattle                               | king-county                              |
-| python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                               | king_county                              |
-| maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                    | Jackson Maxfield Brown                | CouncilDataProject                       |
-| hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name) | JacksonMaxfield                       | CouncilDataProject                       |
-| hosting_github_reponame        | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                           | king-county                              |
-| hosting_github_url             | From the provided information, the expected URL of the web application.                                                    | jacksonmaxfield.github.io/cdp-seattle | councildataproject.github.io/king-county |
 
 ### Google Cloud
 
