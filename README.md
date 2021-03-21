@@ -53,13 +53,13 @@ More information available in our
     Google Cloud Platform is where all data and files will be stored, and some
     processing will be done using GCP resources.
     More details available in the [Google Cloud](#google-cloud) section.
-2.  Create (or re-use) a [billing account](https://console.cloud.google.com/billing)<br>
-    and attach it to your GCP account. For more details on the
-    cost of maintaining a CDP Instance, see [Cost](#cost).
+2.  Create (or re-use) a [billing account](https://console.cloud.google.com/billing)
+    and attach it to your GCP account.<br
+    For more details on the cost of maintaining a CDP Instance, see [Cost](#cost).
 3.  PLACEHOLDER: GET GOOGLE CLOUD CREDENTIALS<br>
     _I remember this is where things went wrong in setting things up..._
-4.  Create (or sign in to) a Pulumi account.<br>
-    ([Pulumi Account Sign-Up](https://app.pulumi.com/signup))
+4.  Create (or sign in to) a Pulumi account.
+    ([Pulumi Account Sign-Up](https://app.pulumi.com/signup))<br>
     Pulumi tracks and manages the state of your instances infrastructure
     (databases, file storage servers, credentials, etc.).
     More details available in the [Pulumi](#pulumi) section.
