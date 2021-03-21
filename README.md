@@ -71,7 +71,7 @@ More information available in our
     pip install cookiecutter
     cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
     ```
-    For more details see [Cookiecutter Repo Creation](#cookiecutter-repo-creation).
+    For more details see [Cookiecutter Repo Creation](#cookiecutter-repo-generation).
 
 ### Cookiecutter Repo Generation
 
