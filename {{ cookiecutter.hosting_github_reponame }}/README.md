@@ -3,7 +3,7 @@
 [![Infrastructure Deployment Status]({{ cookiecutter.hosting_github_url }}/workflows/Infrastructure/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
 [![Event Processing Pipeline]({{ cookiecutter.hosting_github_url }}/workflows/Event%20Processing/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Event+Processing%22)
 [![Event Index Pipeline]({{ cookiecutter.hosting_github_url }}/workflows/Event%20Index/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Event+Index%22)
-[![Web Deployment Status]({{ cookiecutter.hosting_github_url }}/workflows/Web%20App/badge.svg)](https://{{ cookiecutter.hosting_github_username_or_org }}.github.io/{{ cookiecutter.hosting_github_reponame }})
+[![Web Deployment Status]({{ cookiecutter.hosting_github_url }}/workflows/Web%20App/badge.svg)](https://{{ cookiecutter.hosting_github_username_or_org }}.github.io/{{ cookiecutter.hosting_github_repo_name }})
 [![Repo Build Status]({{ cookiecutter.hosting_github_url }}/workflows/Build%20Main/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Build+Main%22)
 
 ---
@@ -70,7 +70,7 @@ These are detailed below.
 
 1.  Create a [new GitHub repo](https://github.com/{{ cookiecutter.hosting_github_username_or_org}}/repositories/new).
 
-    -   Set the "Repository name" to: **{{ cookiecutter.hosting_github_reponame }}**
+    -   Set the "Repository name" to: **{{ cookiecutter.hosting_github_repo_name }}**
     -   Select the "Public" option for repository visibility.
     -   Do not select any of the "Initialize this repository with" options.
 

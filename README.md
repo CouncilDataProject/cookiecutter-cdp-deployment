@@ -20,13 +20,13 @@ For more information about CouncilDataProject, please visit
 This repository is "cookiecutter template" for an entirely new
 CouncilDataProject (CDP) Instance. By following the steps defined in
 the [Usage](#usage) section, our tools will create and manage all the database,
-file storage, processing resources, and more, that are ultimately needed to serve the
-CDP web application.
+file storage, and processing infrastructure needed to serve the CDP web application.
 
 While our tools will setup and manage all processing and storage infrastructure,
 you (or your team) must provide and maintain the custom Python code to gather event
-information and handling billing for the costs of the deployment.
-For more information about costs and billing, see [cost](#cost).
+information and handle billing for the costs of the deployment.
+
+For more information about costs and billing, see [Cost](#cost).
 
 ### CDP Instance Features
 
@@ -35,12 +35,12 @@ For more information about costs and billing, see [cost](#cost).
 -   Filter and sort event and legislation search results<br>
     _(filter by date range, committee, etc.)_
 -   Automatic timestamped-transcript generation<br>
-    _(jump to a specific public comment or debate)_
+    _(jump right to a specific public comment or debate)_
 -   Legislation and amendment tracking<br>
     _(check for amendment passage, upcoming meetings, etc.)_
 -   Share event at timepoint<br>
-    _(jump right to the point in the meeting you want to highlight)_
--   Full event minute details<br>
+    _(jump right to the point in the meeting you want to share)_
+-   Full event minutes details<br>
     _(view all documents and presentations related to each event)_
 
 See the current
@@ -48,7 +48,7 @@ See the current
 for a live example.
 
 _Note: Some features are dependent on how much data is provided during event gather.
-More information available in our
+More information see our
 [ingestion models documentation](https://councildataproject.github.io/cdp-backend/ingestion_models.html)._
 
 ## Usage
@@ -61,17 +61,17 @@ pip install cookiecutter
 cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
 ```
 
-Following the prompts in the terminal and fill in the details of the repository.
+Follow the prompts in your terminal and fill in the details for the instance deployment.
 At the end of the process a new directory will have been created with
-further instructions and all required files to set up your new deployment.
+all required files and further instructions to set up your new deployment.
 
 Follow the next steps in the generated repository's "Initial Repo Setup" section
-of the created README.md file.
+of the generated README.md file.
 
-For more details and examples on each parameter of the cookiecutter, see
-[Cookiecutter Parameters](#cookiecutter-parameters)
+For more details and examples on each parameter of this cookiecutter template,
+see [Cookiecutter Parameters](#cookiecutter-parameters)
 
-For more details on what is created from using this template, see
+For more details on what is created from using this cookiecutter template, see
 [Cookiecutter Repo Generation](#cookiecutter-repo-generation)
 
 ### Cookiecutter Parameters
@@ -83,22 +83,22 @@ For more details on what is created from using this template, see
 | python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                               | king_county                              |
 | maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                    | Jackson Maxfield Brown                | CouncilDataProject                       |
 | hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name) | JacksonMaxfield                       | CouncilDataProject                       |
-| hosting_github_reponame        | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                           | king-county                              |
+| hosting_github_repo_name       | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                           | king-county                              |
 | hosting_github_url             | From the provided information, the expected URL of the web application.                                                    | jacksonmaxfield.github.io/cdp-seattle | councildataproject.github.io/king-county |
 
 ### Things to Know
 
 Much of CouncilDataProject processing and resource management can be handled for
-free and purely on GitHub. However we do rely on a select few of resources outside
-of GitHub.
+free and purely on GitHub. However we do rely on a select few resources outside
+of GitHub to manage all services and applications.
 
-The only service that will require a billing account to management payment for
+The only service that will require a billing account to manage payment for
 resources used, is [Google Cloud](#google-cloud).
 Google Cloud will manage all databases, file storage, and (if needed)
 [speech-to-text](#speech-to-text) for transcription. You can see more about the
-average monthly of running a CDP instance in our [cost](#cost) section.
+average monthly cost of running a CDP instance in [Cost](#cost).
 
-[Pulumi](#pulumi) is a service to management and track infrastructure deployment state.
+[Pulumi](#pulumi) is a service to manage and track infrastructure deployment state.
 For those familiar with [Terraform](https://www.terraform.io/), the two are quite
 similar. Pulumi's purpose is to ensure that we can move from infrastructure
 upgrade to infrastructure upgrade without breaking anything (and skipping things
@@ -115,11 +115,11 @@ This repository is a template for `cookiecutter` to generate a CDP deployment
 repository which contains following:
 
 -   A directory structure for your project
--   A directory for the web app to build and deploy from
+-   A directory for your web application to build and deploy from
 -   A directory for infrastructure management
 -   A directory for your Python event gather function and it's requirements
 -   Continuous integration
-    -   Preconfigured for web app to fully deploy
+    -   Preconfigured for your web application to fully deploy
     -   Preconfigured to deploy all required CDP infrastructure
     -   Preconfigured to run CDP pipelines using GitHub Actions
 
@@ -131,8 +131,8 @@ pip install cookiecutter
 cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
 ```
 
-_Note: This will only create the basic repository. You will still need to setup
-Google Cloud and Pulumi accounts._
+_Note: This will only create the basic repository. You will still need to setup_
+_Google Cloud and Pulumi accounts._
 
 ### Google Cloud
 
@@ -148,7 +148,9 @@ Google Cloud Platform (GCP).
     will be processed using [Speech-to-Text](https://cloud.google.com/speech-to-text).
 
 All of these resources will be set up for you using [Pulumi](#pulumi) but you will
-need to make
+need to create both Google Cloud and Pulumi accounts. More information on these
+services and the steps for account creation can be found in the generated
+repository's README.
 
 ## Cost
 
@@ -158,6 +160,8 @@ We didn't want to pay extreme amounts of money so why should you?
 To that end, we try to make CDP as low cost as possible.
 Many of the current features are entirely free as long as the repo is open source:
 
+Free Resources and Infrastructure:
+
 -   Event Processing (GitHub Actions)
 -   Event and Legislation Indexing (GitHub Actions)
 -   Web Hosting (GitHub Pages)
@@ -165,8 +169,10 @@ Many of the current features are entirely free as long as the repo is open sourc
 
 The backend resources and processing are the only real costs and depend on usage.
 The more users that use your web application, the more the database and file storage
-costs. The CDP-Seattle monthly averages below are the averages for the most utilized
+cost. The CDP-Seattle monthly averages below are the averages for the most utilized
 months of it's existance so take these as close to upper-bounds.
+
+Billed Resources and Infrastructure:
 
 -   [Cloud Firestore Pricing](https://firebase.google.com/pricing/)
     _CDP-Seattle monthly average: ~$8.00_
@@ -182,12 +188,14 @@ months of it's existance so take these as close to upper-bounds.
 You may not need to use speech-to-text! In the case your municipalicity provides closed
 caption files in a format we support parsing and cleaning, we can use those files
 instead of using speech-to-text. When using closed caption files for transcription
-generation. CDP-Seattle speech-to-text costs dropped to ~$2.00 / month because an
-occasional meeting didn't have closed captions. You can attach a
-[`closed_caption_uri`](https://councildataproject.github.io/cdp-backend/cdp_backend.pipeline.html#cdp_backend.pipeline.ingestion_models.Session)
-to the `Session` object during event ingestion.
+generation. CDP-Seattle speech-to-text costs dropped to ~$2.00 / month.
 
-With speech-to-text cost removed, total average monthly cost for CDP-Seattle is ~$11.00.
+To use closed captions files instead of generating a transcript from audio,
+your event gather function can attach a
+[`closed_caption_uri`](https://councildataproject.github.io/cdp-backend/cdp_backend.pipeline.html#cdp_backend.pipeline.ingestion_models.Session)
+to the `Session` object.
+
+With speech-to-text cost removed, total average monthly cost for CDP-Seattle is ~$13.00.
 
 ### Future Processing Features
 
@@ -198,9 +206,6 @@ additional processing or resource usage.
 See [Upgrades and New Features](#upgrades-and-new-features) for more information.
 
 ## Upgrades and New Features
-
-Answering the question:
-_"How does my instance of CDP receive updates and new features?"_
 
 In general, all updates and upgrades are handled easily for you through
 automated systems that run using GitHub Actions on your repository.
@@ -220,7 +225,7 @@ index pieces of legislation, you can be sure you are up-to-date.
 #### Backend Infrastructure Upgrades
 
 Every week, your repository will automatically check the status of your infrastructure
-and deploy updates if needed.
+and deploy updates as detected.
 
 #### Frontend Web Application Upgrades
 
