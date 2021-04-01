@@ -19,9 +19,14 @@ For more information about CouncilDataProject, please visit
 
 This repository is "cookiecutter template" for an entirely new
 CouncilDataProject (CDP) Instance. By following the steps defined in
-the [Usage](#usage) section, you will be creating all the database, file storage,
-processing resources, and more, that are ultimately needed to serve the
+the [Usage](#usage) section, our tools will create and manage all the database,
+file storage, processing resources, and more, that are ultimately needed to serve the
 CDP web application.
+
+While our tools will setup and manage all processing and storage infrastructure,
+you (or your team) must provide and maintain the custom Python code to gather event
+information and handling billing for the costs of the deployment.
+For more information about costs and billing, see [cost](#cost).
 
 ### CDP Instance Features
 
@@ -99,9 +104,9 @@ similar. Pulumi's purpose is to ensure that we can move from infrastructure
 upgrade to infrastructure upgrade without breaking anything (and skipping things
 that don't need to be done).
 
-For more details see [Cookiecutter Repo Creation](#cookiecutter-repo-generation).
+For more details see [Cookiecutter Repo Generation](#cookiecutter-repo-generation).
 _After creating the repo, the following steps will have_
-_instructions and links specific to your deployment in the generated README._
+_instructions and links specific to your deployment in the generated repository's README._
 
 ### Cookiecutter Repo Generation
 
@@ -150,7 +155,7 @@ need to make
 CDP was created and maintained by a group of people working on it in their free time.
 We didn't want to pay extreme amounts of money so why should you?
 
-So to that end, we try to make CDP as low cost as possible.
+To that end, we try to make CDP as low cost as possible.
 Many of the current features are entirely free as long as the repo is open source:
 
 -   Event Processing (GitHub Actions)
@@ -190,5 +195,55 @@ As we add more features to CDP that require additional processing or resources w
 continue to try to minimize their costs wherever possible. Further, if a feature is
 optional, we will create a flag that maintainers can set to include or exclude the
 additional processing or resource usage.
+See [Upgrades and New Features](#upgrades-and-new-features) for more information.
+
+## Upgrades and New Features
+
+Answering the question:
+_"How does my instance of CDP receive updates and new features?"_
+
+In general, all updates and upgrades are handled easily for you through
+automated systems that run using GitHub Actions on your repository.
+
+Upgrades are delivered either just before processing time (during package installation)
+or as a part of weekly system checks and auto-deployments.
+
+#### Backend Pipeline Upgrades
+
+Due to how we have constructed how event processing works, every time CDP
+pipelines are initiated, they also install the latest non-breaking-changes version of
+the [cdp-backend](https://github.com/CouncilDataProject/cdp-backend) package.
+
+In this way, every time your pipeline runs to gather events, index events, or
+index pieces of legislation, you can be sure you are up-to-date.
+
+#### Backend Infrastructure Upgrades
+
+Every week, your repository will automatically check the status of your infrastructure
+and deploy updates if needed.
+
+#### Frontend Web Application Upgrades
+
+Every week, your repository will automatically build and deploy the CDP web application,
+during the build process any non-breaking changes and new features will automatically be
+pulled in.
+
+### Breaking Changes
+
+In the case we release a new version of
+[cdp-backend](https://github.com/CouncilDataProject/cdp-backend) or
+[cdp-frontend](https://github.com/CouncilDataProject/cdp-frontend) that includes
+breaking changes we will also release an upgrade guide that you will be able to find
+in this repository.
+
+In the case we can fully automate the upgrade, we will include a script to do so that
+CDP instance maintainers will simply have to run.
+
+### Notification of Updates and Release Notes
+
+We are still in the process of developing a notification system for alerting CDP
+instance maintainers that a new version of `cdp-backend` or `cdp-frontend` was
+released. These notifications will include details on new features, bugfixes, and
+if there is anything the instance maintainer needs to do to enable the release.
 
 **Free software: MIT license**
