@@ -96,7 +96,7 @@ The only service that will require a billing account to manage payment for
 resources used, is [Google Cloud](#google-cloud).
 Google Cloud will manage all databases, file storage, and (if needed)
 [speech-to-text](#speech-to-text) for transcription. You can see more about the
-average monthly cost of running a CDP instance in [Cost](#cost).
+average monthly cost of running a CDP Instance in [Cost](#cost).
 
 [Pulumi](#pulumi) is a service to manage and track infrastructure deployment state.
 For those familiar with [Terraform](https://www.terraform.io/), the two are quite
@@ -242,7 +242,7 @@ breaking changes we will also release an upgrade guide that you will be able to 
 in this repository.
 
 In the case we can fully automate the upgrade, we will include a script to do so that
-CDP instance maintainers will simply have to run.
+CDP Instance maintainers will simply have to run.
 
 ### Notification of Updates and Release Notes
 

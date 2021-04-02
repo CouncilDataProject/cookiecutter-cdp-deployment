@@ -2,7 +2,7 @@
 
 """
 Top-level package for {{ cookiecutter.municipality }}
-CDP instance backend.
+CDP Instance backend.
 """
 
 __author__ = "{{ cookiecutter.maintainer_or_org_full_name }}"
