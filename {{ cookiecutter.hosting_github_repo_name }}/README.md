@@ -57,11 +57,11 @@ These are detailed below.
     [project's dashboard](https://console.cloud.google.com/home/dashboard?project=cdp-{{ cookiecutter.municipality_slug }}).
 5.  Create a [Service Account](https://console.cloud.google.com/iam-admin/serviceaccounts/create?project=cdp-{{ cookiecutter.municipality_slug }}).
     -   Set the Service Acount Name to: "GitHub Actions Runner".
-    -   Click Create.
+    -   Click "Create".
     -   Grant the access to the project for the service account:
         -   Select the "Owner" (Full access to all resources) role.
     -   Do not grant users access to this service account.
-    -   Click Done.
+    -   Click "Done".
 6.  On the "Service Accounts" dashboard, select the newly created service acount.
 7.  Generate a new JSON Key for the Service Account.
     -   Navigate to the "Keys" tab.
@@ -69,25 +69,28 @@ These are detailed below.
     -   Select JSON.
     -   Click "Create".
     -   Save the file somewhere safe. We will use it later.
-8.  Create (or sign in to) a Pulumi account.
+        _Do not save this file to the this repository's directory._
+8.  Enable the [Cloud Resource Manager API](https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com?project=cdp-{{ cookiecutter.municipality_slug }}).
+9.  Create (or sign in to) a Pulumi account.
     ([Pulumi Account Sign-Up](https://app.pulumi.com/signup))<br>
     Pulumi tracks and manages the state of your instance's infrastructure
     (databases, file storage servers, credentials, etc.).
     More details available in the [Pulumi](#pulumi) section.
-9.  Create a [Pulumi Access Token](https://app.pulumi.com/account/tokens).<br>
+10. Create a [Pulumi Access Token](https://app.pulumi.com/account/tokens).<br>
     -   Click "Create token".
     -   Set the description to: "{{ cookiecutter.municipality_slug }}-github-actions-runner".
     -   Click "Create token".
     -   Copy and save the token somewhere safe. We will use it later.
-10. Create the GitHub repository for this deployment to live in.
+        _Do not save this token as a file in this repository's directory._
+11. Create the GitHub repository for this deployment to live in.
     [Create a new Repository](https://github.com/new)
     -   Set the repo name to: **{{ cookiecutter.hosting_github_repo_name }}**
     -   Set the repo owner to: **{{ cookiecutter.hosting_github_username_or_org }}**
     -   Set the repo visibility to: "Public"
     -   Do not initialize with any of the extra options
     -   Click "Create repository".
-11. Initialize and push the local repository to GitHub.
-    -   In a terminal, while in the deployment's code directory, run:
+12. Initialize and push the local repository to GitHub.
+    -   In a terminal, while in this repository's directory, run:
         ```bash
         git init
         git add -A
@@ -97,7 +100,7 @@ These are detailed below.
         git push -u origin main
         ```
     -   Refresh your repository's dashboard to ensure that all files were pushed.
-12. Configure [repository settings](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.hosting_github_repo_name }}/settings).
+13. Configure [repository settings](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.hosting_github_repo_name }}/settings).
     -   In the "Options" tab, configure "GitHub Pages"
         -   Select "gh-pages" from the "Source" dropdown.
         -   Click "Save".
@@ -112,27 +115,26 @@ These are detailed below.
         -   Open up the file or browser tab where you saved your Pulumi token,
             copy the token, past the token into the "Value" field.
         -   Click "Add secret".
-13. Navigate to [GitHub Actions History](https://github.com/JacksonMaxfield/cdp-jackson-dev-stack/actions).
+14. Navigate to [GitHub Actions History](https://github.com/JacksonMaxfield/cdp-jackson-dev-stack/actions).
 
     -   Click on the "workflow run" tagged with "Initial commit" and "Infrastructure".
     -   Click the "Re-run jobs" dropdown.
     -   Click "Re-run all jobs".
 
-**If all steps complete successfully your web application will be viewable at:
+**If all steps complete successful your web application will be viewable at:
 https://{{ cookiecutter.hosting_github_username_or_org }}.github.io/{{ cookiecutter.hosting_github_repo_name }}**
 
-Once all these steps are done, feel free to delete this section of the README.
+Once all of these steps are done, feel free to delete this section of the README.
 
 ## Data Gathering Setup
 
-Once your repository, infrastructure, and web application have been setup,
-it's time to write an event data gathering function.
+Once your repository, infrastructure, and web application have been set up,
+you will need to write an event data gathering function.
 
-Navigate to the
-`python/cdp_{{ cookiecutter.python_municipality_slug }}_backend/scraper.py`
-file and follow instructions found there.
+Navigate and follow the instructions in the the file:
+`python/cdp_{{ cookiecutter.python_municipality_slug }}_backend/scraper.py`.
 
-As soon as you push your updates to your event gather function to the GitHub
+As soon as you push your updates to your event gather function to your GitHub
 repository, everything will be tested and configured for the next pipeline run.
 
 Once your function is complete and pushed to the `main` branch,
