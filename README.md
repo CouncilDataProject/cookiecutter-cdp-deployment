@@ -246,9 +246,15 @@ CDP instance maintainers will simply have to run.
 
 ### Notification of Updates and Release Notes
 
-We are still in the process of developing a notification system for alerting CDP
-instance maintainers that a new version of `cdp-backend` or `cdp-frontend` was
-released. These notifications will include details on new features, bugfixes, and
-if there is anything the instance maintainer needs to do to enable the release.
+General CDP updates will be posted to our main website: councildataproject.github.io
+
+However, to receive notifications for individual CDP front and back-end application
+updates and to receive release notes you can "watch" the two primary reposioties.
+
+-   [cdp-frontend](https://github.com/CouncilDataProject/cdp-frontend)
+-   [cdp-backend](https://github.com/CouncilDataProject/cdp-backend)
+
+See
+[GitHub's Documentation on Watching individual repositories](https://docs.github.com/en/github/managing-subscriptions-and-notifications-on-github/configuring-notifications#configuring-your-watch-settings-for-an-individual-repository).
 
 **Free software: MIT license**
