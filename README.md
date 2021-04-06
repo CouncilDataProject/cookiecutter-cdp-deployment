@@ -76,15 +76,16 @@ For more details on what is created from using this cookiecutter template, see
 
 ### Cookiecutter Parameters
 
-| Parameter                      | Description                                                                                                                | Example 1                             | Example 2                                |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ------------------------------------- | ---------------------------------------- |
-| municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                        | Seattle                               | King County                              |
-| municipality_slug              | The name of the municipality cleaned for use in infrastructure and certain parts of repository naming.                     | seattle                               | king-county                              |
-| python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                               | king_county                              |
-| maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                    | Jackson Maxfield Brown                | CouncilDataProject                       |
-| hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name) | JacksonMaxfield                       | CouncilDataProject                       |
-| hosting_github_repo_name       | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                           | king-county                              |
-| hosting_github_url             | From the provided information, the expected URL of the web application.                                                    | jacksonmaxfield.github.io/cdp-seattle | councildataproject.github.io/king-county |
+| Parameter                      | Description                                                                                                                | Example 1                                      | Example 2                                         |
+| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------- |
+| municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                        | Seattle                                        | King County                                       |
+| municipality_slug              | The name of the municipality cleaned for use in infrastructure and certain parts of repository naming.                     | seattle                                        | king-county                                       |
+| python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                                        | king_county                                       |
+| maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                    | Jackson Maxfield Brown                         | CouncilDataProject                                |
+| hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name) | JacksonMaxfield                                | CouncilDataProject                                |
+| hosting_github_repo_name       | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                                    | king-county                                       |
+| hosting_github_url             | From the provided information, the expected URL of the GitHub repository.                                                  | https://github.com/JacksonMaxfield/cdp-seattle | https://github.com/CouncilDataProject/king-county |
+| hosting_web_app_address        | From the provided information, the expected URL of the web application.                                                    | https://jacksonmaxfield.github.io/cdp-seattle  | https://councildataproject.github.io/king-county  |
 
 ### Things to Know
 
@@ -152,6 +153,20 @@ need to create both Google Cloud and Pulumi accounts. More information on these
 services and the steps for account creation can be found in the generated
 repository's README.
 
+### Pulumi
+
+Pulumi allows CDP developers and Instance maintainers to create, deploy, and manage
+infrastructure on any cloud using familiar programming languages and tools.
+It additionally, stores and tracks the _state_ of the CDP infrastructure,
+i.e. how many and which file storage, database, and processing resources are available.
+
+For CDP Instance maintainers, this simply means, the infrastructure management
+is packaged up as a part of `cdp-backend`, _and_ the infrastructure will never be
+incompatible with the pipelines as they are versioned together.
+
+Pulumi is free, and generally, you as an instance maintainer should never have to
+interact with Pulumi other than during the CDP Instance creation and setup process.
+
 ## Cost
 
 CDP was created and maintained by a group of people working on it in their free time.
@@ -169,8 +184,8 @@ Free Resources and Infrastructure:
 
 The backend resources and processing are the only real costs and depend on usage.
 The more users that use your web application, the more the database and file storage
-cost. The CDP-Seattle monthly averages below are the averages for the most utilized
-months of it's existance so take these as close to upper-bounds.
+cost. The CDP-Seattle monthly averages below are for the most utilized months of
+its existance so take these as close to upper-bounds.
 
 Billed Resources and Infrastructure:
 
@@ -188,7 +203,7 @@ Billed Resources and Infrastructure:
 You may not need to use speech-to-text! In the case your municipalicity provides closed
 caption files in a format we support parsing and cleaning, we can use those files
 instead of using speech-to-text. When using closed caption files for transcription
-generation. CDP-Seattle speech-to-text costs dropped to ~$2.00 / month.
+generation, CDP-Seattle speech-to-text costs dropped to ~$2.00 / month.
 
 To use closed captions files instead of generating a transcript from audio,
 your event gather function can attach a
@@ -215,9 +230,9 @@ or as a part of weekly system checks and auto-deployments.
 
 #### Backend Pipeline Upgrades
 
-Due to how we have constructed how event processing works, every time CDP
-pipelines are initiated, they also install the latest non-breaking-changes version of
-the [cdp-backend](https://github.com/CouncilDataProject/cdp-backend) package.
+Every time CDP pipelines are initiated, event processing will also install the
+latest non-breaking-changes version of the
+[cdp-backend](https://github.com/CouncilDataProject/cdp-backend) package.
 
 In this way, every time your pipeline runs to gather events, index events, or
 index pieces of legislation, you can be sure you are up-to-date.
@@ -242,11 +257,12 @@ breaking changes we will also release an upgrade guide that you will be able to 
 in this repository.
 
 In the case we can fully automate the upgrade, we will include a script to do so that
-CDP Instance maintainers will simply have to run.
+CDP Instance maintainers will simply have to run for their project.
 
 ### Notification of Updates and Release Notes
 
-General CDP updates will be posted to our main website: councildataproject.github.io
+General CDP updates will be posted to our main website:
+https://councildataproject.github.io
 
 However, to receive notifications for individual CDP front and back-end application
 updates and to receive release notes you can "watch" the two primary reposioties.

@@ -3,7 +3,7 @@
 [![Infrastructure Deployment Status]({{ cookiecutter.hosting_github_url }}/workflows/Infrastructure/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
 [![Event Processing Pipeline]({{ cookiecutter.hosting_github_url }}/workflows/Event%20Processing/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Event+Processing%22)
 [![Event Index Pipeline]({{ cookiecutter.hosting_github_url }}/workflows/Event%20Index/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Event+Index%22)
-[![Web Deployment Status]({{ cookiecutter.hosting_github_url }}/workflows/Web%20App/badge.svg)](https://{{ cookiecutter.hosting_github_username_or_org }}.github.io/{{ cookiecutter.hosting_github_repo_name }})
+[![Web Deployment Status]({{ cookiecutter.hosting_github_url }}/workflows/Web%20App/badge.svg)]({{ cookiecutter.hosting_web_app_address }})
 [![Repo Build Status]({{ cookiecutter.hosting_github_url }}/workflows/Build%20Main/badge.svg)]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Build+Main%22)
 
 ---
@@ -46,7 +46,9 @@ These are detailed below.
     ([Google Cloud Console Home](https://console.cloud.google.com/))<br>
     Google Cloud Platform is where all data and files will be stored, and some
     processing will be done using GCP resources.
-    More details available in the [Google Cloud](#google-cloud) section.
+    More details available in the
+    [Cookiecutter Google Cloud](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#google-cloud)
+    section.
 2.  Create (or re-use) a [billing account](https://console.cloud.google.com/billing)
     and attach it to your GCP account.<br>
     For more details on the cost of maintaining a CDP Instance, see [Cost](#cost).
@@ -59,7 +61,7 @@ These are detailed below.
     -   Set the Service Acount Name to: "GitHub Actions Runner".
     -   Click "Create".
     -   Grant the access to the project for the service account:
-        -   Select the "Owner" (Full access to all resources) role.
+        -   Select the "Editor" (Edit access to all resources) role.
     -   Do not grant users access to this service account.
     -   Click "Done".
 6.  On the "Service Accounts" dashboard, select the newly created service acount.
@@ -75,7 +77,9 @@ These are detailed below.
     ([Pulumi Account Sign-Up](https://app.pulumi.com/signup))<br>
     Pulumi tracks and manages the state of your instance's infrastructure
     (databases, file storage servers, credentials, etc.).
-    More details available in the [Pulumi](#pulumi) section.
+    More details available in the
+    [Cookiecutter Pulumi](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#pulumi)
+    section.
 10. Create a [Pulumi Access Token](https://app.pulumi.com/account/tokens).<br>
     -   Click "Create token".
     -   Set the description to: "{{ cookiecutter.municipality_slug }}-github-actions-runner".
@@ -96,11 +100,11 @@ These are detailed below.
         git add -A
         git commit -m "Initial commit"
         git branch -M main
-        git remote add origin https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.hosting_github_repo_name }}.git
+        git remote add origin {{ cookiecutter.hosting_github_url }}.git
         git push -u origin main
         ```
     -   Refresh your repository's dashboard to ensure that all files were pushed.
-13. Configure [repository settings](https://github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.hosting_github_repo_name }}/settings).
+13. Configure [repository settings]({{ cookiecutter.hosting_github_url }}/settings).
     -   In the "Options" tab, configure "GitHub Pages"
         -   Select "gh-pages" from the "Source" dropdown.
         -   Click "Save".
@@ -115,14 +119,14 @@ These are detailed below.
         -   Open up the file or browser tab where you saved your Pulumi token,
             copy the token, past the token into the "Value" field.
         -   Click "Add secret".
-14. Navigate to [GitHub Actions History](https://github.com/JacksonMaxfield/cdp-jackson-dev-stack/actions).
+14. Navigate to [GitHub Actions History]({{ cookiecutter.hosting_github_url }}/actions).
 
     -   Click on the "workflow run" tagged with "Initial commit" and "Infrastructure".
     -   Click the "Re-run jobs" dropdown.
     -   Click "Re-run all jobs".
 
 **If all steps complete successful your web application will be viewable at:
-https://{{ cookiecutter.hosting_github_username_or_org }}.github.io/{{ cookiecutter.hosting_github_repo_name }}**
+{{ cookiecutter.hosting_web_app_address }}**
 
 Once all of these steps are done, feel free to delete this section of the README.
 
@@ -134,8 +138,13 @@ you will need to write an event data gathering function.
 Navigate and follow the instructions in the the file:
 `python/cdp_{{ cookiecutter.python_municipality_slug }}_backend/scraper.py`.
 
-As soon as you push your updates to your event gather function to your GitHub
-repository, everything will be tested and configured for the next pipeline run.
+As soon as you push your updates to your event gather function (`get_events`)
+to your GitHub repository, everything will be tested and configured for the
+next pipeline run.
+
+Be sure to review the
+[CDP Ingestion Model documentation](https://councildataproject.github.io/cdp-backend/ingestion_models.html)
+for the object definition to return from your `get_events` function.
 
 Once your function is complete and pushed to the `main` branch,
 feel free to delete this section of the README.

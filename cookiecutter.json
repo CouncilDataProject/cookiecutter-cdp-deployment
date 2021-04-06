@@ -5,5 +5,6 @@
     "maintainer_or_org_full_name": "CouncilDataProject Developers",
     "hosting_github_username_or_org": "CouncilDataProject",
     "hosting_github_repo_name": "{{ cookiecutter.municipality_slug }}",
-    "hosting_github_url": "{{ '/'.join(['https://github.com', cookiecutter.hosting_github_username_or_org, cookiecutter.hosting_github_repo_name]) }}"
+    "hosting_github_url": "{{ '/'.join(['https://github.com', cookiecutter.hosting_github_username_or_org, cookiecutter.hosting_github_repo_name]) }}",
+    "hosting_web_app_address": "{{ '/'.join(['https:/', cookiecutter.hosting_github_username_or_org, 'github.io', cookiecutter.hosting_github_repo_name]) }}"
 }
