@@ -30,7 +30,7 @@ extra_requirements = {
 }
 
 setup(
-    author="Jackson Maxfield Brown",
+    author="CouncilDataProject Developers",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",

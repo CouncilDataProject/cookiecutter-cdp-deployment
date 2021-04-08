@@ -2,10 +2,10 @@
 
 """
 Top-level package for Example
-CDP instance backend.
+CDP Instance backend.
 """
 
-__author__ = "Jackson Maxfield Brown"
+__author__ = "CouncilDataProject Developers"
 __version__ = "1.0.0"
 
 
