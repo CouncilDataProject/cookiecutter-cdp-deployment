@@ -1,0 +1,41 @@
+{
+    "name": "cdp-{{ cookiecutter.municipality_slug }}",
+    "version": "1.0.0",
+    "homepage": "{{ cookiecutter.hosting_web_app_address }}",
+    "license": "MIT",
+    "dependencies": {
+        "@councildataproject/cdp-frontend": "^0.2.0",
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "lint": "eslint --ignore-path .gitignore .",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build"
+    },
+    "eslintConfig": {
+        "extends": "react-app"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "gh-pages": "^2.2.0",
+        "eslint-config-strongloop": "^2.1.0",
+        "eslint-plugin-jsdoc": "^15.11.0",
+        "eslint-utils": "^1.4.2",
+        "react-scripts": "^3.4.1"
+    }
+}

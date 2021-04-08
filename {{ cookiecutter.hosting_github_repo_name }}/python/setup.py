@@ -30,7 +30,7 @@ extra_requirements = {
 }
 
 setup(
-    author="{{ cookiecutter.maintainer_full_name }}",
+    author="{{ cookiecutter.maintainer_or_org_full_name }}",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
