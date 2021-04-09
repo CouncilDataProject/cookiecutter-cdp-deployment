@@ -265,7 +265,7 @@ General CDP updates will be posted to our main website:
 https://councildataproject.github.io
 
 However, to receive notifications for individual CDP front and back-end application
-updates and to receive release notes you can "watch" the two primary reposioties.
+updates and to receive release notes you can "watch" the two primary repositories.
 
 -   [cdp-frontend](https://github.com/CouncilDataProject/cdp-frontend)
 -   [cdp-backend](https://github.com/CouncilDataProject/cdp-backend)
