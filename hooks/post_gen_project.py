@@ -3,12 +3,21 @@
 
 from pathlib import Path
 
+class AnsiColors:
+    HEADER = '\033[95m'
+    OKBLUE = '\033[94m'
+    OKCYAN = '\033[96m'
+    OKGREEN = '\033[92m'
+    WARNING = '\033[93m'
+    FAIL = '\033[91m'
+    ENDC = '\033[0m'
+    BOLD = '\033[1m'
+    UNDERLINE = '\033[4m'
+
 deployment_dir = Path(".").resolve()
 
-print("-" * 80)
-print(f"Created new directory: {deployment_dir}")
-print(
-    "To finish new CDP Instance creation, move into the "
-    "created directory and follow the instructions in the "
-    "'Initial Repo Setup' section of the README.md file."
-)
+print()
+print(f"🎊 Success! Generated CDP Instance repo at {AnsiColors.OKGREEN}{deployment_dir}{AnsiColors.ENDC}.")
+print()
+print("To finish CDP Instance initialization, follow the instructions in SETUP.md.")
+print()
