@@ -107,8 +107,6 @@ This document outlines the steps necessary to finish initializing this CDP Insta
 
 **If all steps complete successful your web application will be viewable at: {{ cookiecutter.hosting_web_app_address }}**
 
-Once all of these steps are done, feel free to delete this section of the README.
-
 ## Data Gathering Setup
 
 Once your repository, infrastructure, and web application have been set up, you will need to write an event data gathering function.
@@ -119,4 +117,4 @@ As soon as you push your updates to your event gather function (`get_events`) to
 
 Be sure to review the [CDP Ingestion Model documentation](https://councildataproject.github.io/cdp-backend/ingestion_models.html) for the object definition to return from your `get_events` function.
 
-Once your function is complete and pushed to the `main` branch, feel free to delete this section of the README.
+Once your function is complete and pushed to the `main` branch, feel free to delete this setup file.
