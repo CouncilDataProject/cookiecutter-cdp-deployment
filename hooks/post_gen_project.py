@@ -17,7 +17,7 @@ class AnsiColors:
 deployment_dir = Path(".").resolve()
 
 print()
-print(f"🎊 Success! Created new CDP Instance at {AnsiColors.OKGREEN}{deployment_dir}{AnsiColors.ENDC}.")
+print(f"🎊 Success! Generated CDP Instance repo at {AnsiColors.OKGREEN}{deployment_dir}{AnsiColors.ENDC}.")
 print()
 print("To finish CDP Instance initialization, follow the instructions in SETUP.md.")
 print()
