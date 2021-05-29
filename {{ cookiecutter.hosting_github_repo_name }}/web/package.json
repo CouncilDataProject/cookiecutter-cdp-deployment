@@ -6,9 +6,8 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "lint": "eslint --ignore-path .gitignore .",
-        "format": "prettier --write src/**/*",
         "test": "react-scripts test",
+        "lint": "eslint --ignore-path .gitignore .",
         "deploy": "gh-pages -d build"
     },
     "dependencies": {
@@ -21,7 +20,6 @@
         "eslint-plugin-jsdoc": "^15.11.0",
         "eslint-utils": "^1.4.2",
         "gh-pages": "^2.2.0",
-        "prettier": "^2.3.0",
         "react-scripts": "^3.4.1"
     },
     "eslintConfig": {
