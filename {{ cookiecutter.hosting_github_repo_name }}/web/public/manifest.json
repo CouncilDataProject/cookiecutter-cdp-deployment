@@ -1,6 +1,6 @@
 {
     "short_name": "CDP - {{ cookiecutter.municipality }}",
-    "name": "CouncilDataProject - {{ cookiecutter.municipality }}",
+    "name": "Council Data Project - {{ cookiecutter.municipality }}",
     "icons": [{
         "src": "favicon.ico",
         "sizes": "64x64 32x32 24x24 16x16",
