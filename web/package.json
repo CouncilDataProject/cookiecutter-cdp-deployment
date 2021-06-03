@@ -3,18 +3,24 @@
     "version": "1.0.0",
     "homepage": "https://CouncilDataProject/github.io/example",
     "license": "MIT",
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "lint": "eslint --ignore-path .gitignore .",
+        "deploy": "gh-pages -d build"
+    },
     "dependencies": {
         "@councildataproject/cdp-frontend": "^0.2.0",
         "react": "^16.13.1",
         "react-dom": "^16.13.1"
     },
-    "scripts": {
-        "start": "react-scripts start",
-        "lint": "eslint --ignore-path .gitignore .",
-        "build": "react-scripts build",
-        "test": "react-scripts test",
-        "predeploy": "npm run build",
-        "deploy": "gh-pages -d build"
+    "devDependencies": {
+        "eslint-config-strongloop": "^2.1.0",
+        "eslint-plugin-jsdoc": "^15.11.0",
+        "eslint-utils": "^1.4.2",
+        "gh-pages": "^2.2.0",
+        "react-scripts": "^3.4.1"
     },
     "eslintConfig": {
         "extends": "react-app"
@@ -30,12 +36,5 @@
             "last 1 firefox version",
             "last 1 safari version"
         ]
-    },
-    "devDependencies": {
-        "gh-pages": "^2.2.0",
-        "eslint-config-strongloop": "^2.1.0",
-        "eslint-plugin-jsdoc": "^15.11.0",
-        "eslint-utils": "^1.4.2",
-        "react-scripts": "^3.4.1"
     }
 }
