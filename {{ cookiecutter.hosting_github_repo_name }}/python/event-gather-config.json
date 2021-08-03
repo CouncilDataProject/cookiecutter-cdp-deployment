@@ -1,0 +1,6 @@
+{
+  "google_credentials_file": "google-creds.json",
+  "gcs_bucket_name": "",
+  "caption_new_speaker_turn_pattern": "",
+  "caption_confidence": null
+}

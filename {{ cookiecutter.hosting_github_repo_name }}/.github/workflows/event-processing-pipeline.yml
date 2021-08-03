@@ -30,7 +30,14 @@ jobs:
         echo "$GOOGLE_CREDS" > python/google-creds.json
       env:
         GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+    - name: Create event gather pipeline config file 
+      uses: jossef/action-set-json-field@v1
+      with: 
+        file: python/event-gather-config.json
+        field: get_events_function_path
+        value: cdp_{{ cookiecutter.python_municipality_slug }}_backend.scraper.get_events
     - name: Gather and Process New Events
       run: |
         cd python/
-        run_cdp_event_gather -g google-creds.json -e cdp_{{ cookiecutter.python_municipality_slug }}_backend.scraper.get_events
+        run_cdp_event_gather event-gather-config.json --parallel
+
