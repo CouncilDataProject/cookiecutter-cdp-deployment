@@ -14,7 +14,7 @@ For more information about Council Data Project, please visit [our website](http
 
 ## About
 
-This repository is "cookiecutter template" for an entirely newCouncil Data Project (CDP) Instance. By following the steps defined in
+This repository is "cookiecutter template" for an entirely new Council Data Project (CDP) Instance. By following the steps defined in
 the [Usage](#usage) section, our tools will create and manage all the database, file storage, and processing infrastructure needed to serve the CDP web application.
 
 While our tools will setup and manage all processing and storage infrastructure, you (or your team) must provide and maintain the custom Python code to gather event information and handle billing for the costs of the deployment.
