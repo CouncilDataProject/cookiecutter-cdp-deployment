@@ -86,6 +86,7 @@ For more details on what is created from using this cookiecutter template, see
 | hosting_github_repo_name       | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                                    | king-county                                       |
 | hosting_github_url             | From the provided information, the expected URL of the GitHub repository.                                                  | https://github.com/JacksonMaxfield/cdp-seattle | https://github.com/CouncilDataProject/king-county |
 | hosting_web_app_address        | From the provided information, the expected URL of the web application.                                                    | https://jacksonmaxfield.github.io/cdp-seattle  | https://councildataproject.github.io/king-county  |
+| firestore_region               | The desired region to host the firestore instance. [Firestore docs](https://firebase.google.com/docs/firestore/locations)  | us-west1                                       | europe-central2                                   |
 
 ### Things to Know
 
