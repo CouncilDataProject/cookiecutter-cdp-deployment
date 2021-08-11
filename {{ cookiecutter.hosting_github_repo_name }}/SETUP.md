@@ -115,6 +115,6 @@ Navigate and follow the instructions in the the file: `python/cdp_{{ cookiecutte
 
 As soon as you push your updates to your event gather function (`get_events`) to your GitHub repository, everything will be tested and configured for the next pipeline run.
 
-Be sure to review the [CDP Ingestion Model documentation](https://councildataproject.github.io/cdp-backend/ingestion_models.html) for the object definition to return from your `get_events` function.
+Be sure to review the [CDP Ingestion Model documentation](https://councildataproject.org/cdp-backend/ingestion_models.html) for the object definition to return from your `get_events` function.
 
 Once your function is complete and pushed to the `main` branch, feel free to delete this setup file.
