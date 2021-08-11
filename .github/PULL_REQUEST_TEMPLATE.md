@@ -13,10 +13,10 @@
   For example: feature/read-tiff-files
 -->
 
-### Link to relevant issue
+### Link to Relevant Issue
 
 This pull request resolves #
 
-### Description of changes
+### Description of Changes
 
 _Include a description of the proposed changes._

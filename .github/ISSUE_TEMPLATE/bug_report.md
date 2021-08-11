@@ -1,5 +1,5 @@
 ---
-name: Bug report
+name: Bug Report
 about: Create a report to help us improve cookiecutter-cdp-deployment
 labels: bug
 ---
@@ -11,11 +11,11 @@ labels: bug
   🔎 Please search existing issues to avoid creating duplicates.
 -->
 
-### Describe the bug
+### Describe the Bug
 
 _A clear and concise description of the bug._
 
-### Expected behavior
+### Expected Behavior
 
 _What did you expect to happen instead?_
 

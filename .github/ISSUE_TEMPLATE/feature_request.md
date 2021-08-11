@@ -1,5 +1,5 @@
 ---
-name: Feature request
+name: Feature Request
 about: Suggest a feature for cookiecutter-cdp-deployment
 labels: enhancement
 ---
@@ -11,11 +11,11 @@ labels: enhancement
   🔎 Please search existing issues to avoid creating duplicates.
 -->
 
-### Feature description
+### Feature Description
 
 _A clear and concise description of the feature you're requesting._
 
-### Use case
+### Use Case
 
 _Please provide a use case to help us understand your request in context._
 
