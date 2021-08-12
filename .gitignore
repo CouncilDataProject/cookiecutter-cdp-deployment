@@ -98,3 +98,7 @@ python_boilerplate/
 
 # VSCode
 .vscode
+
+# Vim swap files
+*.swp
+*.swo
