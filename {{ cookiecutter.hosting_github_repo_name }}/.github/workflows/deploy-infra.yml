@@ -14,7 +14,7 @@ jobs:
     - name: Run Infrastructure Deploy
       uses: pulumi/actions@v1
       with:
-        command: up -p 5
+        command: up -p 4
       env:
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
         PULUMI_ACCESS_TOKEN: {% raw %}${{ secrets.PULUMI_ACCESS_TOKEN }}{% endraw %}
