@@ -1,0 +1,5 @@
+{
+    "google_credentials_file": "google-creds.json",
+    "gcs_bucket_name": null,
+    "datetime_weighting_days_decay": 30
+}

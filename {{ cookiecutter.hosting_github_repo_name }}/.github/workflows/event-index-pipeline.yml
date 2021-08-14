@@ -7,9 +7,10 @@ on:
   schedule:
     # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
     # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
-    # Run every Monday and Thursday at 2:26:00 UTC (Monday and Thursday at 18:26:00 PST)
+    # Run every Monday, Wednesday, and Friday at 3:26:00 UTC
+    # (Monday, Wednesday, and Friday at 19:26:00 PST)
     # We offset from the hour and half hour to go easy on the servers :)
-    - cron: '26 2 * * 1,4'
+    - cron: '26 3 * * 1,3,5'
 
 jobs:
   index-events:
@@ -29,6 +30,14 @@ jobs:
       run: |
         cd python/
         pip install .
+    - name: Dump Credentials to JSON
+      run: |
+        echo "$GOOGLE_CREDS" > python/google-creds.json
+      env:
+        GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
     - name: Index Events {% raw %}${{ matrix.n-gram }}{% endraw %}-grams
       run: |
-        echo "To be added soon..."
+        cd python/
+        {% raw %}run_cdp_event_index event-index-config.json \
+          --n_grams ${{ matrix.n-gram }} \
+          --parallel{% endraw %}
