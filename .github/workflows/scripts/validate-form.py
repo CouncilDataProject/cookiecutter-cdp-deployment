@@ -83,7 +83,6 @@ def _check_github_resource_exists(resource: str, name: str) -> bool:
     # Request and get response
     response = requests.get(f"https://api.github.com/{resource}/{name}")
     content = response.json()
-    log.info(content)
 
     # Return the boolean if the structure is consistent with successful query or not
     # name is only present if the resource exists
@@ -125,20 +124,20 @@ def validate_form(issue_content_file: str) -> None:
 
     # Construct message content
     if planned_maintainer_exists:
-        maintainer_response += TARGET_MAINTAINER_EXISTS_MESSAGE.format(
+        maintainer_response = TARGET_MAINTAINER_EXISTS_MESSAGE.format(
             maintainer_name=form_values[TARGET_MAINTAINER],
         )
     else:
-        maintainer_response += TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
+        maintainer_response = TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
             maintainer_name=form_values[TARGET_MAINTAINER],
         )
     
     if planned_repository_exists:
-        repository_response += TARGET_REPOSITORY_EXISTS_MESSAGE.format(
+        repository_response = TARGET_REPOSITORY_EXISTS_MESSAGE.format(
             repository_name=repository_name,
         )
     else:
-        repository_response += TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
+        repository_response = TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
             repository_name=repository_name,
         )
 
