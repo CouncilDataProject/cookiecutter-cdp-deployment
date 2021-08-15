@@ -37,7 +37,12 @@ jobs:
       - name: Get form value - maintainer
         id: get-maintainer
         run: |
-          cat issue-body.md
+          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Maintainer GitHub Name")
+          echo "::set-output name=maintainer::$output"
+      
+      - name: Print value
+        run: |
+          echo ${{ steps.get-maintainer.outputs.maintainer }}
 
       # - name: Check for existing repo
       #   uses: actions/checkout@v2
