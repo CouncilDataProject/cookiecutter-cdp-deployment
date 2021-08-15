@@ -134,8 +134,15 @@ jobs:
       # Repository Availability
 
       - name: Check for Existing Repo
+        id: check-for-repo
         run: |
-          curl https://api.github.com/repos/councildataproject/${{ steps.get-target-repository.outputs.target_repository }}
+          target_repo_return=$(curl https://api.github.com/repos/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
+          output=${{ !contains($target_repo_return, '"message": "Not Found"') }}
+          echo "::set-output name=repo_exists::$output"
+      
+      - name: Log existing repo
+        run: |
+          echo ${{ steps.check-for-repo.outputs.repo_exists }}
 
       # - name: Find Repository Available Check 
       #   uses: peter-evans/find-comment@v1
