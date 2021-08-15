@@ -61,35 +61,69 @@ jobs:
       - name: Dump Issue Body to File
         run: |
           echo "${{ github.event.issue.body }}" > issue-body.md
+      - name: Validate Form and Create Bot Response
+        run: |
+          python .github/workflows/scripts/validate-form.py issue-body.md
 
-      # Parse Form Values
-      - name: Get Form Value - Target Maintainer
-        id: get-target-maintainer
+      - name: Set Response Content
+        id: validation-message-response
         run: |
-          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Maintainer GitHub Name")
-          echo "::set-output name=target_maintainer::$output"
-      - name: Get Form Value - Target Repository
-        id: get-target-repository
-        run: |
-          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Repository Name")
-          echo "::set-output name=target_repository::$output"
-      - name: Get Form Value - Legistar Client Id
-        id: get-legistar-client-id
-        run: |
-          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Legistar Client Id")
-          echo "::set-output name=legistar_client_id::$output"
-      - name: Get Form Value - Legistar Client Timezone
-        id: get-legistar-client-timezone
-        run: |
-          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Municipality Timezone")
-          echo "::set-output name=legistar_client_timezone::$output"
-          
-      - name: Log Form Values
-        run: |
-          echo ${{ steps.get-target-maintainer.outputs.target_maintainer }}
-          echo ${{ steps.get-target-repository.outputs.target_repository }}
-          echo ${{ steps.get-legistar-client-id.outputs.legistar_client_id }}
-          echo ${{ steps.get-legistar-client-timezone.outputs.legistar_client_timezone }}
+          body=$(cat form-validation-results.md)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo ::set-output name=body::$body
+
+      - name: Find Prior Validation Results  
+        uses: peter-evans/find-comment@v1
+        id: find-validation-message
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: --validation-results--
+
+      - name: Post Validation Results
+        if: ${{ steps.find-validation-message.outputs.comment-id == 0 }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hello! 👋
+
+            Thanks for initiating the process to configure a new CDP instance.
+
+            I am a bot that will check out the information provided in your form.
+            If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and
+            selecting 'Edit'.
+
+            ### Form Checks
+            
+            ${{ steps.validation-message-response.outputs.body }}
+            
+            --form-validation--
+            _This comment was written by a bot!_
+      
+      - name: Update Validation Results
+        if: ${{ steps.find-validation-message.outputs.comment-id != 0 }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.find-validation-message.outputs.comment-id }}
+          edit-mode: 'replace'
+          body: |
+            Hello! 👋
+
+            Thanks for initiating the process to configure a new CDP instance.
+
+            I am a bot that will check out the information provided in your form.
+            If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and
+            selecting 'Edit'.
+
+            ### Form Checks
+            
+            ${{ steps.validation-message-response.outputs.body }}
+            
+            --form-validation--
+            _This comment was written by a bot!_
 
       #########################################################################
       # Maintainer Tagging
@@ -136,86 +170,97 @@ jobs:
       #########################################################################
       # Repository Availability
 
-      - name: Check for Existing Repo
-        id: check-for-repo
-        run: |
-          output=$(python .github/workflows/scripts/check-github-resource-exists.py repos councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
-          echo "::set-output name=repo_exists::$output"
+      # - name: Check for Existing Repo
+      #   id: check-for-repo
+      #   run: |
+      #     output=$(python .github/workflows/scripts/check-github-resource-exists.py repos councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
+      #     echo "::set-output name=repo_exists::$output"
 
-      - name: Log Repo Exists Return
-        run: |
-          echo ${{ steps.check-for-repo.outputs.repo_exists }}
+      # - name: Log Repo Exists Return
+      #   run: |
+      #     echo ${{ steps.check-for-repo.outputs.repo_exists }}
 
-      - name: Find Repository Available Check 
-        uses: peter-evans/find-comment@v1
-        id: find-repository-available-check
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: repository-available-check
+      # - name: Find Repository Available Check 
+      #   uses: peter-evans/find-comment@v1
+      #   id: find-repository-available-check
+      #   with:
+      #     issue-number: ${{ github.event.issue.number }}
+      #     comment-author: 'github-actions[bot]'
+      #     body-includes: repository-available-check
 
-      # Failed -- Repository already exists
-      - name: Repository Exists - Initial Comment
-        if: |
-          (
-            ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
-            && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
-          )
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            ❌ The provided target repository name already exists.
-            See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
+      # # Failed -- Repository already exists
+      # - name: Repository Exists - Initial Comment
+      #   if: |
+      #     (
+      #       ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
+      #       && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
+      #     )
+      #   uses: peter-evans/create-or-update-comment@v1
+      #   with:
+      #     issue-number: ${{ github.event.issue.number }}
+      #     body: |
+      #       ❌ The provided target repository name already exists.
+      #       See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
 
-            _--repository-available-check--_         
-            _This comment was written by a bot!_
+      #       _--repository-available-check--_         
+      #       _This comment was written by a bot!_
 
-      - name: Repository Exists - Update Comment
-        if: |
-          (
-            ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
-            && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
-          )
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
-          edit-mode: replace
-          body: |
-            ❌ The provided target repository name already exists.
-            See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
+      # - name: Repository Exists - Update Comment
+      #   if: |
+      #     (
+      #       ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
+      #       && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
+      #     )
+      #   uses: peter-evans/create-or-update-comment@v1
+      #   with:
+      #     comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
+      #     edit-mode: replace
+      #     body: |
+      #       ❌ The provided target repository name already exists.
+      #       See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
 
-            _--repository-available-check--_         
-            _This comment was written by a bot!_
+      #       _--repository-available-check--_         
+      #       _This comment was written by a bot!_
 
-      # Succeeded -- Repository does not exist
-      - name: Repository Available - Initial Comment
-        if: |
-          (
-            ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
-            && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
-          )
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
+      # # Succeeded -- Repository does not exist
+      # - name: Repository Available - Initial Comment
+      #   if: |
+      #     (
+      #       ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
+      #       && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
+      #     )
+      #   uses: peter-evans/create-or-update-comment@v1
+      #   with:
+      #     issue-number: ${{ github.event.issue.number }}
+      #     body: |
+      #       ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
 
-            _--repository-available-check--_         
-            _This comment was written by a bot!_
+      #       _--repository-available-check--_         
+      #       _This comment was written by a bot!_
 
-      - name: Repository Available - Update Comment
-        if: |
-          (
-            ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
-            && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
-          )
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
-          edit-mode: replace
-          body: |
-            ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
+      # - name: Repository Available - Update Comment
+      #   if: |
+      #     (
+      #       ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
+      #       && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
+      #     )
+      #   uses: peter-evans/create-or-update-comment@v1
+      #   with:
+      #     comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
+      #     edit-mode: replace
+      #     body: |
+      #       ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
 
-            _--repository-available-check--_         
-            _This comment was written by a bot!_
+      #       _--repository-available-check--_         
+      #       _This comment was written by a bot!_
+
+      # #########################################################################
+      # # Post Validation Results
+      
+
+
+      #       - [ ] Planned Instance Maintainer Exists
+      #       - [ ] Planned Repository Available
+      #       - [ ] (Optional) Legistar Data Meets Minimum Requirements
+
+      #       --form-validation--
