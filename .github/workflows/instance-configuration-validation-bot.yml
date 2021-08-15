@@ -17,25 +17,49 @@ jobs:
       #########################################################################
       # Initial Hello and Documentation
 
-      - name: Find Any Bot Comment
+      - name: Find Validation Results Comment - Pre Run
         uses: peter-evans/find-comment@v1
-        id: find-any-bot-comment
+        id: find-validation-results-comment-pre
         with:
           issue-number: ${{ github.event.issue.number }}
           comment-author: 'github-actions[bot]'
-          body-includes: 'Thanks for initiating the process'
+          body-includes: 'Form Validation Results'
 
-      - name: Post Hello
+      - name: Set Initial Comment State
         uses: peter-evans/create-or-update-comment@v1
-        if: ${{ steps.find-any-bot-comment.outputs.comment-id == 0 }}
+        if: ${{ steps.find-validation-results-comment-pre.outputs.comment-id == 0 }}
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
             Hello! 👋
             Thanks for initiating the process to configure a new CDP instance.
 
-            I am a bot that will check out the information provided in your form. If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
+            I am a bot that will check out the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
 
+            #### Form Validation Results
+
+            :thought_balloon: Validating planned instance maintainer
+            :thought_balloon: Validating planned instance repository name
+            
+            _This comment was written by a bot!_
+      
+      - name: Reset Initial Comment State
+        uses: peter-evans/create-or-update-comment@v1
+        if: ${{ steps.find-validation-results-comment-pre.outputs.comment-id != 0 }}
+        with:
+          comment-id: ${{ steps.find-validation-results-comment-pre.outputs.comment-id }}
+          edit-mode: 'replace'
+          body: |
+            Hello! 👋
+            Thanks for initiating the process to configure a new CDP instance.
+
+            I am a bot that will check out the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
+
+            #### Form Validation Results
+
+            :thought_balloon: Validating planned instance maintainer
+            :thought_balloon: Validating planned instance repository name
+            
             _This comment was written by a bot!_
 
       #########################################################################
@@ -69,50 +93,26 @@ jobs:
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
 
-      - name: Find Prior Validation Results  
+      - name: Find Validation Results Comment - Post Run
         uses: peter-evans/find-comment@v1
-        id: find-validation-message
+        id: find-validation-results-comment-post
         with:
           issue-number: ${{ github.event.issue.number }}
           comment-author: 'github-actions[bot]'
           body-includes: 'Form Validation Results'
 
       - name: Post Validation Results
-        if: ${{ steps.find-validation-message.outputs.comment-id == 0 }}
         uses: peter-evans/create-or-update-comment@v1
         with:
-          issue-number: ${{ github.event.issue.number }}
-          body: |
-            Hello! 👋
-
-            Thanks for initiating the process to configure a new CDP instance.
-
-            I am a bot that will check out the information provided in your form.
-            If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and
-            selecting 'Edit'.
-
-            ### Form Validation Results
-            
-            ${{ steps.validation-message-response.outputs.body }}
-            
-            _This comment was written by a bot!_
-      
-      - name: Update Validation Results
-        if: ${{ steps.find-validation-message.outputs.comment-id != 0 }}
-        uses: peter-evans/create-or-update-comment@v1
-        with:
-          comment-id: ${{ steps.find-validation-message.outputs.comment-id }}
+          comment-id: ${{ steps.find-validation-results-comment-post.outputs.comment-id }}
           edit-mode: 'replace'
           body: |
             Hello! 👋
-
             Thanks for initiating the process to configure a new CDP instance.
 
-            I am a bot that will check out the information provided in your form.
-            If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and
-            selecting 'Edit'.
+            I am a bot that will check out the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
 
-            ### Form Validation Results
+            #### Form Validation Results
             
             ${{ steps.validation-message-response.outputs.body }}
             
