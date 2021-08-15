@@ -38,7 +38,7 @@ jobs:
 
             A member from the CDP team will respond as soon as possible!
 
-            #### Form Validation Results:
+            #### Form Validation Results
 
             :thought_balloon: Validating planned instance maintainer
             :thought_balloon: Validating planned instance repository name
@@ -112,17 +112,6 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
-
-      - name: Run Cookiecutter
-        run: |
-          mkdir planned-repo/
-          cp planned-cookiecutter.json planned-repo/cookiecutter.json
-          cd planned-repo/
-          cookiecutter .. --output-dir planned-repo/ --no-input
-
-      - name: Log Cookiecutter Generated Contents
-        run: |
-          tree -a planned-repo/
 
       - name: Find Validation Results Comment - Post Run
         uses: peter-evans/find-comment@v1
