@@ -157,8 +157,10 @@ jobs:
       # Failed -- Repository already exists
       - name: Repository Exists - Initial Comment
         if: |
-          ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
-          && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
+          (
+            ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
+            && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
+          )
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -171,8 +173,10 @@ jobs:
 
       - name: Repository Exists - Update Comment
         if: |
-          ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
-          && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
+          (
+            ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
+            && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
+          )
         uses: peter-evans/create-or-update-comment@v1
         with:
           comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
@@ -187,8 +191,10 @@ jobs:
       # Succeeded -- Repository does not exist
       - name: Repository Available - Initial Comment
         if: |
-          ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
-          && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
+          (
+            ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
+            && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
+          )
         uses: peter-evans/create-or-update-comment@v1
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -200,8 +206,10 @@ jobs:
 
       - name: Repository Available - Update Comment
         if: |
-          ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
-          && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
+          (
+            ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
+            && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
+          )
         uses: peter-evans/create-or-update-comment@v1
         with:
           comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
