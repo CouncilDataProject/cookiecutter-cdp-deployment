@@ -37,20 +37,35 @@ jobs:
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
 
-      - name: Dump issue body to file
+      - name: Dump Issue Body to File
         run: |
           echo "${{ github.event.issue.body }}" > issue-body.md
 
-      - name: Get form value - maintainer
-        id: get-maintainer
+      - name: Get Form Values
         run: |
-          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Maintainer GitHub Name")
-          echo "::set-output name=maintainer::$output"
-      
-      - name: Print value
-        run: |
-          echo ${{ steps.get-maintainer.outputs.maintainer }}
+          target_maintainer=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Maintainer GitHub Name")
 
-      # - name: Check for existing repo
-      #   uses: actions/checkout@v2
-      #     repository: councildataproject/{{}}
+          echo "::set-output name=target_maintainer::$target_maintainer"
+
+          target_repository=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Repository Name")
+
+          echo "::set-output name=target_repository::$target_repository"
+
+          legistar_client_id=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Legistar Client Id")
+
+          echo "::set-output name=legistar_client_id::$legistar_client_id"
+
+          legistar_client_timezone=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Municipality Timezone")
+
+          echo "::set-output name=legistar_client_timezone::$legistar_client_timezone"
+          
+      - name: Print Form Values
+        run: |
+          echo ${{ steps.get-maintainer.outputs.target_maintainer }}
+          echo ${{ steps.get-maintainer.outputs.target_repository }}
+          echo ${{ steps.get-maintainer.outputs.legistar_client_id }}
+          echo ${{ steps.get-maintainer.outputs.legistar_client_timezone }}
+
+      - name: Check for existing repo
+        uses: actions/checkout@v2
+          repository: councildataproject/{{}}
