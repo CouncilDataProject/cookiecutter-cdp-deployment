@@ -7,7 +7,7 @@ body:
   - type: markdown
     attributes:
       value:
-        Before beginning on the new instance configuration process, you may want to find if your municipality uses Legistar for it's legislation and meeting management process. If so, this instance configuration process can be almost entirely automated. If not, you will need to write a custom event scraper. See our documentation on the process [here](https://github.com/CouncilDataProject/cdp-scrapers).
+        Before beginning on the new instance configuration process, you may want to find out if your municipality uses Legistar for it's legislation and meeting management process. If so, this instance configuration process can be almost entirely automated. If not, you will need to write a custom event scraper. See our documentation on the process [here](https://github.com/CouncilDataProject/cdp-scrapers).
 
 
         Additionally, please refer to our documentation on the [cost of maintaining a CDP instance](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost) and affirm that you are able to pay the estimated monthly cost of a new CDP instance.
@@ -31,6 +31,8 @@ body:
       label: Repository Name
       description: A unique name for the CDP Instance repository. This name will additionally be used as the domain for the instance.
       placeholder: ex. "seattle"
+    validations:
+      required: true
   - type: input
     id: legistar_client_id
     attributes:
