@@ -1,0 +1,49 @@
+name: New CDP Instance Form
+description: Configure a new CDP Instance.
+assignees:
+  - JacksonMaxfield
+body:
+  - type: markdown
+    attributes:
+      value:
+        Fill out the following information to start the process for deploying a new CDP instance. 
+        
+        Before beginning on this process, you will want to see if your municipality uses Legistar for their legislation and meeting management. If so, this process can be almost entirely automated. If not, you will need to write a custom event scraper. See our documentation on the process [here]().
+
+        Additionally, please refer to our documentation on the [cost of maintaining a CDP instance](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
+        
+        _**Note**, this instance will live under the "CouncilDataProject" GitHub organization and will be hosted under the "councildataproject.org" domain._
+  - type: input
+    id: maintainer_github_name
+    attributes:
+      label: Maintainer GitHub Name
+      description: Who will act as the primary maintainer of the new CDP Instance.
+      placeholder: ex. "JacksonMaxfield"
+    validations:
+      required: true
+  - type: input
+    id: repo_name
+    attributes:
+      label: Repository Name
+      description: A unique name for the CDP Instance repository. This name will additionally be used as the domain for the instance.
+      placeholder: ex. "seattle"
+  - type: input
+    id: legistar_client_id
+    attributes:
+      label: Legistar Client Id
+      description: If planning on using Legistar, the municipalities Legistar Client Id as described in above documentation.
+      placeholder: ex. "seattle"
+  - type: input
+    id: timezone
+    attributes:
+      label: Municipality Timezone
+      description: If planning on using Legistar, the timezone of your municipality. See [the TZ database name column](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to find the appropriate timezone string.
+      placeholder: ex. "US/Pacific"
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Code of Conduct
+      description: By submitting this issue, you agree to follow our [Code of Conduct](https://github.com/CouncilDataProject/councildataproject.github.io/blob/main/CODE_OF_CONDUCT.md)
+      options:
+        - label: I agree to follow this project's Code of Conduct
+          required: true
