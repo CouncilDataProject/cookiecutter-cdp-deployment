@@ -1,5 +1,5 @@
-name: New CDP Instance Form
-description: Configure a new CDP Instance.
+name: CDP Instance Configuration
+description: Configure and deploy a new CDP instance.
 title: "[Instance]: "
 assignees:
   - JacksonMaxfield
@@ -7,14 +7,14 @@ body:
   - type: markdown
     attributes:
       value:
+        Before beginning on the new instance configuration process, you may want to find if your municipality uses Legistar for it's legislation and meeting management process. If so, this instance configuration process can be almost entirely automated. If not, you will need to write a custom event scraper. See our documentation on the process [here](https://github.com/CouncilDataProject/cdp-scrapers).
+
+
+        Additionally, please refer to our documentation on the [cost of maintaining a CDP instance](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost) and affirm that you are able to pay the estimated monthly cost of a new CDP instance.
+
+
         Fill out the following information to start the process for deploying a new CDP instance.
-        
 
-        Before beginning on this process, you will want to see if your municipality uses Legistar for their legislation and meeting management. If so, this process can be almost entirely automated. If not, you will need to write a custom event scraper. See our documentation on the process [here]().
-
-
-        Additionally, please refer to our documentation on the [cost of maintaining a CDP instance](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
-        
 
         _**Note**, this instance will live under the "CouncilDataProject" GitHub organization and will be hosted under the "councildataproject.org" domain._
   - type: input
