@@ -142,7 +142,7 @@ jobs:
       # Failed -- Repository already exists
       - name: Failed Repository Availability Check - Initial Comment
         if: |
-          ${{ steps.check-for-existing-repo.conclusion == "failure" }}
+          ${{ steps.check-for-existing-repo.conclusion == 'failure' }}
           && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -156,7 +156,7 @@ jobs:
 
       - name: Failed Repository Availability Check - Update Comment
         if: |
-          ${{ steps.check-for-existing-repo.conclusion == "failure" }}
+          ${{ steps.check-for-existing-repo.conclusion == 'failure' }}
           && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -171,7 +171,7 @@ jobs:
       # Succeeded -- Repository does not exist
       - name: Succeeded Repository Availability Check - Initial Comment
         if: |
-          ${{ steps.check-for-existing-repo.conclusion == "success" }}
+          ${{ steps.check-for-existing-repo.conclusion == 'success' }}
           && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -184,7 +184,7 @@ jobs:
 
       - name: Succeeded Repository Availability Check - Update Comment
         if: |
-          ${{ steps.check-for-existing-repo.conclusion == "success" }}
+          ${{ steps.check-for-existing-repo.conclusion == 'success' }}
           && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
         uses: peter-evans/create-or-update-comment@v1
         with:
