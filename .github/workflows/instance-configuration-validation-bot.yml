@@ -139,7 +139,7 @@ jobs:
       - name: Check for Existing Repo
         id: check-for-repo
         run: |
-          output=$(python .github/workflows/scripts/check-repo-exists.py councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
+          output=$(python .github/workflows/scripts/check-github-resource-exists.py repos councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
           echo "::set-output name=repo_exists::$output"
 
       - name: Log Repo Exists Return

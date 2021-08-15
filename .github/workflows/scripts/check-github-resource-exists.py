@@ -25,19 +25,30 @@ class Args(argparse.Namespace):
 
     def __parse(self) -> None:
         p = argparse.ArgumentParser(
-            prog="check-repo-exists",
-            description="Check if a GitHub repository exists.",
+            prog="check-github-resource-exists",
+            description="Check if a GitHub resource (repo, user, org) exists.",
         )
         p.add_argument(
-            "repo",
+            "resource",
             type=str,
-            help="The repo name. Ex. 'councildataproject/cookiecutter-cdp-deployment'"
+            help=(
+                "The resource target. Ex. 'repos', 'users', 'organizations'"
+            )
+        )
+        p.add_argument(
+            "name",
+            type=str,
+            help=(
+                "The resource name. "
+                "Repo Ex. 'councildataproject/cookiecutter-cdp-deployment' "
+                "User Ex. 'JacksonMaxfield'"
+            )
         )
         p.parse_args(namespace=self)
 
-def check_repo_exists(repo: str) -> None:
+def check_repo_exists(resource: str, name: str) -> None:
     # Request and get response
-    response = requests.get(f"https://api.github.com/repos/{repo}")
+    response = requests.get(f"https://api.github.com/{resource}/{name}")
     content = response.json()
 
     # Print out the boolean if the structure is consistent or not
@@ -50,7 +61,7 @@ def check_repo_exists(repo: str) -> None:
 def main() -> None:
     try:
         args = Args()
-        check_repo_exists(repo=args.repo)
+        check_repo_exists(resource=args.resource, name=args.name)
     except Exception as e:
         log.error("=============================================")
         log.error("\n\n" + traceback.format_exc())
