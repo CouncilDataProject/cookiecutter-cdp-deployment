@@ -23,7 +23,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           comment-author: 'github-actions[bot]'
-          body-includes: This comment was written by a bot!
+          body-includes: 'Thanks for initiating the process'
 
       - name: Post Hello
         uses: peter-evans/create-or-update-comment@v1
@@ -75,7 +75,7 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           comment-author: 'github-actions[bot]'
-          body-includes: --validation-results--
+          body-includes: 'Form Validation Results'
 
       - name: Post Validation Results
         if: ${{ steps.find-validation-message.outputs.comment-id == 0 }}
@@ -91,11 +91,10 @@ jobs:
             If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and
             selecting 'Edit'.
 
-            ### Form Checks
+            ### Form Validation Results
             
             ${{ steps.validation-message-response.outputs.body }}
             
-            --form-validation--
             _This comment was written by a bot!_
       
       - name: Update Validation Results
@@ -113,149 +112,8 @@ jobs:
             If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and
             selecting 'Edit'.
 
-            ### Form Checks
+            ### Form Validation Results
             
             ${{ steps.validation-message-response.outputs.body }}
             
-            --form-validation--
             _This comment was written by a bot!_
-
-      #########################################################################
-      # Maintainer Tagging
-
-      # - name: Find Maintainer Tagged Check
-      #   uses: peter-evans/find-comment@v1
-      #   id: find-maintainer-tagged-check
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     comment-author: 'github-actions[bot]'
-      #     body-includes: maintainer-tagged-check
-
-      # - name: Tag Target Maintainer - Initial Comment
-      #   if: |
-      #     ${{ steps.find-maintainer-tagged-check.outputs.comment-id == 0 }}
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     body: |
-      #       Hey @${{ steps.get-target-maintainer.outputs.target_maintainer }} 👋
-
-      #       You have been marked as the planned ${{ steps.get-target-repository.outputs.target_repository }} CDP instance primary maintainer.
-      #       If you aren't the correct person, please let us know!
-
-      #       _--maintainer-tagged-check--_         
-      #       _This comment was written by a bot!_
-      
-      # - name: Tag Target Maintainer - Update Comment
-      #   if: |
-      #     ${{ steps.find-maintainer-tagged-check.outputs.comment-id != 0 }}
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     comment-id: ${{ steps.find-maintainer-tagged-check.outputs.comment-id }}
-      #     edit-mode: replace
-      #     body: |
-      #       Hey @${{ steps.get-target-maintainer.outputs.target_maintainer }} 👋
-
-      #       You have been marked as the planned ${{ steps.get-target-repository.outputs.target_repository }} CDP instance primary maintainer.
-      #       If you aren't the correct person, please let us know!
-
-      #       _--maintainer-tagged-check--_         
-      #       _This comment was written by a bot!_
-
-      #########################################################################
-      # Repository Availability
-
-      # - name: Check for Existing Repo
-      #   id: check-for-repo
-      #   run: |
-      #     output=$(python .github/workflows/scripts/check-github-resource-exists.py repos councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
-      #     echo "::set-output name=repo_exists::$output"
-
-      # - name: Log Repo Exists Return
-      #   run: |
-      #     echo ${{ steps.check-for-repo.outputs.repo_exists }}
-
-      # - name: Find Repository Available Check 
-      #   uses: peter-evans/find-comment@v1
-      #   id: find-repository-available-check
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     comment-author: 'github-actions[bot]'
-      #     body-includes: repository-available-check
-
-      # # Failed -- Repository already exists
-      # - name: Repository Exists - Initial Comment
-      #   if: |
-      #     (
-      #       ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
-      #       && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
-      #     )
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     body: |
-      #       ❌ The provided target repository name already exists.
-      #       See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
-
-      #       _--repository-available-check--_         
-      #       _This comment was written by a bot!_
-
-      # - name: Repository Exists - Update Comment
-      #   if: |
-      #     (
-      #       ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
-      #       && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
-      #     )
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
-      #     edit-mode: replace
-      #     body: |
-      #       ❌ The provided target repository name already exists.
-      #       See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
-
-      #       _--repository-available-check--_         
-      #       _This comment was written by a bot!_
-
-      # # Succeeded -- Repository does not exist
-      # - name: Repository Available - Initial Comment
-      #   if: |
-      #     (
-      #       ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
-      #       && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
-      #     )
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     body: |
-      #       ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
-
-      #       _--repository-available-check--_         
-      #       _This comment was written by a bot!_
-
-      # - name: Repository Available - Update Comment
-      #   if: |
-      #     (
-      #       ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
-      #       && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
-      #     )
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
-      #     edit-mode: replace
-      #     body: |
-      #       ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
-
-      #       _--repository-available-check--_         
-      #       _This comment was written by a bot!_
-
-      # #########################################################################
-      # # Post Validation Results
-      
-
-
-      #       - [ ] Planned Instance Maintainer Exists
-      #       - [ ] Planned Repository Available
-      #       - [ ] (Optional) Legistar Data Meets Minimum Requirements
-
-      #       --form-validation--
