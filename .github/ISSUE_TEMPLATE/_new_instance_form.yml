@@ -20,6 +20,20 @@ body:
 
         _**Note**, this instance will live under the "CouncilDataProject" GitHub organization and will be hosted under the "councildataproject.org" domain._
   - type: input
+    id: municipality_name
+    attributes:
+      label: Municipality Name
+      description: The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.
+      placeholder: ex. "Seattle", "King County"
+    validations:
+      required: true
+  - type: input
+    id: municipality_slug
+    attributes:
+      label: (Optional) Municipality Slug
+      description: The name of the municipality cleaned for use in infrastructure and certain parts of repository naming. Default - municipality name lowercased and spaces replaced with '-'.
+      placeholder: ex. "seattle", "king-county"
+  - type: input
     id: maintainer_github_name
     attributes:
       label: Maintainer GitHub Name
@@ -28,23 +42,21 @@ body:
     validations:
       required: true
   - type: input
-    id: repo_name
+    id: firestore_region
     attributes:
-      label: Repository Name
-      description: A unique name for the CDP Instance repository. This name will additionally be used as the domain for the instance.
-      placeholder: ex. "seattle"
-    validations:
-      required: true
+      label: (Optional) Firestore Region
+      description: The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations)) Default - 'us-central1'.
+      placeholder: ex. "us-west1", "us-central1"
   - type: input
     id: legistar_client_id
     attributes:
-      label: Legistar Client Id
+      label: (Optional) Legistar Client Id
       description: If planning on using Legistar, the municipalities Legistar Client Id as described in above documentation.
       placeholder: ex. "seattle"
   - type: input
     id: timezone
     attributes:
-      label: Municipality Timezone
+      label: (Optional) Municipality Timezone
       description: If planning on using Legistar, the timezone of your municipality. See [the TZ database name column](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to find the appropriate timezone string.
       placeholder: ex. "US/Pacific"
   - type: checkboxes
