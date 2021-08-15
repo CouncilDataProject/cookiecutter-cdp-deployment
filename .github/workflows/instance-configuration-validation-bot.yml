@@ -15,18 +15,6 @@ jobs:
     
     steps:
       #########################################################################
-      # Workflow Setup
-
-      - uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.9
-      - name: Install Bot Scripts Dependencies
-        run: |
-          pip install -r .github/workflows/scripts/requirements.txt
-
-      #########################################################################
       # Initial Hello and Documentation
 
       - name: Find Any Bot Comment
@@ -49,6 +37,18 @@ jobs:
             I am a bot that will check out the information provided in your form. If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
 
             _This comment was written by a bot!_
+
+      #########################################################################
+      # Workflow Setup
+
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: Install Bot Scripts Dependencies
+        run: |
+          pip install -r .github/workflows/scripts/requirements.txt
 
       #########################################################################
       # Parsing Form and Logging Details
@@ -141,6 +141,10 @@ jobs:
         run: |
           output=$(python .github/workflows/scripts/check-repo-exists.py councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
           echo "::set-output name=repo_exists::$output"
+
+      - name: Log Repo Exists Return
+        run: |
+          echo ${{ steps.check-for-repo.outputs.repo_exists }}
 
       - name: Find Repository Available Check 
         uses: peter-evans/find-comment@v1
