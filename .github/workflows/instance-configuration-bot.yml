@@ -7,7 +7,7 @@ on:
 
 jobs:
   initial-form-check:
-    if: github.event.label.name == 'new instance'
+    if: ${{ github.event.label.name == 'new instance' }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
