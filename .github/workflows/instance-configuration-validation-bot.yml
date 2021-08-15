@@ -43,8 +43,9 @@ jobs:
             :thought_balloon: Validating planned instance maintainer
             :thought_balloon: Validating planned instance repository name
 
-            <summary><h4>Planned Repository Contents:</h4></summary>
-            <details>:thought_balloon:</details>
+            #### All Cookiecutter Parameters
+
+            :thought_balloon:
             
             _This comment was written by a bot!_
       
@@ -67,8 +68,9 @@ jobs:
             :thought_balloon: Validating planned instance maintainer
             :thought_balloon: Validating planned instance repository name
 
-            <summary><h4>Planned Repository Contents:</h4></summary>
-            <details>:thought_balloon:</details>
+            #### All Cookiecutter Parameters
+
+            :thought_balloon:
             
             _This comment was written by a bot!_
 
@@ -102,18 +104,25 @@ jobs:
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
 
-      - name: Run Cookiecutter
+      - name: Dump Cookiecutter Parameters
+        id: dump-cookiecutter-parameters
         run: |
-          cookiecutter planned-repo/ --config-file planned-cookiecutter.json
-      - name: Get Generated Repo Contents
-        id: log-generated-repo
-        run: |
-          tree -a planned-repo/ > generated-repo-contents.txt
-          body=$(cat generated-repo-contents.txt)
+          body=$(cat planned-cookiecutter.json)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
+
+      - name: Run Cookiecutter
+        run: |
+          mkdir planned-repo/
+          cp planned-cookiecutter.json planned-repo/cookiecutter.json
+          cd planned-repo/
+          cookiecutter .. --output-dir planned-repo/ --no-input
+
+      - name: Log Cookiecutter Generated Contents
+        run: |
+          tree -a planned-repo/
 
       - name: Find Validation Results Comment - Post Run
         uses: peter-evans/find-comment@v1
@@ -140,11 +149,10 @@ jobs:
             
             ${{ steps.validation-message-response.outputs.body }}
 
-            <summary><h4>Planned Repository Contents:</h4></summary>
-            <details>
+            #### All Cookiecutter Parameters
+
             ```json
-            ${{ steps.log-generated-repo.ouytputs.body }}
+            ${{ steps.dump-cookiecutter-parameters.outputs.body }}
             ```
-            </details>
             
             _This comment was written by a bot!_
