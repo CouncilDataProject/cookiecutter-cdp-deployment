@@ -2,11 +2,13 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+import json
 import logging
 import sys
 import traceback
 from typing import Dict, List, Optional
 
+from cdp_backend.pipeline.event_index_pipeline import clean_text
 import requests
 
 ###############################################################################
@@ -19,20 +21,32 @@ log = logging.getLogger(__name__)
 
 ###############################################################################
 
-TARGET_MAINTAINER = "target_maintainer"
-TARGET_REPOSITORY = "target_respository"
+COUNCIL_DATA_PROJECT = "CouncilDataProject"
+
+MUNICIPALITY_NAME = "municipality"
+MUNICIPALITY_SLUG = "municipality_slug"
+PYTHON_MUNICIPALITY_SLUG = "python_municipality_slug"
+TARGET_MAINTAINER = "maintainer_or_org_full_name"
+FIRESTORE_REGION = "firestore_region"
+
 LEGISTAR_CLIENT_ID = "legistar_client_id"
 LEGISTAR_CLIENT_TIMEZONE = "legistar_client_timezone"
 
 FORM_FIELD_TO_HEADER = {
+    MUNICIPALITY_NAME: "Municipality Name",
+    MUNICIPALITY_SLUG: "(Optional) Municipality Slug",
     TARGET_MAINTAINER: "Maintainer GitHub Name",
-    TARGET_REPOSITORY: "Repository Name",
-    LEGISTAR_CLIENT_ID: "Legistar Client Id",
-    LEGISTAR_CLIENT_TIMEZONE: "Municipality Timezone",
+    FIRESTORE_REGION: "(Optional) Firestore Region",
+    LEGISTAR_CLIENT_ID: "(Optional) Legistar Client Id",
+    LEGISTAR_CLIENT_TIMEZONE: "(Optional) Municipality Timezone",
 }
 
 GITHUB_USERS_RESOURCE = "users"
 GITHUB_REPOSITORIES_RESOURCE = "repos"
+
+NO_RESPONSE = "_No response_"
+
+DEFAULT_FIRESTORE_REGION = "us-central1"
 
 ###############################################################################
 
@@ -49,7 +63,7 @@ class Args(argparse.Namespace):
         p.add_argument(
             "issue_content_file",
             type=str,
-            help="The path to the issue / form content file."
+            help="The path to the issue / form content file.",
         )
         p.parse_args(namespace=self)
 
@@ -58,7 +72,7 @@ def _get_field_value(lines: List[str], field_header: str) -> Optional[str]:
     # Get index of target then + 1 for the value
     header_index = lines.index(f"### {field_header}")
     value = lines[header_index + 1]
-    return value if value is not "_No Response_" else None
+    return value if value != NO_RESPONSE else None
 
 
 def _check_github_resource_exists(resource: str, name: str) -> bool:
@@ -71,6 +85,7 @@ def _check_github_resource_exists(resource: str, name: str) -> bool:
     # Otherwise the response looks like
     # {'message': 'Not Found', 'documentation_url': '...'}
     return "name" in content
+
 
 def validate_form(issue_content_file: str) -> None:
     # Open the content file, read, strip, and clean
@@ -86,8 +101,18 @@ def validate_form(issue_content_file: str) -> None:
             lines=lines,
             field_header=form_header_string,
         )
-
     log.info(form_values)
+
+    # Get municipality slug
+    if form_values[MUNICIPALITY_SLUG] is None:
+        municipality_slug = (
+            clean_text(form_values[MUNICIPALITY_NAME]).lower().replace(" ", "-")
+        )
+    else:
+        municipality_slug = form_values[MUNICIPALITY_SLUG]
+
+    # Get python municipality slug
+    python_municipality_slug = municipality_slug.replace("-", "_")
 
     # Check planned maintainer exists
     planned_maintainer_exists = _check_github_resource_exists(
@@ -95,12 +120,40 @@ def validate_form(issue_content_file: str) -> None:
         name=form_values[TARGET_MAINTAINER],
     )
 
-    # Check planned repository exists
-    repository_name = f"councildataproject/{form_values[TARGET_REPOSITORY]}"
+    # Get municipality name
+    repository_path = f"{COUNCIL_DATA_PROJECT}/{municipality_slug}"
     planned_repository_exists = _check_github_resource_exists(
-        resource=GITHUB_REPOSITORIES_RESOURCE,
-        name=repository_name
+        resource=GITHUB_REPOSITORIES_RESOURCE, name=repository_path
     )
+
+    # Get default firestore region
+    if form_values[FIRESTORE_REGION] is None:
+        firestore_region = DEFAULT_FIRESTORE_REGION
+    else:
+        firestore_region = form_values[FIRESTORE_REGION]
+
+    # Dump to cookiecutter.json
+    with open("planned-cookiecutter.json", "w") as open_f:
+        open_f.write(
+            json.dumps(
+                {
+                    MUNICIPALITY_NAME: form_values[MUNICIPALITY_NAME],
+                    MUNICIPALITY_SLUG: municipality_slug,
+                    PYTHON_MUNICIPALITY_SLUG: python_municipality_slug,
+                    TARGET_MAINTAINER: form_values[TARGET_MAINTAINER],
+                    "hosting_github_username_or_org": COUNCIL_DATA_PROJECT,
+                    "hosting_github_repo_name": municipality_slug,
+                    "hosting_github_url": (
+                        f"https://github.com/{COUNCIL_DATA_PROJECT}/{municipality_slug}"
+                    ),
+                    "hosting_web_app_address": (
+                        f"https://councildataproject.org/{municipality_slug}"
+                    ),
+                    FIRESTORE_REGION: firestore_region,
+                },
+                indent=4,
+            )
+        )
 
     # TODO: legistar
 
@@ -115,22 +168,22 @@ def validate_form(issue_content_file: str) -> None:
             f":x: The planned instance maintainer: "
             f"'{form_values[TARGET_MAINTAINER]}', does not exist."
         )
-    
+
     if planned_repository_exists:
         repository_response = (
             f":x: The planned repository already exists. "
-            f"See: [{repository_name}](https://github.com/{repository_name})"
+            f"See: [{repository_path}](https://github.com/{repository_path})"
         )
     else:
-        repository_response = (
-            f":heavy_check_mark: **{repository_name}** is available."
-        )
+        repository_response = f":heavy_check_mark: **{repository_path}** is available."
 
     # Join all together
-    comment_response = "\n".join([
-        maintainer_response,
-        repository_response,
-    ])
+    comment_response = "\n".join(
+        [
+            maintainer_response,
+            repository_response,
+        ]
+    )
 
     # Dump to file
     with open("form-validation-results.md", "w") as open_f:

@@ -34,12 +34,17 @@ jobs:
             Hello! 👋
             Thanks for initiating the process to configure a new CDP instance.
 
-            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
+            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'. I will automatically rerun the checks after you update the issue to validate the changes.
 
-            #### Form Validation Results
+            A member from the CDP team will respond as soon as possible!
+
+            #### Form Validation Results:
 
             :thought_balloon: Validating planned instance maintainer
             :thought_balloon: Validating planned instance repository name
+
+            <summary><h4>Planned Repository Contents:</h4></summary>
+            <details>:thought_balloon:</details>
             
             _This comment was written by a bot!_
       
@@ -53,12 +58,17 @@ jobs:
             Hello! 👋
             Thanks for initiating the process to configure a new CDP instance.
 
-            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
+            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'. I will automatically rerun the checks after you update the issue to validate the changes.
+
+            A member from the CDP team will respond as soon as possible!
 
             #### Form Validation Results
 
             :thought_balloon: Validating planned instance maintainer
             :thought_balloon: Validating planned instance repository name
+
+            <summary><h4>Planned Repository Contents:</h4></summary>
+            <details>:thought_balloon:</details>
             
             _This comment was written by a bot!_
 
@@ -83,11 +93,23 @@ jobs:
       - name: Validate Form and Create Bot Response
         run: |
           python .github/workflows/scripts/validate-form.py issue-body.md
-
       - name: Set Response Content
         id: validation-message-response
         run: |
           body=$(cat form-validation-results.md)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo ::set-output name=body::$body
+
+      - name: Run Cookiecutter
+        run: |
+          cookiecutter planned-repo/ --config-file planned-cookiecutter.json
+      - name: Get Generated Repo Contents
+        id: log-generated-repo
+        run: |
+          tree -a planned-repo/ > generated-repo-contents.txt
+          body=$(cat generated-repo-contents.txt)
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
@@ -110,10 +132,19 @@ jobs:
             Hello! 👋
             Thanks for initiating the process to configure a new CDP instance.
 
-            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
+            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'. I will automatically rerun the checks after you update the issue to validate the changes.
+
+            A member from the CDP team will respond as soon as possible!
 
             #### Form Validation Results
             
             ${{ steps.validation-message-response.outputs.body }}
+
+            <summary><h4>Planned Repository Contents:</h4></summary>
+            <details>
+            ```json
+            ${{ steps.log-generated-repo.ouytputs.body }}
+            ```
+            </details>
             
             _This comment was written by a bot!_
