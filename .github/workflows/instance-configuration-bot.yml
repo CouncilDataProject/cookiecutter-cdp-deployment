@@ -32,7 +32,7 @@ jobs:
 
       - name: Dump issue body to file
         run: |
-          ${{ github.event.issue.body }} > issue-body.md
+          echo ${{ github.event.issue.body }} > issue-body.md
 
       - name: Get form value - maintainer
         id: get-maintainer
