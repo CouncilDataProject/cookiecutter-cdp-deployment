@@ -1,6 +1,8 @@
 name: CDP Instance Configuration
 description: Configure and deploy a new CDP instance.
 title: "[Instance]: "
+labels:
+  - "new instance"
 assignees:
   - JacksonMaxfield
 body:
