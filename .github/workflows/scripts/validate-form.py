@@ -36,24 +36,6 @@ GITHUB_REPOSITORIES_RESOURCE = "repos"
 
 ###############################################################################
 
-TARGET_MAINTAINER_EXISTS_MESSAGE = """
-- [x] ✅ @{maintainer_name} has been marked as the planned instance maintainer.
-""".strip()
-
-TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE = """
-- [ ] ❌ The planned instance maintainer: '{maintainer_name}', does not exist.
-""".strip()
-
-TARGET_REPOSITORY_EXISTS_MESSAGE = """
-- [ ] ❌ The planned repository already exists. See: [{repository_name}](https://github.com/{repository_name})
-""".strip()
-
-TARGET_REPOSITORY_DOES_NOT_EXIST_MESSAGE = """
-- [x] ✅ **{repository_name}** is available.
-""".strip()
-
-###############################################################################
-
 
 class Args(argparse.Namespace):
     def __init__(self) -> None:
@@ -124,21 +106,24 @@ def validate_form(issue_content_file: str) -> None:
 
     # Construct message content
     if planned_maintainer_exists:
-        maintainer_response = TARGET_MAINTAINER_EXISTS_MESSAGE.format(
-            maintainer_name=form_values[TARGET_MAINTAINER],
+        maintainer_response = (
+            f"- [x] ✅ @{form_values[TARGET_MAINTAINER]} "
+            f"has been marked as the instance maintainer."
         )
     else:
-        maintainer_response = TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
-            maintainer_name=form_values[TARGET_MAINTAINER],
+        maintainer_response = (
+            f"- [ ] ❌ The planned instance maintainer: "
+            f"'{form_values[TARGET_MAINTAINER]}', does not exist."
         )
     
     if planned_repository_exists:
-        repository_response = TARGET_REPOSITORY_EXISTS_MESSAGE.format(
-            repository_name=repository_name,
+        repository_response = (
+            f"- [ ] ❌ The planned repository already exists. "
+            f"See: [{repository_name}](https://github.com/{repository_name})"
         )
     else:
-        repository_response = TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
-            repository_name=repository_name,
+        repository_response = (
+            f"- [x] ✅ **{repository_name}** is available."
         )
 
     # Join all together
