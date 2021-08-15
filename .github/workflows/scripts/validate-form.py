@@ -79,7 +79,7 @@ class Args(argparse.Namespace):
 
 def _get_field_value(lines: List[str], field_header: str) -> Optional[str]:
     # Get index of target then + 1 for the value
-    header_index = lines.index(field_header)
+    header_index = lines.index(f"### {field_header}")
     value = lines[header_index + 1]
     return value if value is not "_No Response_" else None
 

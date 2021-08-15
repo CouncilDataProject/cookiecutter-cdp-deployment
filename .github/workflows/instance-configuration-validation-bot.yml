@@ -7,7 +7,7 @@ on:
       - edited
 
 jobs:
-  form-check:
+  validate-form:
     if: ${{ contains(github.event.issue.labels.*.name, 'new instance') }}
     runs-on: ubuntu-latest
     permissions:
