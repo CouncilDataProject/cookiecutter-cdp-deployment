@@ -13,6 +13,13 @@ jobs:
       issues: write
     
     steps:
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+
+
       - name: Post Hello
         uses: peter-evans/create-or-update-comment@v1
         with:
