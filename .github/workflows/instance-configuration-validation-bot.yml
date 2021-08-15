@@ -22,6 +22,9 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.9
+      - name: Install Bot Scripts Dependencies
+        run: |
+          pip install -r .github/workflows/scripts/requirements.txt
 
       #########################################################################
       # Initial Hello and Documentation
@@ -136,76 +139,71 @@ jobs:
       - name: Check for Existing Repo
         id: check-for-repo
         run: |
-          target_repo_return=$(curl https://api.github.com/repos/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
-          output=${{ !contains($target_repo_return, '"message": "Not Found"') }}
+          output=$(python .github/workflows/scripts/check-repo-exists.py councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
           echo "::set-output name=repo_exists::$output"
-      
-      - name: Log existing repo
-        run: |
-          echo ${{ steps.check-for-repo.outputs.repo_exists }}
 
-      # - name: Find Repository Available Check 
-      #   uses: peter-evans/find-comment@v1
-      #   id: find-repository-available-check
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     comment-author: 'github-actions[bot]'
-      #     body-includes: repository-available-check
+      - name: Find Repository Available Check 
+        uses: peter-evans/find-comment@v1
+        id: find-repository-available-check
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: repository-available-check
 
-      # # Failed -- Repository already exists
-      # - name: Failed Repository Availability Check - Initial Comment
-      #   if: |
-      #     ${{ steps.check-for-existing-repo.conclusion == 'success' }}
-      #     && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     body: |
-      #       ❌ The provided target repository name already exists.
-      #       See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
+      # Failed -- Repository already exists
+      - name: Repository Exists - Initial Comment
+        if: |
+          ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
+          && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ❌ The provided target repository name already exists.
+            See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
 
-      #       _--repository-available-check--_         
-      #       _This comment was written by a bot!_
+            _--repository-available-check--_         
+            _This comment was written by a bot!_
 
-      # - name: Failed Repository Availability Check - Update Comment
-      #   if: |
-      #     ${{ steps.check-for-existing-repo.conclusion == 'success' }}
-      #     && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
-      #     edit-mode: replace
-      #     body: |
-      #       ❌ The provided target repository name already exists.
-      #       See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
+      - name: Repository Exists - Update Comment
+        if: |
+          ${{ steps.check-for-repo.outputs.repo_exists == 'True' }}
+          && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
+          edit-mode: replace
+          body: |
+            ❌ The provided target repository name already exists.
+            See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
 
-      #       _--repository-available-check--_         
-      #       _This comment was written by a bot!_
+            _--repository-available-check--_         
+            _This comment was written by a bot!_
 
-      # # Succeeded -- Repository does not exist
-      # - name: Succeeded Repository Availability Check - Initial Comment
-      #   if: |
-      #     ${{ steps.check-for-existing-repo.conclusion == 'failure' }}
-      #     && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     issue-number: ${{ github.event.issue.number }}
-      #     body: |
-      #       ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
+      # Succeeded -- Repository does not exist
+      - name: Repository Available - Initial Comment
+        if: |
+          ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
+          && ${{ steps.find-repository-available-check.outputs.comment-id == 0 }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
 
-      #       _--repository-available-check--_         
-      #       _This comment was written by a bot!_
+            _--repository-available-check--_         
+            _This comment was written by a bot!_
 
-      # - name: Succeeded Repository Availability Check - Update Comment
-      #   if: |
-      #     ${{ steps.check-for-existing-repo.conclusion == 'failure' }}
-      #     && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
-      #   uses: peter-evans/create-or-update-comment@v1
-      #   with:
-      #     comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
-      #     edit-mode: replace
-      #     body: |
-      #       ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
+      - name: Repository Available - Update Comment
+        if: |
+          ${{ steps.check-for-repo.outputs.repo_exists == 'False' }}
+          && ${{ steps.find-repository-available-check.outputs.comment-id != 0 }}
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
+          edit-mode: replace
+          body: |
+            ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
 
-      #       _--repository-available-check--_         
-      #       _This comment was written by a bot!_
+            _--repository-available-check--_         
+            _This comment was written by a bot!_
