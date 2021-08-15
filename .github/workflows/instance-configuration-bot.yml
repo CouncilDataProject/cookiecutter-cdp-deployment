@@ -66,6 +66,6 @@ jobs:
           echo ${{ steps.get-maintainer.outputs.legistar_client_id }}
           echo ${{ steps.get-maintainer.outputs.legistar_client_timezone }}
 
-      - name: Check for existing repo
-        uses: actions/checkout@v2
-          repository: councildataproject/{{}}
+      # - name: Check for existing repo
+      #   uses: actions/checkout@v2
+      #     repository: councildataproject/{{}}
