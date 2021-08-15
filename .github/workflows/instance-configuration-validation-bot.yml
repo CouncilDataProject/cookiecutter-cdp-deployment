@@ -36,7 +36,6 @@ jobs:
 
             I am a bot that will check out the information provided in your form. If any checks fail, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'.
 
-            _--initial-form-check--_         
             _This comment was written by a bot!_
 
       #########################################################################
@@ -112,6 +111,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           comment-id: ${{ steps.find-maintainer-tagged-check.outputs.comment-id }}
+          edit-mode: replace
           body: |
             Hey @${{ steps.get-target-maintainer.outputs.target_maintainer }} 👋
 
@@ -127,6 +127,7 @@ jobs:
       - name: Check for Existing Repo
         id: check-for-existing-repo
         uses: actions/checkout@v2
+        continue-on-error: true
         with:
           repository: councildataproject/${{ steps.get-target-repository.outputs.target_repository }}
           path: target_repo/
@@ -163,6 +164,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
+          edit-mode: replace
           body: |
             ❌ The provided target repository name already exists.
             See: [councildataproject/${{ steps.get-target-repository.outputs.target_repository }}](https://github.com/councildataproject/${{ steps.get-target-repository.outputs.target_repository }})
@@ -193,6 +195,7 @@ jobs:
         uses: peter-evans/create-or-update-comment@v1
         with:
           comment-id: ${{ steps.find-repository-available-check.outputs.comment-id }}
+          edit-mode: replace
           body: |
             ✅ The provided target repository name (**councildataproject/${{ steps.get-target-repository.outputs.target_repository }}**) is available for CDP instance creation.
 
