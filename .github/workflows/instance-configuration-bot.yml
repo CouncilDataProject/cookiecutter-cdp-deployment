@@ -7,7 +7,7 @@ on:
 
 jobs:
   initial-form-check:
-    # if: ${{ github.event.label.name == 'new instance' }}
+    if: ${{ contains(github.event.issue.labels.*.name, "new instance") }}
     runs-on: ubuntu-latest
     permissions:
       issues: write
@@ -22,7 +22,7 @@ jobs:
 
             I am a bot that will check out the information provided in your form.
                         
-            _This comment was written by a bot! <initial-form-check>_
+            _This comment was written by a bot! --initial-form-check--_
 
       - name: View the github context
         run: echo "$GITHUB_CONTEXT"
