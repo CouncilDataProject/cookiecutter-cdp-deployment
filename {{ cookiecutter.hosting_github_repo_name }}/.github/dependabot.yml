@@ -1,0 +1,15 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/python"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-name: "cdp-backend"
+  
+  - package-ecosystem: "npm"
+    directory: "/web"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-name: "cdp-frontend"
