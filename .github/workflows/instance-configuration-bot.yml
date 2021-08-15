@@ -1,0 +1,34 @@
+name: Instance Configuration Bot
+
+on:
+  issues:
+    types:
+      - opened
+
+jobs:
+  initial-form-check:
+    if: github.event.label.name == 'new instance'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    
+    steps:
+      - name: Post Hello
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hello! Thank you for initiating the process to configure a new CDP instance.
+
+            I am a bot that will check out the information provided in your form.
+                        
+            _This comment was written by a bot! <initial-form-check>_
+
+      - name: View the github context
+        run: echo "$GITHUB_CONTEXT"
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+
+      # - name: Check for existing repo
+      #   uses: actions/checkout@v2
+      #     repository: councildataproject/{{}}
