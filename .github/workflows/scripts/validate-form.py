@@ -107,23 +107,23 @@ def validate_form(issue_content_file: str) -> None:
     # Construct message content
     if planned_maintainer_exists:
         maintainer_response = (
-            f"- [x] ✅ @{form_values[TARGET_MAINTAINER]} "
+            f":heavy_check_mark: @{form_values[TARGET_MAINTAINER]} "
             f"has been marked as the instance maintainer."
         )
     else:
         maintainer_response = (
-            f"- [ ] ❌ The planned instance maintainer: "
+            f":x: The planned instance maintainer: "
             f"'{form_values[TARGET_MAINTAINER]}', does not exist."
         )
     
     if planned_repository_exists:
         repository_response = (
-            f"- [ ] ❌ The planned repository already exists. "
+            f":x: The planned repository already exists. "
             f"See: [{repository_name}](https://github.com/{repository_name})"
         )
     else:
         repository_response = (
-            f"- [x] ✅ **{repository_name}** is available."
+            f":heavy_check_mark: **{repository_name}** is available."
         )
 
     # Join all together
