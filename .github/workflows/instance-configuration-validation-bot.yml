@@ -1,0 +1,147 @@
+name: Instance Configuration Validation Bot
+
+on:
+  issues:
+    types:
+      - opened
+      - edited
+
+jobs:
+  validate-form:
+    if: ${{ contains(github.event.issue.labels.*.name, 'new instance') }}
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    
+    steps:
+      #########################################################################
+      # Initial Hello and Documentation
+
+      - name: Find Validation Results Comment - Pre Run
+        uses: peter-evans/find-comment@v1
+        id: find-validation-results-comment-pre
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Form Validation Results'
+
+      - name: Set Initial Comment State
+        uses: peter-evans/create-or-update-comment@v1
+        if: ${{ steps.find-validation-results-comment-pre.outputs.comment-id == 0 }}
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            Hello! 👋
+            Thanks for initiating the process to configure a new CDP instance.
+
+            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'. I will automatically rerun the checks after you update the issue to validate the changes.
+
+            A member from the CDP team will respond as soon as possible!
+
+            #### Form Validation Results
+
+            :thought_balloon: Validating planned instance maintainer
+            :thought_balloon: Validating planned instance repository name
+
+            #### All Cookiecutter Parameters
+
+            :thought_balloon:
+            
+            _This comment was written by a bot!_
+      
+      - name: Reset Initial Comment State
+        uses: peter-evans/create-or-update-comment@v1
+        if: ${{ steps.find-validation-results-comment-pre.outputs.comment-id != 0 }}
+        with:
+          comment-id: ${{ steps.find-validation-results-comment-pre.outputs.comment-id }}
+          edit-mode: 'replace'
+          body: |
+            Hello! 👋
+            Thanks for initiating the process to configure a new CDP instance.
+
+            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'. I will automatically rerun the checks after you update the issue to validate the changes.
+
+            A member from the CDP team will respond as soon as possible!
+
+            #### Form Validation Results
+
+            :thought_balloon: Validating planned instance maintainer
+            :thought_balloon: Validating planned instance repository name
+
+            #### All Cookiecutter Parameters
+
+            :thought_balloon:
+            
+            _This comment was written by a bot!_
+
+      #########################################################################
+      # Workflow Setup
+
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: Install Bot Scripts Dependencies
+        run: |
+          pip install -r .github/workflows/scripts/requirements.txt
+
+      #########################################################################
+      # Parsing Form and Logging Details
+
+      - name: Dump Issue Body to File
+        run: |
+          echo "${{ github.event.issue.body }}" > issue-body.md
+      - name: Validate Form and Create Bot Response
+        run: |
+          python .github/workflows/scripts/validate-form.py issue-body.md
+      - name: Set Response Content
+        id: validation-message-response
+        run: |
+          body=$(cat form-validation-results.md)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo ::set-output name=body::$body
+
+      - name: Dump Cookiecutter Parameters
+        id: dump-cookiecutter-parameters
+        run: |
+          body=$(cat planned-cookiecutter.json)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}" 
+          echo ::set-output name=body::$body
+
+      - name: Find Validation Results Comment - Post Run
+        uses: peter-evans/find-comment@v1
+        id: find-validation-results-comment-post
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Form Validation Results'
+
+      - name: Post Validation Results
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          comment-id: ${{ steps.find-validation-results-comment-post.outputs.comment-id }}
+          edit-mode: 'replace'
+          body: |
+            Hello! 👋
+            Thanks for initiating the process to configure a new CDP instance.
+
+            I am a bot that will validate the information provided in your form. If any check fails, please update your issue by opening the '🞄🞄🞄' dropdown and selecting 'Edit'. I will automatically rerun the checks after you update the issue to validate the changes.
+
+            A member from the CDP team will respond as soon as possible!
+
+            #### Form Validation Results
+            
+            ${{ steps.validation-message-response.outputs.body }}
+
+            #### All Cookiecutter Parameters
+
+            ```json
+            ${{ steps.dump-cookiecutter-parameters.outputs.body }}
+            ```
+            
+            _This comment was written by a bot!_
