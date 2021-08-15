@@ -42,28 +42,32 @@ jobs:
           echo "${{ github.event.issue.body }}" > issue-body.md
 
       - name: Get Form Value - Target Maintainer
+        id: get-target-maintainer
         run: |
           output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Maintainer GitHub Name")
           echo "::set-output name=target_maintainer::$output"
       - name: Get Form Value - Target Repository
+        id: get-target-repository
         run: |
           output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Repository Name")
           echo "::set-output name=target_repository::$output"
       - name: Get Form Value - Legistar Client Id
+        id: get-legistar-client-id
         run: |
           output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Legistar Client Id")
           echo "::set-output name=legistar_client_id::$output"
       - name: Get Form Value - Legistar Client Timezone
+        id: get-legistar-client-timezone
         run: |
           output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Municipality Timezone")
           echo "::set-output name=legistar_client_timezone::$output"
           
       - name: Print Form Values
         run: |
-          echo ${{ steps.get-maintainer.outputs.target_maintainer }}
-          echo ${{ steps.get-maintainer.outputs.target_repository }}
-          echo ${{ steps.get-maintainer.outputs.legistar_client_id }}
-          echo ${{ steps.get-maintainer.outputs.legistar_client_timezone }}
+          echo ${{ steps.get-target-maintainer.outputs.target_maintainer }}
+          echo ${{ steps.get-target-repository.outputs.target_repository }}
+          echo ${{ steps.get-legistar-client-id.outputs.legistar_client_id }}
+          echo ${{ steps.get-legistar-client-timezone.outputs.legistar_client_timezone }}
 
       # - name: Check for existing repo
       #   uses: actions/checkout@v2
