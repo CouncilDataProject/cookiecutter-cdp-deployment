@@ -41,23 +41,22 @@ jobs:
         run: |
           echo "${{ github.event.issue.body }}" > issue-body.md
 
-      - name: Get Form Values
+      - name: Get Form Value - Target Maintainer
         run: |
-          target_maintainer=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Maintainer GitHub Name")
-
-          echo "::set-output name=target_maintainer::$target_maintainer"
-
-          target_repository=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Repository Name")
-
-          echo "::set-output name=target_repository::$target_repository"
-
-          legistar_client_id=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Legistar Client Id")
-
-          echo "::set-output name=legistar_client_id::$legistar_client_id"
-
-          legistar_client_timezone=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Municipality Timezone")
-
-          echo "::set-output name=legistar_client_timezone::$legistar_client_timezone"
+          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Maintainer GitHub Name")
+          echo "::set-output name=target_maintainer::$output"
+      - name: Get Form Value - Target Repository
+        run: |
+          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Repository Name")
+          echo "::set-output name=target_repository::$output"
+      - name: Get Form Value - Legistar Client Id
+        run: |
+          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Legistar Client Id")
+          echo "::set-output name=legistar_client_id::$output"
+      - name: Get Form Value - Legistar Client Timezone
+        run: |
+          output=$(python .github/workflows/scripts/get-form-value.py issue-body.md "### Municipality Timezone")
+          echo "::set-output name=legistar_client_timezone::$output"
           
       - name: Print Form Values
         run: |
