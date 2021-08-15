@@ -53,11 +53,6 @@ jobs:
       #########################################################################
       # Parsing Form and Logging Details
 
-      - name: Log GitHub Context
-        run: echo "$GITHUB_CONTEXT"
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-
       - name: Dump Issue Body to File
         run: |
           echo "${{ github.event.issue.body }}" > issue-body.md

@@ -52,11 +52,6 @@ TARGET_REPOSITORY_DOES_NOT_EXIST_MESSAGE = """
 - [x] ✅ **{repository_name}** is available.
 """.strip()
 
-COMMENT_FOOTER = """
---form-validation--
-_This comment was written by a bot!_
-"""
-
 ###############################################################################
 
 
@@ -111,6 +106,8 @@ def validate_form(issue_content_file: str) -> None:
             field_header=form_header_string,
         )
 
+    log.info(form_values)
+
     # Check planned maintainer exists
     planned_maintainer_exists = _check_github_resource_exists(
         resource=GITHUB_USERS_RESOURCE,
@@ -127,25 +124,29 @@ def validate_form(issue_content_file: str) -> None:
     # TODO: legistar
 
     # Construct message content
-    comment_response = ""
     if planned_maintainer_exists:
-        comment_response += TARGET_MAINTAINER_EXISTS_MESSAGE.format(
+        maintainer_response += TARGET_MAINTAINER_EXISTS_MESSAGE.format(
             maintainer_name=form_values[TARGET_MAINTAINER],
         )
     else:
-        comment_response += TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
+        maintainer_response += TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
             maintainer_name=form_values[TARGET_MAINTAINER],
         )
     
-    comment_response += "\n"
     if planned_repository_exists:
-        comment_response += TARGET_REPOSITORY_EXISTS_MESSAGE.format(
+        repository_response += TARGET_REPOSITORY_EXISTS_MESSAGE.format(
             repository_name=repository_name,
         )
     else:
-        comment_response += TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
+        repository_response += TARGET_MAINTAINER_DOES_NOT_EXIST_MESSAGE.format(
             repository_name=repository_name,
         )
+
+    # Join all together
+    comment_response = "\n".join([
+        maintainer_response,
+        repository_response,
+    ])
 
     # Dump to file
     with open("form-validation-results.md", "w") as open_f:
