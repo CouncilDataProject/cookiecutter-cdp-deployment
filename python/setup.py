@@ -17,7 +17,7 @@ dev_requirements = [
 ]
 
 requirements = [
-    "cdp-backend~=3.0.0.dev5",
+    "cdp-backend~=3.0.0.dev8",
 ]
 
 extra_requirements = {
@@ -30,7 +30,7 @@ extra_requirements = {
 }
 
 setup(
-    author="CouncilDataProject Developers",
+    author="Council Data Project Contributors",
     classifiers=[
         "Development Status :: 2 - Pre-Alpha",
         "Intended Audience :: Developers",
