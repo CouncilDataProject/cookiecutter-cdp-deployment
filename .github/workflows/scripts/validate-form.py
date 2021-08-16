@@ -166,10 +166,13 @@ def validate_form(issue_content_file: str) -> None:
         )
 
     # Test Legistar
+    legistar_response = None
     if (
         form_values[LEGISTAR_CLIENT_ID] is not None
         and form_values[LEGISTAR_CLIENT_TIMEZONE] is not None
     ):
+        log.info("Attempting Legistar data retrieval")
+
         # Create Scraper and fill with get time zone function impl
         class CustomScraper(LegistarScraper):
             def get_time_zone(self) -> str:
@@ -182,18 +185,20 @@ def validate_form(issue_content_file: str) -> None:
             if not scraper.is_legistar_compatible:
                 legistar_response = (
                     f":x: No public Legistar instance found for "
-                    f"the provided client ({form_values[LEGISTAR_CLIENT_ID]}. "
+                    f"the provided client ({form_values[LEGISTAR_CLIENT_ID]}). "
                     f"If your municipality uses Legistar but you received this error, "
                     f"we recommended contacting your municipality clerk and asking "
                     f"about public Legistar API access, they may direct you to the IT "
                     f"department as well."
                 )
+            log.info("Legistar client available")
 
             # If everything runs correctly, log success and show event
             # model in comment
-            legistar_response = None
             for days_prior in [7, 14, 28]:
+                log.info(f"Attempting minimum CDP data for {days_prior} days")
                 if scraper.check_for_cdp_min_ingestion(check_days=days_prior):
+                    log.info("Legistar client has minimum data")
                     events = scraper.get_events(
                         begin=datetime.utcnow() - timedelta(days=days_prior),
                     )
@@ -213,32 +218,37 @@ def validate_form(issue_content_file: str) -> None:
                     break
 
             if legistar_response is None:
+                log.info(
+                    "Legistar client missing minimum data, "
+                    "attempting to simply pull data for logging."
+                )
                 # Check if _any_ data was returned
                 for days_prior in [7, 14, 28]:
+                    log.info(f"Attempting to pull Legistar data for {days_prior} days")
                     events = scraper.get_events(
-                        begin=datetime.utcnow() - timedelta(days=7),
+                        begin=datetime.utcnow() - timedelta(days=days_prior),
                     )
                     if len(events) > 0:
+                        log.info(f"Received Legistar data at {days_prior} days")
+                        single_event = events[0].to_dict()
+                        event_as_json_str = json.dumps(single_event, indent=4)
+                        legistar_response = (
+                            f":x: Your municipality uses Legistar but the minimum "
+                            f"required data for CDP event ingestion wasn't found. "
+                            f"A "
+                            f"[cdp-scrapers]"
+                            f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers) "
+                            f"maintainer should look into this issue however it is "
+                            f"likely that you (@{form_values[TARGET_MAINTAINER]}) will "
+                            f"need to write a custom scraper.\n"
+                            f"<summary>Retrieved Data</summary>\n"
+                            f"<details>\n\n"  # Extra new line for proper rendering
+                            f"```json\n"
+                            f"{event_as_json_str}\n"
+                            f"```"
+                            f"</details>"
+                        )
                         break
-
-                single_event = events[0].to_dict()
-                event_as_json_str = json.dumps(single_event, indent=4)
-                legistar_response = (
-                    f":x: Your municipality uses Legistar but the minimum "
-                    f"required data for CDP event ingestion wasn't found. "
-                    f"A "
-                    f"[cdp-scrapers]"
-                    f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers) "
-                    f"maintainer should look into this issue however it is "
-                    f"likely that you (@{form_values[TARGET_MAINTAINER]}) will "
-                    f"need to write a custom scraper.\n"
-                    f"<summary>Retrieved Data</summary>\n"
-                    f"<details>\n\n"  # Extra new line for proper rendering
-                    f"```json\n"
-                    f"{event_as_json_str}\n"
-                    f"```"
-                    f"</details>"
-                )
 
         # Catch no video path available
         # User will need to write a custom Legistar scraper
@@ -266,7 +276,7 @@ def validate_form(issue_content_file: str) -> None:
             )
 
     # Handle bad / mis-parametrized legistar info
-    if legistar_response is not None:
+    if legistar_response is None:
         if (
             form_values[LEGISTAR_CLIENT_ID] is not None
             and form_values[LEGISTAR_CLIENT_TIMEZONE] is None
