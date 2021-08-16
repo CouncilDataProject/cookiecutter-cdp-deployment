@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+from datetime import datetime, timedelta
 import json
 import logging
 import sys
@@ -9,6 +10,7 @@ import traceback
 from typing import Dict, List, Optional
 
 from cdp_backend.pipeline.event_index_pipeline import clean_text
+from cdp_scrapers.legistar_utils import LegistarScraper
 import requests
 
 ###############################################################################
@@ -58,7 +60,9 @@ class Args(argparse.Namespace):
     def __parse(self) -> None:
         p = argparse.ArgumentParser(
             prog="validate-form",
-            description="Validate the values provided in the CDP instance config form.",
+            description=(
+                "Validate the values provided in the CDP instance config form."
+            ),
         )
         p.add_argument(
             "issue_content_file",
@@ -80,8 +84,8 @@ def _check_github_resource_exists(resource: str, name: str) -> bool:
     response = requests.get(f"https://api.github.com/{resource}/{name}")
     content = response.json()
 
-    # Return the boolean if the structure is consistent with successful query or not
-    # name is only present if the resource exists
+    # Return the boolean if the structure is consistent with successful query
+    # or not name is only present if the resource exists
     # Otherwise the response looks like
     # {'message': 'Not Found', 'documentation_url': '...'}
     return "name" in content
@@ -106,7 +110,12 @@ def validate_form(issue_content_file: str) -> None:
     # Get municipality slug
     if form_values[MUNICIPALITY_SLUG] is None:
         municipality_slug = (
-            clean_text(form_values[MUNICIPALITY_NAME]).lower().replace(" ", "-")
+            clean_text(form_values[MUNICIPALITY_NAME])
+            .lower()
+            .replace(
+                " ",
+                "-",
+            )
         )
     else:
         municipality_slug = form_values[MUNICIPALITY_SLUG]
@@ -144,7 +153,8 @@ def validate_form(issue_content_file: str) -> None:
                     "hosting_github_username_or_org": COUNCIL_DATA_PROJECT,
                     "hosting_github_repo_name": municipality_slug,
                     "hosting_github_url": (
-                        f"https://github.com/{COUNCIL_DATA_PROJECT}/{municipality_slug}"
+                        f"https://github.com/"
+                        f"{COUNCIL_DATA_PROJECT}/{municipality_slug}"
                     ),
                     "hosting_web_app_address": (
                         f"https://councildataproject.org/{municipality_slug}"
@@ -155,7 +165,113 @@ def validate_form(issue_content_file: str) -> None:
             )
         )
 
-    # TODO: legistar
+    # Test Legistar
+    if (
+        form_values[LEGISTAR_CLIENT_ID] is not None
+        and form_values[LEGISTAR_CLIENT_TIMEZONE] is not None
+    ):
+        # Create Scraper and fill with get time zone function impl
+        class CustomScraper(LegistarScraper):
+            def get_time_zone(self) -> str:
+                return form_values[LEGISTAR_CLIENT_TIMEZONE]
+
+        # Init temp scraper and run
+        scraper = CustomScraper(client=form_values[LEGISTAR_CLIENT_ID])
+        try:
+            # Check that the provided client information is even a Legistar municipality
+            if not scraper.is_legistar_compatible:
+                legistar_response = (
+                    f":x: No public Legistar instance found for "
+                    f"the provided client ({form_values[LEGISTAR_CLIENT_ID]}. "
+                    f"If your municipality uses Legistar but you received this error, "
+                    f"we recommended contacting your municipality clerk and asking "
+                    f"about public Legistar API access, they may direct you to the IT "
+                    f"department as well."
+                )
+
+            # If everything runs correctly, log success and show event
+            # model in comment
+            legistar_response = None
+            for days_prior in [7, 14, 28]:
+                if scraper.check_for_cdp_min_ingestion(check_days=days_prior):
+                    events = scraper.get_events(
+                        begin=datetime.utcnow() - timedelta(days=days_prior),
+                    )
+                    single_event = events[0].to_dict()
+                    event_as_json_str = json.dumps(single_event, indent=4)
+
+                    legistar_response = (
+                        f":heavy_check_mark: The municipality's Legistar instance "
+                        f"contains the minimum required CDP event ingestion data.\n"
+                        f"<summary>Retrieved Data</summary>\n"
+                        f"<details>\n\n"  # Extra new line for proper rendering
+                        f"```json\n"
+                        f"{event_as_json_str}\n"
+                        f"```"
+                        f"</details>"
+                    )
+                    break
+
+            if legistar_response is None:
+                # Check if _any_ data was returned
+                for days_prior in [7, 14, 28]:
+                    events = scraper.get_events(
+                        begin=datetime.utcnow() - timedelta(days=7),
+                    )
+                    if len(events) > 0:
+                        break
+
+                single_event = events[0].to_dict()
+                event_as_json_str = json.dumps(single_event, indent=4)
+                legistar_response = (
+                    f":x: Your municipality uses Legistar but the minimum "
+                    f"required data for CDP event ingestion wasn't found. "
+                    f"A "
+                    f"[cdp-scrapers]"
+                    f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers) "
+                    f"maintainer should look into this issue however it is "
+                    f"likely that you (@{form_values[TARGET_MAINTAINER]}) will "
+                    f"need to write a custom scraper.\n"
+                    f"<summary>Retrieved Data</summary>\n"
+                    f"<details>\n\n"  # Extra new line for proper rendering
+                    f"```json\n"
+                    f"{event_as_json_str}\n"
+                    f"```"
+                    f"</details>"
+                )
+
+        # Catch no video path available
+        # User will need to write a custom Legistar scraper
+        except NotImplementedError:
+            legistar_response = (
+                f":warning: Your municipality uses Legistar but is missing the video "
+                f"URLs for event recordings. We recommended writing a custom Legistar "
+                f"Scraper that inherits from our own to resolve the issue. "
+                f"Please the "
+                f"[cdp-scrapers]"
+                f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers) repository "
+                f"for more details. And please refer to the "
+                f"[SeattleScraper]"
+                f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers"
+                f"/blob/main/cdp_scrapers/instances/seattle.py) for an example of a "
+                f"scraper that inherits from our base to resolve this issue."
+            )
+
+    # Handle bad / mis-parametrized legistar info
+    if (
+        form_values[LEGISTAR_CLIENT_ID] is not None
+        and form_values[LEGISTAR_CLIENT_TIMEZONE] is None
+    ):
+        legistar_response = (
+            ":x: You provided a Legistar Client Id but no Timezone. "
+            "Timezone is required for Legistar scraping."
+        )
+    else:
+        legistar_response = (
+            ":thought_balloon: You didn't provided Legistar Client information, "
+            "please note that you will be required to write an entirely custom event "
+            "scraper after your instance is deployed."
+        )
 
     # Construct message content
     if planned_maintainer_exists:
@@ -182,6 +298,7 @@ def validate_form(issue_content_file: str) -> None:
         [
             maintainer_response,
             repository_response,
+            legistar_response,
         ]
     )
 
