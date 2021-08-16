@@ -266,20 +266,21 @@ def validate_form(issue_content_file: str) -> None:
             )
 
     # Handle bad / mis-parametrized legistar info
-    if (
-        form_values[LEGISTAR_CLIENT_ID] is not None
-        and form_values[LEGISTAR_CLIENT_TIMEZONE] is None
-    ):
-        legistar_response = (
-            ":x: You provided a Legistar Client Id but no Timezone. "
-            "**Timezone is required** for Legistar scraping."
-        )
-    else:
-        legistar_response = (
-            ":thought_balloon: **You didn't provided Legistar Client information**, "
-            "please note that you will be required to write an entirely custom event "
-            "scraper after your instance is deployed."
-        )
+    if legistar_response is not None:
+        if (
+            form_values[LEGISTAR_CLIENT_ID] is not None
+            and form_values[LEGISTAR_CLIENT_TIMEZONE] is None
+        ):
+            legistar_response = (
+                ":x: You provided a Legistar Client Id but no Timezone. "
+                "**Timezone is required** for Legistar scraping."
+            )
+        else:
+            legistar_response = (
+                ":thought_balloon: **You didn't provided Legistar Client "
+                "information**, please note that you will be required to write "
+                "an entirely custom event scraper after your instance is deployed."
+            )
 
     # Construct message content
     if planned_maintainer_exists:
