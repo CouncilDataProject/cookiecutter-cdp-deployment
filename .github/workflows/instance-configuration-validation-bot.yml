@@ -42,10 +42,11 @@ jobs:
 
             :thought_balloon: Validating planned instance maintainer
             :thought_balloon: Validating planned instance repository name
+            :thought_balloon: Determining event scraper strategy and optionally testing Legistar
 
             #### All Cookiecutter Parameters
 
-            :thought_balloon:
+            :thought_balloon: Generating...
             
             _This comment was written by a bot!_
       
@@ -67,10 +68,11 @@ jobs:
 
             :thought_balloon: Validating planned instance maintainer
             :thought_balloon: Validating planned instance repository name
+            :thought_balloon: Determining event scraper strategy and optionally testing Legistar
 
             #### All Cookiecutter Parameters
 
-            :thought_balloon:
+            :thought_balloon: Generating...
             
             _This comment was written by a bot!_
 

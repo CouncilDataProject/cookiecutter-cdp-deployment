@@ -257,6 +257,14 @@ def validate_form(issue_content_file: str) -> None:
                 f"scraper that inherits from our base to resolve this issue."
             )
 
+        except Exception:
+            legistar_response = (
+                f":x: Something went wrong during Legistar client data validation. "
+                f"A [cdp-scrapers]"
+                f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers) maintainer "
+                f"should look into the logs for this bug. Sorry about this!"
+            )
+
     # Handle bad / mis-parametrized legistar info
     if (
         form_values[LEGISTAR_CLIENT_ID] is not None
@@ -264,11 +272,11 @@ def validate_form(issue_content_file: str) -> None:
     ):
         legistar_response = (
             ":x: You provided a Legistar Client Id but no Timezone. "
-            "Timezone is required for Legistar scraping."
+            "**Timezone is required** for Legistar scraping."
         )
     else:
         legistar_response = (
-            ":thought_balloon: You didn't provided Legistar Client information, "
+            ":thought_balloon: **You didn't provided Legistar Client information**, "
             "please note that you will be required to write an entirely custom event "
             "scraper after your instance is deployed."
         )
