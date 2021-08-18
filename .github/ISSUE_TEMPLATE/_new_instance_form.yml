@@ -8,13 +8,12 @@ assignees:
 body:
   - type: markdown
     attributes:
-      value: |
-        "Please fill out the following information to start the process for deploying a new CDP instance.
+      value: Please fill out the following information to start the process for deploying a new CDP instance.
 
-        Please refer to our documentation on the [cost of maintaining a CDP instance](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost) and verify that you are able to pay the estimated monthly cost of a new CDP instance."
+        Please refer to our documentation on the [cost of maintaining a CDP instance](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost) and verify that you are able to pay the estimated monthly cost of a new CDP instance.
   - type: markdown
     attributes:
-      value: "#### Instance Configuration Basics"
+      value: '## Instance Configuration Basics'
   - type: input
     id: municipality_name
     attributes:
@@ -33,14 +32,13 @@ body:
       required: true
   - type: markdown
     attributes:
-      value: |
-        "#### Recommended Legistar Options
+      value: '## Recommended Legistar Options'
 
         These fields are entirely optional however if your municipality utilizes Legistar, they are highly recommended as our tools may be entirely able to automate the creation and management of your scraper.
 
         To find out if your municipality uses Legistar for its legislation management software follow the steps outlined in our [Legistar Documentation](TODO). If Legistar is used, this instance configuration process can be almost entirely automated for you and you can fill in your Legistar Id below. If not, you will need to write a [custom event scraper](TODO) to complete the process.
         
-        If you plan on using Legistar, all fields in this section are required. I.e. the municipality's Legistar Client Id is required and can be found by following our recommendations in [documentation](TODO) and the timezone for your municipality is required."
+        If you plan on using Legistar, all fields in this section are required. I.e. the municipality's Legistar Client Id is required and can be found by following our recommendations in [documentation](TODO) and the timezone for your municipality is required.
   - type: input
     id: legistar_client_id
     attributes:
@@ -55,7 +53,7 @@ body:
       placeholder: ex. "America/Los_Angeles"
   - type: markdown
     attributes:
-      value: "#### Optional Infrastructure Options"
+      value: '## Optional Infrastructure Options'
   - type: input
     id: municipality_slug
     attributes:
