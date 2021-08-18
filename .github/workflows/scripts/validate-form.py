@@ -262,7 +262,7 @@ def validate_form(issue_content_file: str) -> None:
                 f":warning: Your municipality uses Legistar but is missing the video "
                 f"URLs for event recordings. We recommended writing a custom Legistar "
                 f"Scraper that inherits from our own "
-                f"[LegistarScraper](https://councildataproject.org/cdp-scrapers/cdp_scrapers.html#cdp_scrapers.legistar_utils.LegistarScraper)"
+                f"[LegistarScraper](https://councildataproject.org/cdp-scrapers/cdp_scrapers.html#cdp_scrapers.legistar_utils.LegistarScraper) "
                 f"to resolve the issue. "
                 f"Please see the "
                 f"[cdp-scrapers]"
