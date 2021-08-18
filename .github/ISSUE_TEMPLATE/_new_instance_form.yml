@@ -60,7 +60,7 @@ body:
     id: municipality_slug
     attributes:
       label: Municipality Slug
-      description: The name of the municipality cleaned for use in infrastructure and certain parts of repository naming. Default - municipality name lowercased and spaces replaced with '-'. This is useful if you want to add more specificity to the generated repository name. For example, "seattle-wa" instead of simply "seattle".
+      description: The name of the municipality cleaned for use in infrastructure and certain parts of repository naming. Default - municipality name lowercased and spaces replaced with '-'. This is useful if you want to add more specificity to the generated repository name, i.e. "seattle-wa" instead of simply "seattle".
       placeholder: ex. "seattle", "king-county"
   - type: input
     id: firestore_region
