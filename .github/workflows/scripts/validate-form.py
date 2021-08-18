@@ -184,7 +184,7 @@ def validate_form(issue_content_file: str) -> None:
             # Check that the provided client information is even a Legistar municipality
             if not scraper.is_legistar_compatible:
                 legistar_response = (
-                    f":x: No public Legistar instance found for "
+                    f"❌ No public Legistar instance found for "
                     f"the provided client ({form_values[LEGISTAR_CLIENT_ID]}). "
                     f"If your municipality uses Legistar but you received this error, "
                     f"we recommended contacting your municipality clerk and asking "
@@ -206,7 +206,7 @@ def validate_form(issue_content_file: str) -> None:
                     event_as_json_str = json.dumps(single_event, indent=4)
 
                     legistar_response = (
-                        f":heavy_check_mark: The municipality's Legistar instance "
+                        f"✅ The municipality's Legistar instance "
                         f"contains the minimum required CDP event ingestion data.\n"
                         f"<summary>Retrieved Data</summary>\n"
                         f"<details>\n\n"  # Extra new line for proper rendering
@@ -224,21 +224,26 @@ def validate_form(issue_content_file: str) -> None:
                 )
                 # Check if _any_ data was returned
                 for days_prior in [7, 14, 28]:
-                    log.info(f"Attempting to pull Legistar data for {days_prior} days")
+                    log.info(
+                        f"Attempting to pull Legistar data for "
+                        f"previous {days_prior} days."
+                    )
                     events = scraper.get_events(
                         begin=datetime.utcnow() - timedelta(days=days_prior),
                     )
                     if len(events) > 0:
-                        log.info(f"Received Legistar data at {days_prior} days")
+                        log.info(
+                            f"Received Legistar data for previous {days_prior} days."
+                        )
                         single_event = events[0].to_dict()
                         event_as_json_str = json.dumps(single_event, indent=4)
                         legistar_response = (
-                            f":x: Your municipality uses Legistar but the minimum "
+                            f"❌ Your municipality uses Legistar but the minimum "
                             f"required data for CDP event ingestion wasn't found. "
                             f"A "
                             f"[cdp-scrapers]"
                             f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers) "
-                            f"maintainer should look into this issue however it is "
+                            f"maintainer will look into this issue however it is "
                             f"likely that you (@{form_values[TARGET_MAINTAINER]}) will "
                             f"need to write a custom scraper.\n"
                             f"<summary>Retrieved Data</summary>\n"
@@ -256,23 +261,25 @@ def validate_form(issue_content_file: str) -> None:
             legistar_response = (
                 f":warning: Your municipality uses Legistar but is missing the video "
                 f"URLs for event recordings. We recommended writing a custom Legistar "
-                f"Scraper that inherits from our own to resolve the issue. "
-                f"Please the "
+                f"Scraper that inherits from our own "
+                f"[LegistarScraper](https://councildataproject.org/cdp-scrapers/cdp_scrapers.html#cdp_scrapers.legistar_utils.LegistarScraper)"
+                f"to resolve the issue. "
+                f"Please see the "
                 f"[cdp-scrapers]"
                 f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers) repository "
                 f"for more details. And please refer to the "
                 f"[SeattleScraper]"
                 f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers"
                 f"/blob/main/cdp_scrapers/instances/seattle.py) for an example of a "
-                f"scraper that inherits from our base to resolve this issue."
+                f"scraper that inherits from our base scraper to resolve this issue."
             )
 
         except Exception:
             legistar_response = (
-                f":x: Something went wrong during Legistar client data validation. "
+                f"❌ Something went wrong during Legistar client data validation. "
                 f"A [cdp-scrapers]"
                 f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers) maintainer "
-                f"should look into the logs for this bug. Sorry about this!"
+                f"will look into the logs for this bug. Sorry about this!"
             )
 
     # Handle bad / mis-parametrized legistar info
@@ -282,12 +289,13 @@ def validate_form(issue_content_file: str) -> None:
             and form_values[LEGISTAR_CLIENT_TIMEZONE] is None
         ):
             legistar_response = (
-                ":x: You provided a Legistar Client Id but no Timezone. "
-                "**Timezone is required** for Legistar scraping."
+                "❌ You provided a Legistar Client Id but no Timezone. "
+                "**Timezone is required** for Legistar scraping. "
+                "Please edit your original submission to include this information."
             )
         else:
             legistar_response = (
-                ":thought_balloon: **You didn't provided Legistar Client "
+                ":warning: **You didn't provide Legistar Client "
                 "information**, please note that you will be required to write "
                 "an entirely custom event scraper after your instance is deployed."
             )
@@ -295,22 +303,22 @@ def validate_form(issue_content_file: str) -> None:
     # Construct message content
     if planned_maintainer_exists:
         maintainer_response = (
-            f":heavy_check_mark: @{form_values[TARGET_MAINTAINER]} "
+            f"✅ @{form_values[TARGET_MAINTAINER]} "
             f"has been marked as the instance maintainer."
         )
     else:
         maintainer_response = (
-            f":x: The planned instance maintainer: "
+            f"❌ The planned instance maintainer: "
             f"'{form_values[TARGET_MAINTAINER]}', does not exist."
         )
 
     if planned_repository_exists:
         repository_response = (
-            f":x: The planned repository already exists. "
+            f"❌ The planned repository already exists. "
             f"See: [{repository_path}](https://github.com/{repository_path})"
         )
     else:
-        repository_response = f":heavy_check_mark: **{repository_path}** is available."
+        repository_response = f"✅ **{repository_path}** is available."
 
     # Join all together
     comment_response = "\n".join(
