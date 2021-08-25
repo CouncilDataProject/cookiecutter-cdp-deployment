@@ -313,7 +313,7 @@ def validate_form(issue_content_file: str) -> None:
             )
         else:
             scraper_response = (
-                f":warning: **You didn't provide Legistar Client "
+                f"❌ **You didn't provide Legistar Client "
                 f"information and no existing scraper was found in `cdp-scrapers`**."
                 f"Please either provide Legistar Client information and / or add a "
                 f"custom scraper to "
