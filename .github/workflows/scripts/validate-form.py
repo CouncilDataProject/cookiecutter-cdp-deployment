@@ -174,7 +174,10 @@ def validate_form(issue_content_file: str) -> None:
 
         scraper_response = (
             f"✅ An existing scraper for '{form_values[MUNICIPALITY_NAME]}' was found "
-            f"in `cdp-scrapers` (`cdp_scrapers.instances.{func_name}`)."
+            f"in `cdp-scrapers` (`cdp_scrapers.instances.{func_name}`). "
+            f"If this scraper was selected incorrectly, please update the "
+            f"Municipality Slug field with more specificity "
+            f"(i.e. 'seattle-wa' instead of 'seattle')."
         )
     except AttributeError:
         if (
@@ -314,7 +317,7 @@ def validate_form(issue_content_file: str) -> None:
         else:
             scraper_response = (
                 f"❌ **You didn't provide Legistar Client "
-                f"information and no existing scraper was found in `cdp-scrapers`**."
+                f"information and no existing scraper was found in `cdp-scrapers`**. "
                 f"Please either provide Legistar Client information and / or add a "
                 f"custom scraper to "
                 f"[cdp-scrapers]"
