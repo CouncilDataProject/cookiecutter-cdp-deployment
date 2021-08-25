@@ -325,7 +325,7 @@ def validate_form(issue_content_file: str) -> None:
                 f"{COUNCIL_DATA_PROJECT}/cdp-scrapers). "
                 f"Please refer to our "
                 f"[documentation for writing custom scrapers](TODO) "
-                f"for more information."
+                f"for more information. "
                 f"Note, either a successful basic Legistar scraper run or the "
                 f"addition of a custom scraper to `cdp-scrapers` is required before "
                 f"moving on in the deployment process."
