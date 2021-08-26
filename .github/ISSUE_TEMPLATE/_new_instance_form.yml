@@ -8,17 +8,13 @@ assignees:
 body:
   - type: markdown
     attributes:
-      value:
-        Before beginning on the new instance configuration process, you may want to find out if your municipality uses Legistar for it's legislation and meeting management process. If so, this instance configuration process can be almost entirely automated. If not, you will need to write a custom event scraper. See our documentation on the process [here](https://github.com/CouncilDataProject/cdp-scrapers).
+      value: |
+        Please fill out the following information to start the process for deploying a new CDP instance.
 
-
-        Additionally, please refer to our documentation on the [cost of maintaining a CDP instance](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost) and affirm that you are able to pay the estimated monthly cost of a new CDP instance.
-
-
-        Fill out the following information to start the process for deploying a new CDP instance.
-
-
-        _**Note**, this instance will live under the "CouncilDataProject" GitHub organization and will be hosted under the "councildataproject.org" domain._
+        Please refer to our documentation on the [cost of maintaining a CDP instance](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost) and verify that you are able to pay the estimated monthly cost of a new CDP instance.
+  - type: markdown
+    attributes:
+      value: '## Instance Configuration Basics'
   - type: input
     id: municipality_name
     attributes:
@@ -28,12 +24,6 @@ body:
     validations:
       required: true
   - type: input
-    id: municipality_slug
-    attributes:
-      label: (Optional) Municipality Slug
-      description: The name of the municipality cleaned for use in infrastructure and certain parts of repository naming. Default - municipality name lowercased and spaces replaced with '-'.
-      placeholder: ex. "seattle", "king-county"
-  - type: input
     id: maintainer_github_name
     attributes:
       label: Maintainer GitHub Name
@@ -41,24 +31,43 @@ body:
       placeholder: ex. "JacksonMaxfield"
     validations:
       required: true
-  - type: input
-    id: firestore_region
+  - type: markdown
     attributes:
-      label: (Optional) Firestore Region
-      description: The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations)) Default - 'us-central1'.
-      placeholder: ex. "us-west1", "us-central1"
+      value: |
+        ## Recommended Legistar Options
+
+        These fields are entirely optional however if your municipality utilizes Legistar, they are highly recommended as our tools may be entirely able to automate the creation and management of your scraper.
+
+        To find out if your municipality uses Legistar for its legislation management software follow the steps outlined in our [Legistar Documentation](TODO). If Legistar is used, this instance configuration process could potentially be automated for you and you can fill in your Legistar Id below. If not, you will need to write a [custom event scraper](TODO) to complete the process.
+        
+        If you plan on using Legistar, all fields in this section are required. I.e. the municipality's Legistar Client Id is required and can be found by following our recommendations in [documentation](TODO) and the timezone for your municipality is required.
   - type: input
     id: legistar_client_id
     attributes:
-      label: (Optional) Legistar Client Id
+      label: Legistar Client Id
       description: If planning on using Legistar, the municipalities Legistar Client Id as described in above documentation.
       placeholder: ex. "seattle"
   - type: input
     id: timezone
     attributes:
-      label: (Optional) Municipality Timezone
+      label: Municipality Timezone
       description: If planning on using Legistar, the timezone of your municipality. See [the TZ database name column](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to find the appropriate timezone string.
-      placeholder: ex. "US/Pacific"
+      placeholder: ex. "America/Los_Angeles"
+  - type: markdown
+    attributes:
+      value: '## Optional Infrastructure Options'
+  - type: input
+    id: municipality_slug
+    attributes:
+      label: Municipality Slug
+      description: The name of the municipality cleaned for use in infrastructure and certain parts of repository naming. Default - municipality name lowercased and spaces replaced with '-'. This is useful if you want to add more specificity to the generated repository name, i.e. "seattle-wa" instead of simply "seattle".
+      placeholder: ex. "seattle", "king-county"
+  - type: input
+    id: firestore_region
+    attributes:
+      label: Firestore Region
+      description: The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations)) Default - 'us-central1'.
+      placeholder: ex. "us-west1", "us-central1"
   - type: checkboxes
     id: terms
     attributes:

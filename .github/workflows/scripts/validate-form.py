@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import argparse
+from datetime import datetime, timedelta
 import json
 import logging
 import sys
@@ -9,6 +10,8 @@ import traceback
 from typing import Dict, List, Optional
 
 from cdp_backend.pipeline.event_index_pipeline import clean_text
+from cdp_scrapers.legistar_utils import LegistarScraper
+from cdp_scrapers import instances
 import requests
 
 ###############################################################################
@@ -34,11 +37,11 @@ LEGISTAR_CLIENT_TIMEZONE = "legistar_client_timezone"
 
 FORM_FIELD_TO_HEADER = {
     MUNICIPALITY_NAME: "Municipality Name",
-    MUNICIPALITY_SLUG: "(Optional) Municipality Slug",
+    MUNICIPALITY_SLUG: "Municipality Slug",
     TARGET_MAINTAINER: "Maintainer GitHub Name",
-    FIRESTORE_REGION: "(Optional) Firestore Region",
-    LEGISTAR_CLIENT_ID: "(Optional) Legistar Client Id",
-    LEGISTAR_CLIENT_TIMEZONE: "(Optional) Municipality Timezone",
+    FIRESTORE_REGION: "Firestore Region",
+    LEGISTAR_CLIENT_ID: "Legistar Client Id",
+    LEGISTAR_CLIENT_TIMEZONE: "Municipality Timezone",
 }
 
 GITHUB_USERS_RESOURCE = "users"
@@ -58,7 +61,9 @@ class Args(argparse.Namespace):
     def __parse(self) -> None:
         p = argparse.ArgumentParser(
             prog="validate-form",
-            description="Validate the values provided in the CDP instance config form.",
+            description=(
+                "Validate the values provided in the CDP instance configuration form."
+            ),
         )
         p.add_argument(
             "issue_content_file",
@@ -80,8 +85,8 @@ def _check_github_resource_exists(resource: str, name: str) -> bool:
     response = requests.get(f"https://api.github.com/{resource}/{name}")
     content = response.json()
 
-    # Return the boolean if the structure is consistent with successful query or not
-    # name is only present if the resource exists
+    # Return the boolean if the structure is consistent with successful query
+    # or not name is only present if the resource exists
     # Otherwise the response looks like
     # {'message': 'Not Found', 'documentation_url': '...'}
     return "name" in content
@@ -106,7 +111,12 @@ def validate_form(issue_content_file: str) -> None:
     # Get municipality slug
     if form_values[MUNICIPALITY_SLUG] is None:
         municipality_slug = (
-            clean_text(form_values[MUNICIPALITY_NAME]).lower().replace(" ", "-")
+            clean_text(form_values[MUNICIPALITY_NAME])
+            .lower()
+            .replace(
+                " ",
+                "-",
+            )
         )
     else:
         municipality_slug = form_values[MUNICIPALITY_SLUG]
@@ -144,7 +154,8 @@ def validate_form(issue_content_file: str) -> None:
                     "hosting_github_username_or_org": COUNCIL_DATA_PROJECT,
                     "hosting_github_repo_name": municipality_slug,
                     "hosting_github_url": (
-                        f"https://github.com/{COUNCIL_DATA_PROJECT}/{municipality_slug}"
+                        f"https://github.com/"
+                        f"{COUNCIL_DATA_PROJECT}/{municipality_slug}"
                     ),
                     "hosting_web_app_address": (
                         f"https://councildataproject.org/{municipality_slug}"
@@ -155,33 +166,197 @@ def validate_form(issue_content_file: str) -> None:
             )
         )
 
-    # TODO: legistar
+    # Test Legistar / existing scraper
+    scraper_response = None
+    try:
+        func_name = f"get_{python_municipality_slug}_events"
+        getattr(instances, func_name)
+
+        scraper_response = (
+            f"✅ An existing scraper for '{form_values[MUNICIPALITY_NAME]}' was found "
+            f"in `cdp-scrapers` (`cdp_scrapers.instances.{func_name}`). "
+            f"If this scraper was selected incorrectly, please update the "
+            f"Municipality Slug field with more specificity "
+            f"(i.e. 'seattle-wa' instead of 'seattle')."
+        )
+    except AttributeError:
+        if (
+            form_values[LEGISTAR_CLIENT_ID] is not None
+            and form_values[LEGISTAR_CLIENT_TIMEZONE] is not None
+        ):
+            log.info("Attempting Legistar data retrieval")
+
+            # Init temp scraper and run
+            scraper = LegistarScraper(
+                client=form_values[LEGISTAR_CLIENT_ID],
+                timezone=form_values[LEGISTAR_CLIENT_TIMEZONE],
+            )
+            try:
+                # Check that the provided client information
+                # is even a Legistar municipality
+                if not scraper.is_legistar_compatible:
+                    scraper_response = (
+                        f"❌ No public Legistar instance found for "
+                        f"the provided client ({form_values[LEGISTAR_CLIENT_ID]}). "
+                        f"If your municipality uses Legistar but you received this "
+                        f"error, we recommended contacting your municipality clerk and "
+                        f"asking about public Legistar API access, "
+                        f"they may direct you to the IT department as well. "
+                        f"If they do not respond to your requests, you will need to "
+                        f"write a custom scraper to deploy your CDP instance."
+                    )
+                log.info("Legistar client available")
+
+                # If everything runs correctly, log success and show event
+                # model in comment
+                for days_prior in [7, 14, 28]:
+                    log.info(f"Attempting minimum CDP data for {days_prior} days")
+                    if scraper.check_for_cdp_min_ingestion(check_days=days_prior):
+                        log.info("Legistar client has minimum data")
+                        events = scraper.get_events(
+                            begin=datetime.utcnow() - timedelta(days=days_prior),
+                        )
+                        single_event = events[0].to_dict()
+                        event_as_json_str = json.dumps(single_event, indent=4)
+
+                        scraper_response = (
+                            f"✅ The municipality's Legistar instance "
+                            f"contains the minimum required CDP event ingestion data.\n"
+                            f"<summary>Retrieved Data</summary>\n"
+                            f"<details>\n\n"  # Extra new line for proper rendering
+                            f"```json\n"
+                            f"{event_as_json_str}\n"
+                            f"```"
+                            f"</details>"
+                        )
+                        break
+
+                if scraper_response is None:
+                    log.info(
+                        "Legistar client missing minimum data, "
+                        "attempting to simply pull data for logging."
+                    )
+                    # Check if _any_ data was returned
+                    for days_prior in [7, 14, 28]:
+                        log.info(
+                            f"Attempting to pull Legistar data for "
+                            f"previous {days_prior} days."
+                        )
+                        events = scraper.get_events(
+                            begin=datetime.utcnow() - timedelta(days=days_prior),
+                        )
+                        if len(events) > 0:
+                            log.info(
+                                f"Received Legistar data for "
+                                f"previous {days_prior} days."
+                            )
+                            single_event = events[0].to_dict()
+                            event_as_json_str = json.dumps(single_event, indent=4)
+                            scraper_response = (
+                                f"❌ Your municipality uses Legistar but the minimum "
+                                f"required data for CDP event ingestion wasn't found. "
+                                f"A "
+                                f"[cdp-scrapers]"
+                                f"(https://github.com/"
+                                f"{COUNCIL_DATA_PROJECT}/cdp-scrapers) "
+                                f"maintainer will look into this issue however it is "
+                                f"likely that you (@{form_values[TARGET_MAINTAINER]}) "
+                                f"will need to write a custom scraper.\n"
+                                f"<summary>Retrieved Data</summary>\n"
+                                f"<details>\n\n"  # Extra new line for proper rendering
+                                f"```json\n"
+                                f"{event_as_json_str}\n"
+                                f"```"
+                                f"</details>"
+                            )
+                            break
+
+            # Catch no video path available
+            # User will need to write a custom Legistar scraper
+            except NotImplementedError:
+                scraper_response = (
+                    f":warning: Your municipality uses Legistar but is "
+                    f"missing the video URLs for event recordings. "
+                    f"We recommended writing a custom Legistar Scraper that inherits "
+                    f"from our own [LegistarScraper]"
+                    f"(https://councildataproject.org/cdp-scrapers/"
+                    f"cdp_scrapers.html#cdp_scrapers.legistar_utils.LegistarScraper) "
+                    f"to resolve the issue. "
+                    f"Please see the "
+                    f"[cdp-scrapers]"
+                    f"(https://github.com/"
+                    f"{COUNCIL_DATA_PROJECT}/cdp-scrapers) repository "
+                    f"for more details. And please refer to the "
+                    f"[SeattleScraper]"
+                    f"(https://github.com/{COUNCIL_DATA_PROJECT}/cdp-scrapers"
+                    f"/blob/main/cdp_scrapers/instances/seattle.py) "
+                    f"for an example of a scraper that inherits from our "
+                    f"base `LegistarScraper` to resolve this issue."
+                )
+
+            except Exception:
+                scraper_response = (
+                    f"❌ Something went wrong during Legistar client data validation. "
+                    f"A [cdp-scrapers]"
+                    f"(https://github.com/"
+                    f"{COUNCIL_DATA_PROJECT}/cdp-scrapers) maintainer "
+                    f"will look into the logs for this bug. Sorry about this!"
+                )
+
+    # Handle bad / mis-parametrized legistar info
+    if scraper_response is None:
+        if (
+            form_values[LEGISTAR_CLIENT_ID] is not None
+            and form_values[LEGISTAR_CLIENT_TIMEZONE] is None
+        ):
+            scraper_response = (
+                "❌ You provided a Legistar Client Id but no Timezone. "
+                "**Timezone is required** for Legistar scraping. "
+                "Please edit your original submission to include this information."
+            )
+        else:
+            scraper_response = (
+                f"❌ **You didn't provide Legistar Client "
+                f"information and no existing scraper was found in `cdp-scrapers`**. "
+                f"Please either provide Legistar Client information and / or add a "
+                f"custom scraper to "
+                f"[cdp-scrapers]"
+                f"(https://github.com/"
+                f"{COUNCIL_DATA_PROJECT}/cdp-scrapers). "
+                f"Please refer to our "
+                f"[documentation for writing custom scrapers](TODO) "
+                f"for more information. "
+                f"Note, either a successful basic Legistar scraper run or the "
+                f"addition of a custom scraper to `cdp-scrapers` is required before "
+                f"moving on in the deployment process."
+            )
 
     # Construct message content
     if planned_maintainer_exists:
         maintainer_response = (
-            f":heavy_check_mark: @{form_values[TARGET_MAINTAINER]} "
+            f"✅ @{form_values[TARGET_MAINTAINER]} "
             f"has been marked as the instance maintainer."
         )
     else:
         maintainer_response = (
-            f":x: The planned instance maintainer: "
+            f"❌ The planned instance maintainer: "
             f"'{form_values[TARGET_MAINTAINER]}', does not exist."
         )
 
     if planned_repository_exists:
         repository_response = (
-            f":x: The planned repository already exists. "
+            f"❌ The planned repository already exists. "
             f"See: [{repository_path}](https://github.com/{repository_path})"
         )
     else:
-        repository_response = f":heavy_check_mark: **{repository_path}** is available."
+        repository_response = f"✅ **{repository_path}** is available."
 
     # Join all together
     comment_response = "\n".join(
         [
             maintainer_response,
             repository_response,
+            scraper_response,
         ]
     )
 

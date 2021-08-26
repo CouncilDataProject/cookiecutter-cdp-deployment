@@ -1,4 +1,4 @@
 cdp-backend~=3.0.0.dev8
-cdp-scrapers~=0.1
+cdp-scrapers~=0.2
 cookiecutter~=1.7
 requests~=2.25
