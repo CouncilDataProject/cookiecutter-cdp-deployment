@@ -1,4 +1,4 @@
-cdp-backend~=3.0.0.dev10[pipeline]
+cdp-backend[pipeline]~=3.0.0.dev10
 cdp-scrapers~=0.2
 cookiecutter~=1.7
 requests~=2.25
