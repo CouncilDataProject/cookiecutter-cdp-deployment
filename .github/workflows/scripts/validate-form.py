@@ -179,6 +179,7 @@ def validate_form(issue_content_file: str) -> None:
             f"Municipality Slug field with more specificity "
             f"(i.e. 'seattle-wa' instead of 'seattle')."
         )
+        scraper_ready = True
     except AttributeError:
         if (
             form_values[LEGISTAR_CLIENT_ID] is not None
@@ -205,6 +206,7 @@ def validate_form(issue_content_file: str) -> None:
                         f"If they do not respond to your requests, you will need to "
                         f"write a custom scraper to deploy your CDP instance."
                     )
+                    scraper_ready = False
                 log.info("Legistar client available")
 
                 # If everything runs correctly, log success and show event
@@ -229,6 +231,7 @@ def validate_form(issue_content_file: str) -> None:
                             f"```"
                             f"</details>"
                         )
+                        scraper_ready = True
                         break
 
                 if scraper_response is None:
@@ -269,6 +272,7 @@ def validate_form(issue_content_file: str) -> None:
                                 f"```"
                                 f"</details>"
                             )
+                            scraper_ready = False
                             break
 
             # Catch no video path available
@@ -293,6 +297,7 @@ def validate_form(issue_content_file: str) -> None:
                     f"for an example of a scraper that inherits from our "
                     f"base `LegistarScraper` to resolve this issue."
                 )
+                scraper_ready = False
 
             except Exception:
                 scraper_response = (
@@ -302,6 +307,7 @@ def validate_form(issue_content_file: str) -> None:
                     f"{COUNCIL_DATA_PROJECT}/cdp-scrapers) maintainer "
                     f"will look into the logs for this bug. Sorry about this!"
                 )
+                scraper_ready = False
 
     # Handle bad / mis-parametrized legistar info
     if scraper_response is None:
@@ -314,6 +320,7 @@ def validate_form(issue_content_file: str) -> None:
                 "**Timezone is required** for Legistar scraping. "
                 "Please edit your original submission to include this information."
             )
+            scraper_ready = False
         else:
             scraper_response = (
                 f"❌ **You didn't provide Legistar Client "
@@ -330,6 +337,7 @@ def validate_form(issue_content_file: str) -> None:
                 f"addition of a custom scraper to `cdp-scrapers` is required before "
                 f"moving on in the deployment process."
             )
+            scraper_ready = False
 
     # Construct message content
     if planned_maintainer_exists:
@@ -337,19 +345,29 @@ def validate_form(issue_content_file: str) -> None:
             f"✅ @{form_values[TARGET_MAINTAINER]} "
             f"has been marked as the instance maintainer."
         )
+        maintainer_ready = True
     else:
         maintainer_response = (
             f"❌ The planned instance maintainer: "
             f"'{form_values[TARGET_MAINTAINER]}', does not exist."
         )
+        maintainer_ready = False
 
     if planned_repository_exists:
         repository_response = (
             f"❌ The planned repository already exists. "
             f"See: [{repository_path}](https://github.com/{repository_path})"
         )
+        repository_ready = False
     else:
         repository_response = f"✅ **{repository_path}** is available."
+        repository_ready = True
+
+    # Construct "ready"
+    if all([scraper_ready, maintainer_ready, repository_ready]):
+        ready_response = "#### ✅ All checks successful :tada:"
+    else:
+        ready_response = "#### ❌ Some checks failing"
 
     # Join all together
     comment_response = "\n".join(
@@ -357,6 +375,7 @@ def validate_form(issue_content_file: str) -> None:
             maintainer_response,
             repository_response,
             scraper_response,
+            ready_response,
         ]
     )
 
