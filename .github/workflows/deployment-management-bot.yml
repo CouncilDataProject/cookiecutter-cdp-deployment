@@ -43,6 +43,28 @@ jobs:
           content="$(cat generation-options.json)"
           echo "::set-output name=content::$content"
 
-      - name: Dump genops
+      - name: Error Early - Message
+        uses: peter-evans/create-or-update-comment@v1
+        if: |
+          ${{ fromJSON(steps.genops.outputs.content).scraper_path == null }} ||
+          ${{ fromJSON(steps.genops.outputs.content).maintainer_name == null }} ||
+          ${{ fromJSON(steps.genops.outputs.content).repository_path == null }}
+        with:
+          body: |
+            :warning: :warning: :warning
+
+            Not all configuration options are present or some conflict.
+
+            #### Configuration Options
+
+            ${{ steps.genops.outputs.content }}
+
+            **Will not proceed with deployment.**
+      
+      - name: Error Early - Exit
+        if: |
+          ${{ fromJSON(steps.genops.outputs.content).scraper_path == null }} ||
+          ${{ fromJSON(steps.genops.outputs.content).maintainer_name == null }} ||
+          ${{ fromJSON(steps.genops.outputs.content).repository_path == null }}
         run: |
-          echo "${{ fromJSON(steps.genops.outputs.content) }}"
+          exit 1
