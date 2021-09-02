@@ -50,6 +50,7 @@ jobs:
           ${{ fromJSON(steps.genops.outputs.content).maintainer_name == null }} ||
           ${{ fromJSON(steps.genops.outputs.content).repository_path == null }}
         with:
+          issue-number: ${{ github.event.issue.number }}
           body: |
             :warning: :warning: :warning
 
