@@ -168,6 +168,7 @@ def validate_form(issue_content_file: str) -> None:
 
     # Test Legistar / existing scraper
     scraper_response = None
+    scraper_path = None
     try:
         func_name = f"get_{python_municipality_slug}_events"
         getattr(instances, func_name)
@@ -180,6 +181,7 @@ def validate_form(issue_content_file: str) -> None:
             f"(i.e. 'seattle-wa' instead of 'seattle')."
         )
         scraper_ready = True
+        scraper_path = f"USE_FOUND_SCRAPER---cdp_scrapers.instances.{func_name}"
     except AttributeError:
         if (
             form_values[LEGISTAR_CLIENT_ID] is not None
@@ -232,6 +234,11 @@ def validate_form(issue_content_file: str) -> None:
                             f"</details>"
                         )
                         scraper_ready = True
+                        scraper_path = (
+                            f"USE_BASE_LEGISTAR"
+                            f"---{form_values[LEGISTAR_CLIENT_ID]}"
+                            f"---{form_values[LEGISTAR_CLIENT_TIMEZONE]}"
+                        )
                         break
 
                 if scraper_response is None:
@@ -340,10 +347,11 @@ def validate_form(issue_content_file: str) -> None:
             scraper_ready = False
 
     # Construct message content
+    maintainer_name = None
     if planned_maintainer_exists:
+        maintainer_name = form_values[TARGET_MAINTAINER]
         maintainer_response = (
-            f"✅ @{form_values[TARGET_MAINTAINER]} "
-            f"has been marked as the instance maintainer."
+            f"✅ @{maintainer_name} " f"has been marked as the instance maintainer."
         )
         maintainer_ready = True
     else:
@@ -359,6 +367,7 @@ def validate_form(issue_content_file: str) -> None:
             f"See: [{repository_path}](https://github.com/{repository_path})"
         )
         repository_ready = False
+        repository_path = None
     else:
         repository_response = f"✅ **{repository_path}** is available."
         repository_ready = True
@@ -382,6 +391,18 @@ def validate_form(issue_content_file: str) -> None:
     # Dump to file
     with open("form-validation-results.md", "w") as open_f:
         open_f.write(comment_response)
+
+    # Save shorthand repo generation options to file
+    # If any check failed, the value will be None / null
+    with open("generation-options.json", "w") as open_f:
+        json.dump(
+            {
+                "scraper_path": scraper_path,
+                "maintainer_name": maintainer_name,
+                "repository_path": repository_path,
+            },
+            open_f,
+        )
 
 
 def main() -> None:
