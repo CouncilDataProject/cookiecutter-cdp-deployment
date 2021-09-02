@@ -17,16 +17,30 @@ jobs:
       # Check allowed users
 
       - name: Get CDP Organization Members
-        id: get-cdp-members
+        id: cdp-members
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
           members="$(gh api -X GET 'orgs/CouncilDataProject/members' -F per_page=100 --paginate --cache 1h --jq '[.[].login] | join("---")')"
           echo "::set-output name=members::$members"
 
-      - name: Log Members
+      - name: Generate Safe Username Check
+        id: safe-username
         run: |
-          echo ${{ steps.get-cdp-members.outputs.members }}
+          username=${{ github.event.comment.user.login }}
+          username='---$username---'
+          echo "::set-output name=username::$username"
+
+      - name: Log Username
+        run: |
+          echo ${{ steps.safe-username.outputs.username }}
+
+      # - name: Check Job Initiator
+      #   if: |
+      #     contains(
+      #       steps.cdp-members.outputs.members,
+      #       '---${github.event.comment.user.login}---'
+      #     )
 
       #########################################################################
       # Workflow Setup
@@ -53,7 +67,7 @@ jobs:
       # Run fast checks
 
       - name: Read generation-options JSON
-        id: genops
+        id: generation-options
         run: |
           content="$(cat generation-options.json)"
           echo "::set-output name=content::$content"
@@ -61,9 +75,9 @@ jobs:
       - name: Error Early - Message
         uses: peter-evans/create-or-update-comment@v1
         if: |
-          fromJSON(steps.genops.outputs.content).scraper_path == null ||
-          fromJSON(steps.genops.outputs.content).maintainer_name == null ||
-          fromJSON(steps.genops.outputs.content).repository_path == null
+          fromJSON(steps.generation-options.outputs.content).scraper_path == null ||
+          fromJSON(steps.generation-options.outputs.content).maintainer_name == null ||
+          fromJSON(steps.generation-options.outputs.content).repository_path == null
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
@@ -76,16 +90,16 @@ jobs:
             #### Configuration Options
 
             ```json
-            ${{ steps.genops.outputs.content }}
+            ${{ steps.generation-options.outputs.content }}
             ```
 
             **Stopping Deployment Procedure**
       
       - name: Error Early - Exit
         if: |
-          fromJSON(steps.genops.outputs.content).scraper_path == null ||
-          fromJSON(steps.genops.outputs.content).maintainer_name == null ||
-          fromJSON(steps.genops.outputs.content).repository_path == null
+          fromJSON(steps.generation-options.outputs.content).scraper_path == null ||
+          fromJSON(steps.generation-options.outputs.content).maintainer_name == null ||
+          fromJSON(steps.generation-options.outputs.content).repository_path == null
         run: |
           exit 1
     
