@@ -124,14 +124,11 @@ jobs:
       #########################################################################
       # Proceed with deployment
 
-      
-
-
-      # - name: Create New Instance Repo
-      #   run: |
-      #     gh repo create \
-      #       ${{ fromJSON(steps.genops.outputs.content).repository_path }} \
-      #       --confirm \
-      #       --public
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Create New Instance Repo
+        run: |
+          gh repo create \
+            ${{ fromJSON(steps.genops.outputs.content).repository_path }} \
+            --confirm \
+            --public
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
