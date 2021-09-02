@@ -15,4 +15,4 @@ jobs:
     steps:
       - name: log github context
         run: |
-          echo ${{ fromJSON(github) }}
+          echo ${{ toJSON(github) }}
