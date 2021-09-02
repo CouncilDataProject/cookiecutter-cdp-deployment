@@ -24,11 +24,14 @@ jobs:
           members="$(gh api -X GET 'orgs/CouncilDataProject/members' -F per_page=100 --paginate --cache 1h --jq '[.[].login] | join("---")')"
           echo "::set-output name=members::$members"
 
+      - run: |
+          echo ${{ toJSON(github) }}
+
       - name: Generate Safe Username Check
         id: safe-username
         run: |
           username=${{ github.event.comment.user.login }}
-          username='---$username---'
+          username="---$username---"
           echo "::set-output name=username::$username"
 
       - name: Log Username
