@@ -43,10 +43,9 @@ jobs:
           body: |
             ## Deployment Status
 
-            ❌ ❌ ❌
+            ❌ ❌ **Rejected** ❌ ❌
             
-            User (${{ github.event.comment.user.login }}) attempted to deploy 
-            without permissions.
+            User (${{ github.event.comment.user.login }}) attempted to deploy without permissions.
 
             _Only users which are members of the CouncilDataProject organization
             can deploy new instances with this bot._
@@ -103,7 +102,7 @@ jobs:
           body: |
             ## Deployment Status
 
-            :warning: :warning: :warning:
+            :warning: :warning: **Configuration Error** :warning: :warning:
 
             Not all configuration options are present or some options have errors.
 
