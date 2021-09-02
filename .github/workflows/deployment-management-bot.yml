@@ -4,17 +4,17 @@ on:
   issue_comment:
     types:
       - created
-      - edited
 
 jobs:
   deploy-new-instance:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
 
     steps:
       #########################################################################
       # Workflow Setup
+
+      - run: |
+          echo "${{ toJSON(github.event) }}"
 
       - uses: actions/checkout@v2
       - name: Set up Python
@@ -52,15 +52,17 @@ jobs:
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
-            :warning: :warning: :warning
+            :warning: :warning: :warning:
 
             Not all configuration options are present or some conflict.
 
             #### Configuration Options
 
+            ```json
             ${{ steps.genops.outputs.content }}
+            ```
 
-            **Will not proceed with deployment.**
+            **Stopping Deployment Procedure**
       
       - name: Error Early - Exit
         if: |
@@ -69,3 +71,9 @@ jobs:
           ${{ fromJSON(steps.genops.outputs.content).repository_path == null }}
         run: |
           exit 1
+    
+      #########################################################################
+      # Proceed with deployment
+
+      - name: Read generation-options JSON
+        id: genops
