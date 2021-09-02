@@ -9,7 +9,7 @@ jobs:
   deploy-new-instance:
     runs-on: ubuntu-latest
     if: |
-      ${{ github.event.comment.body == "/cdp-deploy" }}
+      ${{ github.event.comment.body == '/cdp-deploy' }}
 
     steps:
       #########################################################################
