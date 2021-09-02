@@ -9,7 +9,8 @@ jobs:
   deploy-new-instance:
     runs-on: ubuntu-latest
     if: |
-      ${{ github.event.comment.body == '/cdp-deploy' }}
+      contains(github.event.comment.html_url, '/issues/') &&
+      contains(github.event.comment.body, '/cdp-deploy')
 
     steps:
       #########################################################################
@@ -49,9 +50,9 @@ jobs:
       - name: Error Early - Message
         uses: peter-evans/create-or-update-comment@v1
         if: |
-          ${{ fromJSON(steps.genops.outputs.content).scraper_path == null }} ||
-          ${{ fromJSON(steps.genops.outputs.content).maintainer_name == null }} ||
-          ${{ fromJSON(steps.genops.outputs.content).repository_path == null }}
+          fromJSON(steps.genops.outputs.content).scraper_path == null ||
+          fromJSON(steps.genops.outputs.content).maintainer_name == null ||
+          fromJSON(steps.genops.outputs.content).repository_path == null
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
@@ -71,9 +72,9 @@ jobs:
       
       - name: Error Early - Exit
         if: |
-          ${{ fromJSON(steps.genops.outputs.content).scraper_path == null }} ||
-          ${{ fromJSON(steps.genops.outputs.content).maintainer_name == null }} ||
-          ${{ fromJSON(steps.genops.outputs.content).repository_path == null }}
+          fromJSON(steps.genops.outputs.content).scraper_path == null ||
+          fromJSON(steps.genops.outputs.content).maintainer_name == null ||
+          fromJSON(steps.genops.outputs.content).repository_path == null
         run: |
           exit 1
     
