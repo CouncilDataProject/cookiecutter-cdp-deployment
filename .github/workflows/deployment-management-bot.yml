@@ -14,6 +14,23 @@ jobs:
 
     steps:
       #########################################################################
+      # Check allowed users
+      
+      - name: Login to GitHub CLI
+        run: |
+          gh auth login --with-token ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Get CDP Organization Members
+        id: get-cdp-members
+        run: |
+          members="$(gh api -X GET 'orgs/CouncilDataProject/members' -F per_page=100 --paginate --cache 1h --jq '[.[].login] | join("---")')"
+          echo "::set-output name=members::$members"
+
+      - name: Log Members
+        run: |
+          echo ${{ steps.get-cdp-members.outputs.members }}
+
+      #########################################################################
       # Workflow Setup
 
       - uses: actions/checkout@v2
@@ -77,11 +94,14 @@ jobs:
       #########################################################################
       # Proceed with deployment
 
-      - name: Create New Instance Repo
-        run: |
-          gh repo create \
-            ${{ fromJSON(steps.genops.outputs.content).repository_path }} \
-            --confirm \
-            --public
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+
+
+      # - name: Create New Instance Repo
+      #   run: |
+      #     gh repo create \
+      #       ${{ fromJSON(steps.genops.outputs.content).repository_path }} \
+      #       --confirm \
+      #       --public
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
