@@ -13,6 +13,53 @@ jobs:
       issues: write
 
     steps:
-      - name: log github context
+      #########################################################################
+      # Workflow Setup
+
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: Install Bot Scripts Dependencies
         run: |
-          echo ${{ toJSON(github) }}
+          pip install -r .github/workflows/scripts/requirements.txt
+          pip install cookiecutter
+
+      # Run Validation Bot to get Configuration Options
+      - name: Dump Issue Body to File
+        run: |
+          echo "${{ github.event.issue.body }}" > issue-body.md
+      - name: Validate Form and Create Bot Response
+        run: |
+          python .github/workflows/scripts/validate-form.py issue-body.md
+      - name: Set Response Content
+        id: validation-message-response
+        run: |
+          body=$(cat form-validation-results.md)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}"
+          echo ::set-output name=body::$body
+
+      - name: Dump Cookiecutter Parameters
+        id: dump-cookiecutter-parameters
+        run: |
+          body=$(cat planned-cookiecutter.json)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}"
+          echo ::set-output name=body::$body
+
+    #########################################################################
+    # Run fast check
+      - name: Read generation-options JSON
+        id: genops
+        run: |
+          content="${cat generation-options.json}"
+          content="${ fromJSON(content) }"
+          echo "::set-output name=content::$content"
+
+      - name: Dump genops
+        run: |
+          echo "${{ steps.genops.outputs.content }}"
