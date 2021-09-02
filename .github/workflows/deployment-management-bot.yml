@@ -33,7 +33,7 @@ jobs:
 
       - name: Check Job Initiator - Message
         if: |
-          contains(
+          !contains(
             steps.cdp-members.outputs.members,
             steps.safe-username.outputs.username
           )
@@ -47,14 +47,13 @@ jobs:
             
             User (${{ github.event.comment.user.login }}) attempted to deploy without permissions.
 
-            _Only users which are members of the CouncilDataProject organization
-            can deploy new instances with this bot._
+            _Only users which are members of the CouncilDataProject organization can deploy new instances with this bot._
 
             **Stopping Deployment Procedure**
       
       - name: Check Job Initiator - Exit
         if: |
-          contains(
+          !contains(
             steps.cdp-members.outputs.members,
             steps.safe-username.outputs.username
           )
