@@ -78,5 +78,5 @@ jobs:
       #########################################################################
       # Proceed with deployment
 
-      - name: Read generation-options JSON
-        id: genops
+      # - name: Read generation-options JSON
+      #   id: genops
