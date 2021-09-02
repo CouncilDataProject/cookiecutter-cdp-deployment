@@ -83,3 +83,5 @@ jobs:
             ${{ fromJSON(steps.genops.outputs.content).repository_path }} \
             --confirm \
             --public
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
