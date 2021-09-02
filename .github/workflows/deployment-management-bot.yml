@@ -134,12 +134,12 @@ jobs:
       #########################################################################
       # Proceed with deployment
 
+      # --description "CDP Instance for ${{ fromJSON(steps.cookiecutter-options.outputs.options).municipality }}"
+
       - name: Create New Instance Repo
         run: |
           gh repo create \
-            ${{ fromJSON(steps.generation-options.outputs.content).repository_path }} \
-            --confirm \
-            --public
+            ${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
