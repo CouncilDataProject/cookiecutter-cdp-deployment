@@ -9,7 +9,7 @@ import sys
 import traceback
 from typing import Dict, List, Optional
 
-from cdp_backend.pipeline.event_index_pipeline import clean_text
+from cdp_backend.utils.string_utils import clean_text
 from cdp_scrapers.legistar_utils import LegistarScraper
 from cdp_scrapers import instances
 import requests
