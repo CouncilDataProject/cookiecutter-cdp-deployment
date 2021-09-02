@@ -13,6 +13,7 @@ jobs:
       #########################################################################
       # Workflow Setup
 
+      - name: log gh context
       - run: |
           echo "${{ toJSON(github.event) }}"
 
