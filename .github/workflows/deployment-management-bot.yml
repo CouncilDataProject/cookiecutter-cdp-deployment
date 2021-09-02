@@ -14,7 +14,7 @@ jobs:
       # Workflow Setup
 
       - name: log gh context
-      - run: |
+        run: |
           echo "${{ toJSON(github.event) }}"
 
       - uses: actions/checkout@v2
