@@ -140,8 +140,7 @@ jobs:
         run: |
           gh repo create \
             ${{ fromJSON(steps.generation-options.outputs.content).repository_path }} \
-            --public \
-            --description "CDP Instance for ${{ fromJSON(steps.cookiecutter-options.outputs.options).municipality }}"
+            --public
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
