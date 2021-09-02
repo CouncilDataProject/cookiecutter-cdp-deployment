@@ -26,10 +26,6 @@ jobs:
           pip install -r .github/workflows/scripts/requirements.txt
           pip install cookiecutter
 
-      - name: log github context
-        run: |
-          echo ${{ toJSON(github) }}
-
       # Run Validation Bot to get Configuration Options
       - name: Dump Issue Body to File
         run: |
@@ -81,5 +77,9 @@ jobs:
       #########################################################################
       # Proceed with deployment
 
-      # - name: Read generation-options JSON
-      #   id: genops
+      - name: Create New Instance Repo
+        run: |
+          gh repo create \
+            ${{ fromJSON(steps.genops.outputs.content).repository_path }} \
+            --confirm \
+            --public
