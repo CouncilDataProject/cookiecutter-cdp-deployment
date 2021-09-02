@@ -41,9 +41,8 @@ jobs:
         id: genops
         run: |
           content="$(cat generation-options.json)"
-          content="${ fromJSON(content) }"
           echo "::set-output name=content::$content"
 
       - name: Dump genops
         run: |
-          echo "${{ steps.genops.outputs.content }}"
+          echo "${{ fromJSON(steps.genops.outputs.content) }}"
