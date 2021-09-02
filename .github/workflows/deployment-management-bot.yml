@@ -30,33 +30,17 @@ jobs:
       - name: Dump Issue Body to File
         run: |
           echo "${{ github.event.issue.body }}" > issue-body.md
-      - name: Validate Form and Create Bot Response
+      - name: Validate Form and Generate Configuration Files
         run: |
           python .github/workflows/scripts/validate-form.py issue-body.md
-      - name: Set Response Content
-        id: validation-message-response
-        run: |
-          body=$(cat form-validation-results.md)
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}"
-          echo ::set-output name=body::$body
 
-      - name: Dump Cookiecutter Parameters
-        id: dump-cookiecutter-parameters
-        run: |
-          body=$(cat planned-cookiecutter.json)
-          body="${body//'%'/'%25'}"
-          body="${body//$'\n'/'%0A'}"
-          body="${body//$'\r'/'%0D'}"
-          echo ::set-output name=body::$body
+      #########################################################################
+      # Run fast checks
 
-    #########################################################################
-    # Run fast check
       - name: Read generation-options JSON
         id: genops
         run: |
-          content="${cat generation-options.json}"
+          content="$(cat generation-options.json)"
           content="${ fromJSON(content) }"
           echo "::set-output name=content::$content"
 
