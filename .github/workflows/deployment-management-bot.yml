@@ -134,11 +134,22 @@ jobs:
       #########################################################################
       # Proceed with deployment
 
-      - name: Run Cookiecutter and Init Git
+      - name: Run Cookiecutter
         run: |
           mv planned-cookiecutter.json cookiecutter.json
           cookiecutter . --no-input
-          cd ${{ fromJSON(steps.cookiecutter-options.outputs.options ).hosting_github_repo_name }}
+
+      - name: Get Municipality Slugs
+        id: municipality-slug
+        run: |
+          slug=$(jq -r '.municipality_slug' cookiecutter.json)
+          python_slug=$(jq -r '.python_municipality_slug' cookiecutter.json)
+          echo "::set-output name=slug::$slug"
+          echo "::set-output name=python_slug::$python_slug"
+          
+      - name: Init Git
+        run: |
+          cd ${{ steps.municipality-slug.outputs.slug }}
           git config --global user.email "councildataproject@gmail.com"
           git config --global user.name "CouncilDataProjectServiceAccount"
           git init
@@ -147,6 +158,23 @@ jobs:
           git commit -m "Initial commit"
 
       # Replace scraper with provided
+      - name: Add cdp-scrapers as dependency
+        run: |
+          sed -i \
+            's/REPLACE_WITH_SCRAPER_INSTALL/cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]~=0.2/' \
+            .github/workflows/resources/setup-replacement.py
+          mv \
+            .github/workflows/resources/setup-replacement.py \
+            ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
+
+      # Get scraper path
+      # - name: Get Scraper Path
+      #   id: selected-scraper
+      #   run: |
+      #     scraper=$(jq -r '.scraper_path' generation-options.json)
+      #     echo "::set-output name=path::$scraper"
+
+      
 
       # run make init
       # setup GCP account
@@ -179,11 +207,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Get Municipality Slug
-        id: municipality-slug
-        run: |
-          slug=$(jq -r '.municipality_slug' cookiecutter.json)
-          echo "::set-output name=slug::$slug"
+      # Sleep for a while
+
+      # add external collab if person not in CDP org
 
       # - name: Enable GitHub Pages
       #   run: |
@@ -195,11 +221,6 @@ jobs:
       #       --input -
       #   env:
       #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-
-      # Enable github pages
-
-      # add external collab if person not in CDP org
 
       - name: Log Success
         uses: peter-evans/create-or-update-comment@v1
