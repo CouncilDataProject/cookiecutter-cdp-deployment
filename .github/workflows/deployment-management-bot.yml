@@ -289,7 +289,6 @@ jobs:
         run: |
           gh api \
             -X DELETE \
-            -H "Accept: application/vnd.github.v3+json" \
             'orgs/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}'
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
