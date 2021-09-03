@@ -179,10 +179,15 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       
+      - name: Install Tree
+        run: |
+          sudo apt-get install tree
+
       - name: Get Municipality Slug
         id: municipality-slug
         run: |
           ls
+          tree
           slug=$(jq -r '.municipality_slug' planned-cookiecutter.json)
           echo "::set-output name=slug::$slug"
 
