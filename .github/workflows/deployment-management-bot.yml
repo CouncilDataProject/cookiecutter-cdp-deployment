@@ -287,9 +287,10 @@ jobs:
 
       - name: Delete Repository
         run: |
+          echo "Deleting CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}"
           gh api \
             -X DELETE \
-            'orgs/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}'
+            'repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}'
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
