@@ -134,13 +134,19 @@ jobs:
       #########################################################################
       # Proceed with deployment
 
-      # 
-
-      - name: Create New Instance Repo
+      - name: Run Cookiecutter
         run: |
+          mv planned-cookiecutter.json cookiecutter.json
+          cookiecutter . --no-input
+
+      - name: Create New Instance Repo and Push
+        run: |
+          cd ${{ fromJSON(steps.cookiecutter-options.outputs.options ).hosting_github_repo_name }}
           gh repo create \
             ${{ fromJSON(steps.generation-options.outputs.content).repository_path }} \
-            --public
+            --public \
+            --description "CDP Instance for ${{ fromJSON(steps.cookiecutter-options.outputs.options).municipality }}" \
+            --confirm
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
