@@ -149,9 +149,14 @@ jobs:
       - name: Setup Git SSH
         run: |
           eval "$(ssh-agent -s)"
-          echo "${{ secrets.SA_SSH_KEY }}" > id_cdp_sa
-          chmod 600 id_cdp_sa
-          ssh-add id_cdp_sa
+          mkdir ~/.ssh/
+          echo "${{ secrets.SA_SSH_KEY }}" > ~/.ssh/id_cdp_sa
+          chmod 600 ~/.ssh/id_cdp_sa
+          ssh-add ~/.ssh/id_cdp_sa
+          echo "Host github.com
+            HostName github.com
+            IdentityFile ~/.ssh/id_cdp_sa" > ~/.ssh/config
+          cat ~/.ssh/config
 
       - name: Create New Instance Repo and Push
         run: |
