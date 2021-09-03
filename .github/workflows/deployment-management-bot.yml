@@ -179,7 +179,7 @@ jobs:
       # Use base legistar for scraper
       - name: Add Base Legistar Scraper
         if: |
-          contains(steps.selected-scraper.outputs.choice, "USE_BASE_LEGISTAR")
+          contains(steps.selected-scraper.outputs.choice, 'USE_BASE_LEGISTAR')
         run: |
           sed \
             's/REPLACE_LEGISTAR_CLIENT/${{ steps.selected-scraper.outputs.param1 }}/g' \
@@ -194,7 +194,7 @@ jobs:
       # Use custom scraper
       - name: Add Custon Scraper
         if: |
-          contains(steps.selected-scraper.outputs.choice, "USE_FOUND_SCRAPER")
+          contains(steps.selected-scraper.outputs.choice, 'USE_FOUND_SCRAPER')
         run: |
           sed \
             's/REPLACE_CUSTOM_SCRAPER/${{ steps.selected-scraper.outputs.param1 }}/g' \
