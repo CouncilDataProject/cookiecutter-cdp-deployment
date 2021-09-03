@@ -182,6 +182,7 @@ jobs:
       - name: Get Municipality Slug
         id: municipality-slug
         run: |
+          ls
           slug=$(jq -r '.municipality_slug' planned-cookiecutter.json)
           echo "::set-output name=slug::$slug"
 
