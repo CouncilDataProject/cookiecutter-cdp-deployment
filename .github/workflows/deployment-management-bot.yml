@@ -134,20 +134,27 @@ jobs:
       #########################################################################
       # Proceed with deployment
 
-      - name: Run Cookiecutter
+      - name: Run Cookiecutter and Init Git
         run: |
           mv planned-cookiecutter.json cookiecutter.json
           cookiecutter . --no-input
-
-      - name: Create New Instance Repo and Push
-        run: |
           cd ${{ fromJSON(steps.cookiecutter-options.outputs.options ).hosting_github_repo_name }}
-          git config --global user.email "councildataproject@gmail.com"
-          git config --global user.name "CouncilDataProjectServiceAccount"
           git init
           git checkout -b main
           git add -A
           git commit -m "Initial commit"
+
+      - name: Setup Git
+        run: |
+          git config --global user.email "councildataproject@gmail.com"
+          git config --global user.name "CouncilDataProjectServiceAccount"
+          eval "$(ssh-agent -s)"
+          echo "${{ secrets.SA_SSH_KEY }}" > id_cdp_sa
+          ssh-add ~/.ssh/id_cdp_sa
+          rm id_cdp_sa
+      
+      - name: Create New Instance Repo and Push
+        run: |
           gh repo create \
             ${{ fromJSON(steps.generation-options.outputs.content).repository_path }} \
             --public \
@@ -155,7 +162,7 @@ jobs:
             --homepage "${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_web_app_address }}" \
             --enable-wiki=false \
             --confirm
-          git remote set-url origin https://CouncilDataProject:${{ secrets.ACCESS_TOKEN }}@github.com/${{ fromJSON(steps.generation-options.outputs.content).repository_path }}.git
+          git remote set-url origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
           git push -u origin main
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
