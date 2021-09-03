@@ -159,7 +159,7 @@ jobs:
             Prior to triggering this deployment:
 
             * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
-            * [ ] Run `make init project=${{ steps.municipality-slug.outputs.slug }}`
+            * [ ] Run `make init project=cdp-${{ steps.municipality-slug.outputs.slug }}`
             * [ ] Comment "/cdp-deploy" and follow the rest of the instructions
             
             _This comment was written by a bot!_

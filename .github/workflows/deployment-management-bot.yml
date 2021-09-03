@@ -285,10 +285,10 @@ jobs:
 
             Final steps:
 
-            * [ ] Run `make gen-key project=${{ steps.municipality-slug.outputs.slug }}`
-            * [ ] Use the generated as the [repository secret]($(jq -r '.hosting_github_url')/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
-            * [ ] Rerun the [infrastructure setup job]($(jq -r '.hosting_github_url')/actions/workflows/deploy-infra.yml)
-            * [ ] Enable [GitHub Pages]($(jq -r '.hosting_github_url')/settings/pages)
+            * [ ] Run `make gen-key project=cdp-${{ steps.municipality-slug.outputs.slug }}`
+            * [ ] Use the generated as the [repository secret](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
+            * [ ] Rerun the [infrastructure setup job](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/actions/workflows/deploy-infra.yml)
+            * [ ] Enable [GitHub Pages](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/settings/pages)
 
   destroy-instance:
     runs-on: ubuntu-latest
