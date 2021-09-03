@@ -150,7 +150,7 @@ jobs:
         run: |
           eval "$(ssh-agent -s)"
           echo "${{ secrets.SA_SSH_KEY }}" > id_cdp_sa
-          ssh-add ~/.ssh/id_cdp_sa
+          ssh-add id_cdp_sa
           rm id_cdp_sa
       
       - name: Create New Instance Repo and Push
