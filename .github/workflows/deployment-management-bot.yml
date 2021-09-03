@@ -185,16 +185,16 @@ jobs:
           slug=$(jq -r '.municipality_slug' cookiecutter.json)
           echo "::set-output name=slug::$slug"
 
-      - name: Enable GitHub Pages
-        run: |
-          echo "Enabling pages for ${{ steps.municipality-slug.outputs.slug }}"
-          jq -n '{"source":{"branch":"gh-pages"}}' | \
-            gh api \
-            -H "Accept: application/vnd.github.switcheroo-preview+json" \
-            repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}/pages \
-            --input -
-        env:
-          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      # - name: Enable GitHub Pages
+      #   run: |
+      #     echo "Enabling pages for ${{ steps.municipality-slug.outputs.slug }}"
+      #     jq -n '{"source":{"branch":"gh-pages"}}' | \
+      #       gh api \
+      #       -H "Accept: application/vnd.github.switcheroo-preview+json" \
+      #       repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}/pages \
+      #       --input -
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
 
       # Enable github pages

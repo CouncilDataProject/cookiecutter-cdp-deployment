@@ -42,3 +42,16 @@ jobs:
         BASE_BRANCH: main # The branch the action should deploy from.
         BRANCH: gh-pages # The branch the action should deploy to.
         FOLDER: web/build/ # The folder the action should deploy.
+
+    # Setup GH Pages
+    {% raw %}
+    - name: Enable GitHub Pages
+      run: |
+        jq -n '{"source":{"branch":"gh-pages"}}' | \
+          gh api \
+          -H "Accept: application/vnd.github.switcheroo-preview+json" \
+          repos/${{ github.repository }}/pages \
+          --input -
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    {% endraw %}
