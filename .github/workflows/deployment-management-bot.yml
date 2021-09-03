@@ -136,6 +136,7 @@ jobs:
 
       - name: Run Cookiecutter
         run: |
+          tree
           mv planned-cookiecutter.json cookiecutter.json
           cookiecutter . --no-input
 
@@ -160,7 +161,6 @@ jobs:
       # Replace scraper with provided
       - name: Add cdp-scrapers as dependency
         run: |
-          sudo apt-get install tree
           tree
           sed -i \
             's/REPLACE_WITH_SCRAPER_INSTALL/cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]~=0.2/' \
