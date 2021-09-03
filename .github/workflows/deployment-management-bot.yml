@@ -147,12 +147,9 @@ jobs:
           git commit -m "Initial commit"
 
       - name: Setup Git SSH
-        run: |
-          eval "$(ssh-agent -s)"
-          echo "${{ secrets.SA_SSH_KEY }}" > id_cdp_sa
-          chmod 600 id_cdp_sa
-          ssh-add id_cdp_sa
-          rm id_cdp_sa
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+            ssh-private-key: ${{ secrets.SA_SSH_KEY }}
       
       - name: Create New Instance Repo and Push
         run: |
