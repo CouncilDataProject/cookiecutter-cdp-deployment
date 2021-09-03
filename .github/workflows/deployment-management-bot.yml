@@ -274,7 +274,7 @@ jobs:
           echo "${{ github.event.issue.body }}" > issue-body.md
       - name: Generate Cookiecutter File
         run: |
-          python parse_form.py issue-body.md
+          python .github/workflows/scripts/parse_form.py issue-body.md
 
       #########################################################################
       # Proceed with destory
