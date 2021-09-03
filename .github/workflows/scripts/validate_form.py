@@ -103,7 +103,7 @@ def validate_form(issue_content_file: str) -> None:
 
     # Test Legistar / existing scraper
     scraper_response = None
-    scraper_path = None
+    scraper_options = None
     try:
         func_name = f"get_{python_municipality_slug}_events"
         getattr(instances, func_name)
@@ -116,7 +116,7 @@ def validate_form(issue_content_file: str) -> None:
             f"(i.e. 'seattle-wa' instead of 'seattle')."
         )
         scraper_ready = True
-        scraper_path = f"USE_FOUND_SCRAPER%{func_name}"
+        scraper_options = f"USE_FOUND_SCRAPER%{func_name}"
     except AttributeError:
         if (
             form_values[LEGISTAR_CLIENT_ID] is not None
@@ -169,7 +169,7 @@ def validate_form(issue_content_file: str) -> None:
                             f"</details>"
                         )
                         scraper_ready = True
-                        scraper_path = (
+                        scraper_options = (
                             f"USE_BASE_LEGISTAR"
                             f"%{form_values[LEGISTAR_CLIENT_ID]}"
                             f"%{form_values[LEGISTAR_CLIENT_TIMEZONE]}"
@@ -332,7 +332,7 @@ def validate_form(issue_content_file: str) -> None:
     with open("generation-options.json", "w") as open_f:
         json.dump(
             {
-                "scraper_options": scraper_path,
+                "scraper_options": scraper_options,
                 "maintainer_name": maintainer_name,
                 "repository_path": repository_path,
             },

@@ -103,7 +103,7 @@ jobs:
       - name: Error Early - Message
         uses: peter-evans/create-or-update-comment@v1
         if: |
-          fromJSON(steps.generation-options.outputs.content).scraper_path == null ||
+          fromJSON(steps.generation-options.outputs.content).scraper_options == null ||
           fromJSON(steps.generation-options.outputs.content).maintainer_name == null ||
           fromJSON(steps.generation-options.outputs.content).repository_path == null
         with:
@@ -125,7 +125,7 @@ jobs:
       
       - name: Error Early - Exit
         if: |
-          fromJSON(steps.generation-options.outputs.content).scraper_path == null ||
+          fromJSON(steps.generation-options.outputs.content).scraper_options == null ||
           fromJSON(steps.generation-options.outputs.content).maintainer_name == null ||
           fromJSON(steps.generation-options.outputs.content).repository_path == null
         run: |
@@ -170,8 +170,8 @@ jobs:
         run: |
           scraper_options=$(jq -r '.scraper_options' generation-options.json)
           scraper_choice=$(echo $scraper_options | cut -f1 -d %)
-          param1=$(echo $scraper_path | cut -f2 -d %)
-          param2=$(echo $scraper_path | cut -f3 -d %)
+          param1=$(echo $scraper_options | cut -f2 -d %)
+          param2=$(echo $scraper_options | cut -f3 -d %)
           echo "::set-output name=choice::$scraper_choice"
           echo "::set-output name=param1::$param1"
           echo "::set-output name=param2::$param2"
