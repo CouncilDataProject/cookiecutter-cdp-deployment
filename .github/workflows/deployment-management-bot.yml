@@ -143,11 +143,15 @@ jobs:
         run: |
           cd ${{ fromJSON(steps.cookiecutter-options.outputs.options ).hosting_github_repo_name }}
           git init
+          git add -A
+          git commit -m "first commit"
+          git branch -M main
           gh repo create \
             ${{ fromJSON(steps.generation-options.outputs.content).repository_path }} \
             --public \
             --description "CDP Instance for ${{ fromJSON(steps.cookiecutter-options.outputs.options).municipality }}" \
             --confirm
+          git push -u origin main
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
