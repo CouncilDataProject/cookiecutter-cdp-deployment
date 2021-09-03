@@ -161,11 +161,8 @@ jobs:
       - name: Add cdp-scrapers as dependency
         run: |
           sed -i \
-            's/REPLACE_WITH_SCRAPER_INSTALL/cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]~=0.2/' \
-            .github/workflows/resources/setup-replacement.py
-          mv \
-            .github/workflows/resources/setup-replacement.py \
-            ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
+              '21 i \    "cdp-scrapers[${{ steps.municipality_slug.outputs.python_slug }}]~=0.2",' \
+              ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
           cd ${{ steps.municipality-slug.outputs.slug }}
           git add -A
           git commit -m "Add cdp-scrapers dependency"
