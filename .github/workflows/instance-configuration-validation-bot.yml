@@ -115,6 +115,12 @@ jobs:
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
 
+      - name: Get Municipality Slug
+        id: municipality-slug
+        run: |
+          slug=$(jq -r '.municipality_slug' planned-cookiecutter.json)
+          echo "::set-output name=slug::$slug"
+
       - name: Find Validation Results Comment - Post Run
         uses: peter-evans/find-comment@v1
         id: find-validation-results-comment-post
@@ -145,5 +151,15 @@ jobs:
             ```json
             ${{ steps.dump-cookiecutter-parameters.outputs.body }}
             ```
+
+            ---
+
+            #### CDP Maintainers
+
+            Prior to triggering this deployment:
+
+            * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
+            * [ ] Run `make init project=${{ steps.municipality-slug.outputs.slug }}`
+            * [ ] Comment "/cdp-deploy" and follow the rest of the instructions
             
             _This comment was written by a bot!_

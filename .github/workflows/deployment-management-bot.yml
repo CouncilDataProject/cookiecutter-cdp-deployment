@@ -208,7 +208,13 @@ jobs:
         run: |
           cd ${{ steps.municipality-slug.outputs.slug }}
           git add -A
-          git commit -m "Add cdp-scrapers dependency"
+          git commit -m "Update scraper dependency and implementation"
+
+      - name: Remove SETUP.md
+        run: |
+          rm ${{ steps.municipality-slug.outputs.slug }}/SETUP.md
+          git add -A
+          git commit -m "Remove SETUP.md"
 
       - name: Setup Git SSH
         run: |
@@ -236,20 +242,27 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      # Sleep for a while
+      - name: Generate Safe Maintainer Name Check
+        id: safe-maintainer
+        run: |
+          username=$(jq -r '.maintainer_name' generation-options.json)
+          username="---$username---"
+          echo "::set-output name=username::$username"
 
-      # add external collab if person not in CDP org
-
-      # - name: Enable GitHub Pages
-      #   run: |
-      #     echo "Enabling pages for ${{ steps.municipality-slug.outputs.slug }}"
-      #     jq -n '{"source":{"branch":"gh-pages"}}' | \
-      #       gh api \
-      #       -H "Accept: application/vnd.github.switcheroo-preview+json" \
-      #       repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}/pages \
-      #       --input -
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      # Add external collaborator to the repo if the maintainer isn't in CDP org
+      - name: Add External Collaborator
+        if: |
+          !contains(
+            steps.cdp-members.outputs.members,
+            steps.safe-maintainer.outputs.username
+          )
+        run: |
+          gh api \
+            repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}/collaborators/$(jq -r '.maintainer_name' generation-options.json) \
+            -X PUT \
+            -f permission='maintain'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Log Success
         uses: peter-evans/create-or-update-comment@v1
@@ -265,6 +278,17 @@ jobs:
             The instance should be setting itself up right now. See [the instance's GitHub Action job history](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions) for more details as to progress of deployment setup.
 
             At any point in the future if you would like to destroy this instance, please just add a comment to this thread and a maintainer will help you.
+
+            ---
+
+            #### CDP Maintainers
+
+            Final steps:
+
+            * [ ] Run `make gen-key project=${{ steps.municipality-slug.outputs.slug }}`
+            * [ ] Use the generated as the [repository secret]($(jq -r '.hosting_github_url')/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
+            * [ ] Rerun the [infrastructure setup job]($(jq -r '.hosting_github_url')/actions/workflows/deploy-infra.yml)
+            * [ ] Enable [GitHub Pages]($(jq -r '.hosting_github_url')/settings/pages)
 
   destroy-instance:
     runs-on: ubuntu-latest
@@ -368,5 +392,4 @@ jobs:
             
             The CouncilDataProject Instance Repository and Infrastructure for **${{ steps.municipality-slug.outputs.slug }}** has been destroyed.
 
-      # Delete stack on pulumi
-      # Delete gcloud project
+            @JacksonMaxfield be sure to destroy the Pulumi Stack and the gcloud project.
