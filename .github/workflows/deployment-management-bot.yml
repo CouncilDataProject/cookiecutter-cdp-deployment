@@ -178,17 +178,11 @@ jobs:
           git push -u origin main
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-      
-      - name: Install Tree
-        run: |
-          sudo apt-get install tree
 
       - name: Get Municipality Slug
         id: municipality-slug
         run: |
-          ls
-          tree
-          slug=$(jq -r '.municipality_slug' planned-cookiecutter.json)
+          slug=$(jq -r '.municipality_slug' cookiecutter.json)
           echo "::set-output name=slug::$slug"
 
       - name: Enable GitHub Pages
