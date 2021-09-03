@@ -146,6 +146,20 @@ jobs:
           python_slug=$(jq -r '.python_municipality_slug' cookiecutter.json)
           echo "::set-output name=slug::$slug"
           echo "::set-output name=python_slug::$python_slug"
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@master
+        with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Create GCP Project
+        run: |
+          gcloud projects create ${{ steps.municipality-slug.outputs.slug }} --set-as-default
+
+      # run make init
+      # setup pulumi account
+      # enable billing
           
       - name: Init Git
         run: |
@@ -161,7 +175,7 @@ jobs:
       - name: Add cdp-scrapers as dependency
         run: |
           sed -i \
-              '21 i \    "cdp-scrapers[${{ steps.municipality_slug.outputs.python_slug }}]~=0.2",' \
+              '21 i \    "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]~=0.2",' \
               ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
           cd ${{ steps.municipality-slug.outputs.slug }}
           git add -A
@@ -176,10 +190,7 @@ jobs:
 
       
 
-      # run make init
-      # setup GCP account
-      # setup pulumi account
-      # enable billing
+      
 
       - name: Setup Git SSH
         run: |
