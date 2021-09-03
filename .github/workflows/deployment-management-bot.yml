@@ -150,6 +150,7 @@ jobs:
         run: |
           eval "$(ssh-agent -s)"
           echo "${{ secrets.SA_SSH_KEY }}" > id_cdp_sa
+          chmod 600 id_cdp_sa
           ssh-add id_cdp_sa
           rm id_cdp_sa
       
