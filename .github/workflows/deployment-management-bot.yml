@@ -142,6 +142,8 @@ jobs:
       - name: Create New Instance Repo and Push
         run: |
           cd ${{ fromJSON(steps.cookiecutter-options.outputs.options ).hosting_github_repo_name }}
+          git config --global user.email "jmaxfieldbrown@gmail.com"
+          git config --global user.name "CouncilDataProjectServiceAccount"
           git init
           git add -A
           git commit -m "first commit"
@@ -151,8 +153,6 @@ jobs:
             --public \
             --description "CDP Instance for ${{ fromJSON(steps.cookiecutter-options.outputs.options).municipality }}" \
             --confirm
-          git config user.email "jmaxfieldbrown@gmail.com"
-          git config user.name "CouncilDataProjectServiceAccount"
           git push -u origin main
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
