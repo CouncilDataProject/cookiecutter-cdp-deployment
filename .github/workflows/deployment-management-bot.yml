@@ -193,6 +193,8 @@ jobs:
             -H "Accept: application/vnd.github.switcheroo-preview+json" \
             repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}/pages \
             --input -
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
 
       # Enable github pages
