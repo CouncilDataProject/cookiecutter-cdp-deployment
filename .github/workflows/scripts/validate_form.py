@@ -332,7 +332,7 @@ def validate_form(issue_content_file: str) -> None:
     with open("generation-options.json", "w") as open_f:
         json.dump(
             {
-                "scraper_path": scraper_path,
+                "scraper_options": scraper_path,
                 "maintainer_name": maintainer_name,
                 "repository_path": repository_path,
             },

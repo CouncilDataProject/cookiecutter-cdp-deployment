@@ -168,16 +168,13 @@ jobs:
       - name: Get Scraper Path
         id: selected-scraper
         run: |
-          scraper_options=$(jq -r '.scraper_path' generation-options.json)
-          scraper_choice=$(echo $scraper_path | cut -f1 -d %)
+          scraper_options=$(jq -r '.scraper_options' generation-options.json)
+          scraper_choice=$(echo $scraper_options | cut -f1 -d %)
           param1=$(echo $scraper_path | cut -f2 -d %)
           param2=$(echo $scraper_path | cut -f3 -d %)
           echo "::set-output name=choice::$scraper_choice"
           echo "::set-output name=param1::$param1"
           echo "::set-output name=param2::$param2"
-
-      - run: |
-          echo ${{ steps.selected-scraper.outputs.choice }}
 
       # Use base legistar for scraper
       - name: Add Base Legistar Scraper
