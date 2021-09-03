@@ -136,7 +136,6 @@ jobs:
 
       - name: Run Cookiecutter
         run: |
-          tree
           mv planned-cookiecutter.json cookiecutter.json
           cookiecutter . --no-input
 
@@ -161,7 +160,7 @@ jobs:
       # Replace scraper with provided
       - name: Add cdp-scrapers as dependency
         run: |
-          tree
+          tree .github
           sed -i \
             's/REPLACE_WITH_SCRAPER_INSTALL/cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]~=0.2/' \
             .github/workflows/resources/setup-replacement.py
