@@ -1,0 +1,41 @@
+name: Event Gather Manual
+
+on:
+  workflow_dispatch:
+    inputs:
+      from:
+        description: "Optional ISO formatted string for datetime to begin event gather from."
+        required: false
+        default: ""  # Will get converted to N (default 2) days prior
+      to:
+        description: "Optional ISO formatted string for datetime to end event gather at."
+        required: false
+        default: ""  # Will get converted to now
+
+
+jobs:
+  process-events:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+
+    - name: Install Python Dependencies
+      run: |
+        cd python/
+        pip install .
+    - name: Dump Credentials to JSON
+      run: |
+        echo "$GOOGLE_CREDS" > python/google-creds.json
+      env:
+        GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+    - name: Gather and Process New Events
+      run: |
+        cd python/
+        {% raw %}run_cdp_event_gather event-gather-config.json \
+          --from ${{ github.event.inputs.from }} \
+          --to ${{ github.event.inputs.to }} \
+          --parallel{% endraw %}
