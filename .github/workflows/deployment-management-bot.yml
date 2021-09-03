@@ -6,7 +6,7 @@ on:
       - created
 
 jobs:
-  deploy-new-instance:
+  deploy-instance:
     runs-on: ubuntu-latest
     if: |
       contains(github.event.comment.html_url, '/issues/') &&
@@ -79,7 +79,7 @@ jobs:
           echo "${{ github.event.issue.body }}" > issue-body.md
       - name: Validate Form and Generate Configuration Files
         run: |
-          python .github/workflows/scripts/validate-form.py issue-body.md
+          python .github/workflows/scripts/validate_form.py issue-body.md
 
       # Store Cookiecutter Options
       - name: Store Cookiecutter Options
@@ -146,6 +146,13 @@ jobs:
           git add -A
           git commit -m "Initial commit"
 
+      # Replace scraper with provided
+
+      # run make init
+      # setup GCP account
+      # setup pulumi account
+      # enable billing
+
       - name: Setup Git SSH
         run: |
           eval "$(ssh-agent -s)"
@@ -156,7 +163,6 @@ jobs:
           echo "Host github.com
             HostName github.com
             IdentityFile ~/.ssh/id_cdp_sa" > ~/.ssh/config
-          cat ~/.ssh/config
 
       - name: Create New Instance Repo and Push
         run: |
@@ -168,12 +174,19 @@ jobs:
             --homepage "${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_web_app_address }}" \
             --enable-wiki=false \
             --confirm
-          git remote -v
           git remote set-url origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
-          git remote -v
           git push -u origin main
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Enable GitHub Pages
+        run: |
+          gh api -X GET 'orgs/CouncilDataProject/members'
+          gh api -X 
+
+      # Enable github pages
+
+      # add external collab if person not in CDP org
 
       - name: Log Success
         uses: peter-evans/create-or-update-comment@v1
@@ -189,3 +202,106 @@ jobs:
             The instance should be setting itself up right now. See [the instance's GitHub Action job history](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions) for more details as to progress of deployment setup.
 
             At any point in the future if you would like to destroy this instance, please just add a comment to this thread and a maintainer will help you.
+
+  destroy-instance:
+    runs-on: ubuntu-latest
+    if: |
+      contains(github.event.comment.html_url, '/issues/') &&
+      contains(github.event.comment.body, '/cdp-destroy')
+
+    steps:
+      #########################################################################
+      # Check initiator is a member of CDP
+
+      - name: Get CDP Organization Members
+        id: cdp-members
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        run: |
+          members="$(gh api -X GET 'orgs/CouncilDataProject/members' -F per_page=100 --paginate --cache 1h --jq '[.[].login] | join("---")')"
+          echo "::set-output name=members::$members"
+
+      - name: Generate Safe Username Check
+        id: safe-username
+        run: |
+          username=${{ github.event.comment.user.login }}
+          username="---$username---"
+          echo "::set-output name=username::$username"
+
+      - name: Check Job Initiator - Message
+        if: |
+          !contains(
+            steps.cdp-members.outputs.members,
+            steps.safe-username.outputs.username
+          )
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ## Destruction Status
+
+            ❌ ❌ **Rejected** ❌ ❌
+            
+            User (${{ github.event.comment.user.login }}) attempted to destroy without permissions.
+
+            _Only users which are members of the CouncilDataProject organization can destroy instances with this bot._
+
+            **Stopping Destruction Procedure**
+      
+      - name: Check Job Initiator - Exit
+        if: |
+          !contains(
+            steps.cdp-members.outputs.members,
+            steps.safe-username.outputs.username
+          )
+        run: |
+          exit 1
+
+      #########################################################################
+      # Workflow Setup
+
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: Install Bot Scripts Dependencies
+        run: |
+          pip install -r .github/workflows/scripts/requirements.txt
+
+      - name: Dump Issue Body to File
+        run: |
+          echo "${{ github.event.issue.body }}" > issue-body.md
+      - name: Generate Cookiecutter File
+        run: |
+          python parse_form.py issue-body.md
+
+      #########################################################################
+      # Proceed with destory
+
+      - name: Get Municipality Slug
+        id: municipality-slug
+        run: |
+          slug=$(jq -r '.municipality_slug' planned-cookiecutter.json)
+          echo "::set-output name=slug::$slug"
+
+      - name: Delete Repository
+        run: |
+          gh api \
+            -X DELETE \
+            -H "Accept: application/vnd.github.v3+json" \
+            'orgs/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}'
+
+      - name: Log Success
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ## Destruction Status
+
+            :wave: :wave: **Completed** :wave: :wave:
+            
+            The CouncilDataProject Instance Repository and Infrastructure for **${{ steps.municipality-slug.outputs.slug }}** has been destroyed.
+
+      # Delete stack on pulumi
+      # Delete gcloud project
