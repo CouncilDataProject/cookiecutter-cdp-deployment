@@ -185,7 +185,7 @@ jobs:
           gh api \
             -X POST
             ${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/pages \
-            -F source='{"source":{"branch":"gh-pages","path":"/"}}'
+            --raw-field source='{"source":{"branch":"gh-pages","path":"/"}}'
 
 
       # Enable github pages
