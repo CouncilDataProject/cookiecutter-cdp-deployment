@@ -155,6 +155,8 @@ jobs:
 
       - name: Create GCP Project
         run: |
+          echo "${{ secrets.GCP_SA_KEY }}" > gcp-sa.json
+          gcloud auth activate-service-account cdp-admin-sa-dev@cdp-admin.iam.gserviceaccount.com  --key-file gcp-sa.json
           gcloud projects create ${{ steps.municipality-slug.outputs.slug }} --set-as-default
 
       # run make init
