@@ -96,7 +96,7 @@ jobs:
           echo "${{ github.event.issue.body }}" > issue-body.md
       - name: Validate Form and Create Bot Response
         run: |
-          python .github/workflows/scripts/validate-form.py issue-body.md
+          python .github/workflows/scripts/validate_form.py issue-body.md
       - name: Set Response Content
         id: validation-message-response
         run: |
