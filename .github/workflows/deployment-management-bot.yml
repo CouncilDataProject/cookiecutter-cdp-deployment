@@ -173,6 +173,7 @@ jobs:
             --description "CDP Instance for ${{ fromJSON(steps.cookiecutter-options.outputs.options).municipality }}" \
             --homepage "${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_web_app_address }}" \
             --enable-wiki=false \
+            --enable-projects=false
             --confirm
           git remote set-url origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
           git push -u origin main
@@ -181,8 +182,12 @@ jobs:
 
       - name: Enable GitHub Pages
         run: |
-          gh api -X GET 'orgs/CouncilDataProject/members'
-          gh api -X 
+          echo "Enabling pages for '${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/pages'"
+          gh api \
+            -X POST
+            ${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/pages \
+            -F source='{"source":{"branch":"gh-pages","path":"/"}}'
+
 
       # Enable github pages
 
