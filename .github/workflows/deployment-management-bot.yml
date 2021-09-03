@@ -156,6 +156,7 @@ jobs:
 
       - name: Create New Instance Repo and Push
         run: |
+          ls
           gh repo create \
             ${{ fromJSON(steps.generation-options.outputs.content).repository_path }} \
             --public \
@@ -163,6 +164,7 @@ jobs:
             --homepage "${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_web_app_address }}" \
             --enable-wiki=false \
             --confirm
+          git remote -v
           git remote set-url origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
           git push -u origin main
         env:
