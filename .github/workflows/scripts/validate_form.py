@@ -116,7 +116,7 @@ def validate_form(issue_content_file: str) -> None:
             f"(i.e. 'seattle-wa' instead of 'seattle')."
         )
         scraper_ready = True
-        scraper_path = f"USE_FOUND_SCRAPER---cdp_scrapers.instances.{func_name}"
+        scraper_path = f"USE_FOUND_SCRAPER%{func_name}"
     except AttributeError:
         if (
             form_values[LEGISTAR_CLIENT_ID] is not None
@@ -171,8 +171,8 @@ def validate_form(issue_content_file: str) -> None:
                         scraper_ready = True
                         scraper_path = (
                             f"USE_BASE_LEGISTAR"
-                            f"---{form_values[LEGISTAR_CLIENT_ID]}"
-                            f"---{form_values[LEGISTAR_CLIENT_TIMEZONE]}"
+                            f"%{form_values[LEGISTAR_CLIENT_ID]}"
+                            f"%{form_values[LEGISTAR_CLIENT_TIMEZONE]}"
                         )
                         break
 

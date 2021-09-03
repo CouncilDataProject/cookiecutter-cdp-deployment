@@ -147,21 +147,6 @@ jobs:
           echo "::set-output name=slug::$slug"
           echo "::set-output name=python_slug::$python_slug"
 
-      - name: Set up Cloud SDK
-        uses: google-github-actions/setup-gcloud@master
-        with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          service_account_email: cdp-admin-sa-dev@cdp-admin.iam.gserviceaccount.com
-          export_default_credentials: true
-
-      - name: Create GCP Project
-        run: |
-          gcloud projects create ${{ steps.municipality-slug.outputs.slug }} --set-as-default
-
-      # run make init
-      # setup pulumi account
-      # enable billing
-          
       - name: Init Git
         run: |
           cd ${{ steps.municipality-slug.outputs.slug }}
@@ -178,20 +163,52 @@ jobs:
           sed -i \
               '21 i \    "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]~=0.2",' \
               ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
+
+      # Get scraper path and update scraper function
+      - name: Get Scraper Path
+        id: selected-scraper
+        run: |
+          scraper_options=$(jq -r '.scraper_path' generation-options.json)
+          scraper_choice=$(echo $scraper_path | cut -f1 -d %)
+          param1=$(echo $scraper_path | cut -f2 -d %)
+          param2=$(echo $scraper_path | cut -f3 -d %)
+          echo "::set-output name=choice::$scraper_choice"
+          echo "::set-output name=param1::$param1"
+          echo "::set-output name=param2::$param2"
+
+      # Use base legistar for scraper
+      - name: Add Base Legistar Scraper
+        if: |
+          contains(steps.selected-scraper.outputs.choice, "USE_BASE_LEGISTAR")
+        run: |
+          sed \
+            's/REPLACE_LEGISTAR_CLIENT/${{ steps.selected-scraper.outputs.param1 }}/g' \
+            .github/workflows/resources/base_legistar_scraper.py
+          sed \
+            's/REPLACE_LEGISTAR_TZ/${{ steps.selected-scraper.outputs.param2 }}/g' \
+            .github/workflows/resources/base_legistar_scraper.py
+          mv \
+            .github/workflows/resources/base_legistar_scraper.py \
+            ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
+
+      # Use custom scraper
+      - name: Add Custon Scraper
+        if: |
+          contains(steps.selected-scraper.outputs.choice, "USE_FOUND_SCRAPER")
+        run: |
+          sed \
+            's/REPLACE_CUSTOM_SCRAPER/${{ steps.selected-scraper.outputs.param1 }}/g' \
+            .github/workflows/resources/custom_scraper.py
+          mv \
+            .github/workflows/resources/custom_scraper.py \
+            ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
+      
+      # Commit scraper changes
+      - name: Commit Scraper Dep and Usage
+        run: |
           cd ${{ steps.municipality-slug.outputs.slug }}
           git add -A
           git commit -m "Add cdp-scrapers dependency"
-
-      # Get scraper path
-      # - name: Get Scraper Path
-      #   id: selected-scraper
-      #   run: |
-      #     scraper=$(jq -r '.scraper_path' generation-options.json)
-      #     echo "::set-output name=path::$scraper"
-
-      
-
-      
 
       - name: Setup Git SSH
         run: |
