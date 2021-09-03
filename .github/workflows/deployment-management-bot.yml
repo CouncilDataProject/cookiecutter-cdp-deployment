@@ -142,6 +142,7 @@ jobs:
       - name: Create New Instance Repo and Push
         run: |
           cd ${{ fromJSON(steps.cookiecutter-options.outputs.options ).hosting_github_repo_name }}
+          git init
           gh repo create \
             ${{ fromJSON(steps.generation-options.outputs.content).repository_path }} \
             --public \
