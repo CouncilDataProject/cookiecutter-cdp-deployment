@@ -308,7 +308,7 @@ jobs:
             ##### Final Steps
 
             * [ ] Run `make gen-key project=${{ steps.infrastructure-slug.outputs.slug }}`
-            * [ ] Use the generated as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
+            * [ ] Use the generated key as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
             * [ ] Rerun the [infrastructure setup job](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions/workflows/deploy-infra.yml)
             * [ ] Enable [GitHub Pages](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/pages)
             * [ ] Navigate to [Firebase Console](https://console.firebase.google.com), login to the CDP Google account, select the `${{ steps.infrastructure-slug.outputs.slug }}` Firebase project
