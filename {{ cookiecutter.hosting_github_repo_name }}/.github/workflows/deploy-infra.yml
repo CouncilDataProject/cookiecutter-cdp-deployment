@@ -17,10 +17,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+    - name: Install Dependencies
+      run: |
+        cd infra/
+        pip install -r requirements.txt
     - name: Run Infrastructure Deploy
       uses: pulumi/actions@v3
       with:
-        command: up -p 4
+        command: up
+        parallel: 4
         stack-name: {{ cookiecutter.infrastructure_slug }}
         work-dir: infra/
       env:
