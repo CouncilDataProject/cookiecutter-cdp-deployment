@@ -7,6 +7,16 @@ on:
     # Run every day at 0,6,12,18:26:00 UTC
     # We offset from the hour and half hour to go easy on the servers :)
     - cron: '26 0,6,12,18 * * *'
+  workflow_dispatch:
+    inputs:
+      from:
+        description: "Optional ISO formatted string for datetime to begin event gather from."
+        required: false
+        default: ""  # Will get converted to N (default 2) days prior
+      to:
+        description: "Optional ISO formatted string for datetime to end event gather at."
+        required: false
+        default: ""  # Will get converted to now
 
 
 jobs:
@@ -28,7 +38,18 @@ jobs:
         echo "$GOOGLE_CREDS" > python/google-creds.json
       env:
         GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
-    - name: Gather and Process New Events
+
+    - name: Gather and Process New Events - CRON
+      if: ${{ github.event_name == 'schedule' }}
       run: |
         cd python/
         run_cdp_event_gather event-gather-config.json --parallel
+    
+    - name: Gather and Process Requested Events - Manual
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      run: |
+        cd python/
+        {% raw %}run_cdp_event_gather event-gather-config.json \
+          --from ${{ github.event.inputs.from }} \
+          --to ${{ github.event.inputs.to }} \
+          --parallel{% endraw %}
