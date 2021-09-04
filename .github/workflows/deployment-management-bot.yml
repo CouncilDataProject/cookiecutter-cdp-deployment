@@ -144,10 +144,8 @@ jobs:
         run: |
           slug=$(jq -r '.municipality_slug' cookiecutter.json)
           python_slug=$(jq -r '.python_municipality_slug' cookiecutter.json)
-          infra_slug=$(jq -r '.infrastructure_slug' cookiecutter.json)
           echo "::set-output name=slug::$slug"
           echo "::set-output name=python_slug::$python_slug"
-          echo "::set-output name=infra_slug::$infra_slug"
 
       - name: Init Git
         run: |
@@ -267,6 +265,20 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
+      - name: Get Prior Infrastructure Slug
+        id: get-infra-slug-comment
+        uses: peter-evans/find-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Generated Infrastructure Slug'
+
+      - name: Parse Prior Infrastructure Slug
+        id: infrastructure-slug
+        run: |
+          slug=$(python -c 'content = """${{ steps.get-infra-slug-comment.outputs.comment-body }}"""; print(content[content.index("`")+1):content.index("`", content.index("`"))]);')
+          echo "::set-output name=slug::$slug"
+
       - name: Log Success
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -288,7 +300,7 @@ jobs:
 
             ##### Final Steps
 
-            * [ ] Run `make gen-key project=cdp-${{ steps.municipality-slug.outputs.infra_slug }}`
+            * [ ] Run `make gen-key project=${{ steps.infrastructure-slug.outputs.slug }}`
             * [ ] Use the generated as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
             * [ ] Rerun the [infrastructure setup job](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions/workflows/deploy-infra.yml)
             * [ ] Enable [GitHub Pages](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/pages)
@@ -297,4 +309,4 @@ jobs:
             
             * [ ] Delete the [instance repository](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings)
             * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
-            * [ ] Run `make destroy project=cdp-${{ steps.infrastructure-slug.outputs.slug }}`
+            * [ ] Run `make destroy project=${{ steps.infrastructure-slug.outputs.slug }}`
