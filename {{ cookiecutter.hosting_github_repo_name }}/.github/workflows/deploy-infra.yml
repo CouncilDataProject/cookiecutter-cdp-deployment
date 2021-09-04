@@ -21,7 +21,8 @@ jobs:
       uses: pulumi/actions@v3
       with:
         command: up -p 4
+        stack-name: {{ cookiecutter.infrastructure_slug }}
+        work-dir: infra/
       env:
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
         PULUMI_ACCESS_TOKEN: {% raw %}${{ secrets.PULUMI_ACCESS_TOKEN }}{% endraw %}
-        PULUMI_ROOT: infra
