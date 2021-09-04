@@ -264,6 +264,21 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
+      - name: Find Validation Results Comment
+        uses: peter-evans/find-comment@v1
+        id: find-validation-results-comment-post
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Form Validation Results'
+
+      - name: Get Infrastructure Slug from Prior Run
+        id: infrastructure-slug
+        run: |
+          echo ${{ steps.find-validation-results-comment-post.outputs.comment-body }} > validation_results.md
+          slug=$(python -c 'content = open("test.md").read(); print(content[content.index("project=")+len("project="):content.index("`", content.index("project="))]);')
+          echo "::set-output name=infra_slug::$slug"
+
       - name: Log Success
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -285,7 +300,7 @@ jobs:
 
             Final steps:
 
-            * [ ] Run `make gen-key project=cdp-${{ steps.municipality-slug.outputs.slug }}`
+            * [ ] Run `make gen-key project=cdp-${{ steps.infrastructure-slug.outputs.slug }}`
             * [ ] Use the generated as the [repository secret](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
             * [ ] Rerun the [infrastructure setup job](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/actions/workflows/deploy-infra.yml)
             * [ ] Enable [GitHub Pages](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/settings/pages)
@@ -390,6 +405,13 @@ jobs:
 
             :wave: :wave: **Completed** :wave: :wave:
             
-            The CouncilDataProject Instance Repository and Infrastructure for **${{ steps.municipality-slug.outputs.slug }}** has been destroyed.
+            The CouncilDataProject Instance Repository for **${{ steps.municipality-slug.outputs.slug }}** has been destroyed.
 
-            @JacksonMaxfield be sure to destroy the Pulumi Stack and the gcloud project.
+            ---
+
+            #### CDP Maintainers
+
+            Be sure to destroy the Pulumi Stack and the gcloud project.
+
+            * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
+            * [ ] Run `make destroy project=${{ steps.infrastructure-slug.outputs.slug }}`
