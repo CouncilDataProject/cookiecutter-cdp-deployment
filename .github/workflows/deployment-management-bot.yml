@@ -144,8 +144,10 @@ jobs:
         run: |
           slug=$(jq -r '.municipality_slug' cookiecutter.json)
           python_slug=$(jq -r '.python_municipality_slug' cookiecutter.json)
+          infra_slug=$(jq -r '.infrastructure_slug' cookiecutter.json)
           echo "::set-output name=slug::$slug"
           echo "::set-output name=python_slug::$python_slug"
+          echo "::set-output name=infra_slug::$infra_slug"
 
       - name: Init Git
         run: |
@@ -192,7 +194,7 @@ jobs:
             ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
 
       # Use custom scraper
-      - name: Add Custon Scraper
+      - name: Add Custom Scraper
         if: |
           contains(steps.selected-scraper.outputs.choice, 'USE_FOUND_SCRAPER')
         run: |
@@ -265,20 +267,6 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-      - name: Find Validation Results Comment
-        uses: peter-evans/find-comment@v1
-        id: find-validation-results-comment-post
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: 'Form Validation Results'
-
-      - name: Get Infrastructure Slug from Prior Run
-        id: infrastructure-slug
-        run: |
-          slug=$(python -c 'content = """${{ steps.find-validation-results-comment-post.outputs.comment-body }}"""; print(content[content.index("project=")+len("project="):content.index("`", content.index("project="))]);')
-          echo "::set-output name=infra_slug::$slug"
-
       - name: Log Success
         uses: peter-evans/create-or-update-comment@v1
         with:
@@ -288,7 +276,7 @@ jobs:
 
             :tada: :tada: **Completed** :tada: :tada:
             
-            New CouncilDataProject Instance Repository was created ([${{ fromJSON(steps.generation-options.outputs.content).repository_path }}](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }})), external collaborator added (@${{ fromJSON(steps.generation-options.outputs.content).maintainer_name }}), and cookiecutter files generated and pushed to repository.
+            A new CouncilDataProject Instance Repository was created ([${{ fromJSON(steps.generation-options.outputs.content).repository_path }}](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }})), external collaborator added (@${{ fromJSON(steps.generation-options.outputs.content).maintainer_name }}), and cookiecutter files generated and pushed to repository.
 
             The instance should be setting itself up right now. See [the instance's GitHub Action job history](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions) for more details as to progress of deployment setup.
 
@@ -298,14 +286,14 @@ jobs:
 
             #### CDP Maintainers
 
-            Final steps:
+            ##### Final Steps
 
-            * [ ] Run `make gen-key project=cdp-${{ steps.infrastructure-slug.outputs.slug }}`
+            * [ ] Run `make gen-key project=cdp-${{ steps.municipality-slug.outputs.infra_slug }}`
             * [ ] Use the generated as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
             * [ ] Rerun the [infrastructure setup job](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions/workflows/deploy-infra.yml)
             * [ ] Enable [GitHub Pages](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/pages)
 
-            If you wish to destroy this instance in the future:
+            ##### Deletion Steps (Future Reference)
             
             * [ ] Delete the [instance repository](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings)
             * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
