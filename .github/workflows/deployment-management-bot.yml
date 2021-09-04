@@ -16,9 +16,6 @@ jobs:
       #########################################################################
       # Check initiator is a member of CDP
 
-      # TODO:
-      # check for prior run of deploy and fast fail
-
       - name: Get CDP Organization Members
         id: cdp-members
         env:
