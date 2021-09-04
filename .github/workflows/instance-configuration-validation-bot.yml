@@ -165,3 +165,36 @@ jobs:
             * [ ] Comment "/cdp-deploy" and follow the rest of the instructions
             
             _This comment was written by a bot!_
+
+      - name: Find Infrastructure Slug Comment
+        uses: peter-evans/find-comment@v1
+        id: find-infra-slug-comment
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Generated Infrastructure Slug'
+
+      - name: Set Initial Infra Slug Comment State
+        uses: peter-evans/create-or-update-comment@v1
+        if: ${{ steps.find-infra-slug-comment.outputs.comment-id == 0 }}
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ##### Generated Infrastructure Slug
+
+            `${{ fromJSON(steps.dump-cookiecutter-parameters.outputs.body).infrastructure_slug }}`
+            
+            _This comment was written by a bot!_
+      
+      - name: Reset Infra Slug Comment State
+        uses: peter-evans/create-or-update-comment@v1
+        if: ${{ steps.find-infra-slug-comment.outputs.comment-id != 0 }}
+        with:
+          comment-id: ${{ steps.find-infra-slug-comment.outputs.comment-id }}
+          edit-mode: 'replace'
+          body: |
+            ##### Generated Infrastructure Slug
+
+            `${{ fromJSON(steps.dump-cookiecutter-parameters.outputs.body).infrastructure_slug }}`
+            
+            _This comment was written by a bot!_
