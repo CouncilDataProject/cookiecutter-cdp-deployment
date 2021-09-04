@@ -277,7 +277,7 @@ jobs:
       - name: Parse Prior Infrastructure Slug
         id: infrastructure-slug
         run: |
-          slug=$(python -c 'content = """${{ steps.get-infra-slug-comment.outputs.comment-body }}"""; print(content[content.index("`")+1):content.index("`", content.index("`"))]);')
+          slug=$(python -c 'content = """${{ steps.get-infra-slug-comment.outputs.comment-body }}"""; print(content[content.index("`") + 1:content.index("`", content.index("`") + 1)]);')
           echo "::set-output name=slug::$slug"
 
       - name: Log Success
