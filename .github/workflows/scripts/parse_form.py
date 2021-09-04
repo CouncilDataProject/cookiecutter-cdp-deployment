@@ -47,7 +47,7 @@ FORM_FIELD_TO_HEADER = {
 
 NO_RESPONSE = "_No response_"
 
-DEFAULT_FIRESTORE_REGION = "us-central1"
+DEFAULT_FIRESTORE_REGION = "us-central"
 
 ###############################################################################
 
