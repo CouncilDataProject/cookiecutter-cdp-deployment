@@ -60,17 +60,18 @@ For more details on what is created from using this cookiecutter template, see [
 
 ### Cookiecutter Parameters
 
-| Parameter                      | Description                                                                                                                | Example 1                                      | Example 2                                         |
-| ------------------------------ | -------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------- |
-| municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                        | Seattle                                        | King County                                       |
-| municipality_slug              | The name of the municipality cleaned for use in infrastructure and certain parts of repository naming.                     | seattle                                        | king-county                                       |
-| python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                              | seattle                                        | king_county                                       |
-| maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                    | Jackson Maxfield Brown                         | Council Data Project                                |
-| hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name) | JacksonMaxfield                                | CouncilDataProject                                |
-| hosting_github_repo_name       | A specific name to give to the repository. (Used in the web application's full address)                                    | cdp-seattle                                    | king-county                                       |
-| hosting_github_url             | From the provided information, the expected URL of the GitHub repository.                                                  | https://github.com/JacksonMaxfield/cdp-seattle | https://github.com/CouncilDataProject/king-county |
-| hosting_web_app_address        | From the provided information, the expected URL of the web application.                                                    | https://jacksonmaxfield.github.io/cdp-seattle  | https://councildataproject.org/king-county  |
-| firestore_region               | The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations))| us-west1                                       | europe-central2                                   |
+| Parameter                      | Description                                                                                                                 | Example 1                                      | Example 2                                         |
+| ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- | ------------------------------------------------- |
+| municipality                   | The name of the municipality (town, city, county, etc.) that this CDP Instance will store data for.                         | Seattle                                        | King County                                       |
+| municipality_slug              | The name of the municipality cleaned for use in the web application and parts of repository naming.                         | seattle                                        | king-county                                       |
+| python_municipality_slug       | The name of the municipality cleaned for use in specifically Python parts of the application.                               | seattle                                        | king_county                                       |
+| infrastructure_slug            | The name of the municipality cleaned for use in specifically application infrastructure. Must be globally unique to GCP.    | cdp-seattle-abasjkqy                           | cdp-king-county-uiqmsbaw                          |
+| maintainer_or_org_full_name    | The full name of the primary maintainer or organization that will be managing this instance deployment.                     | Jackson Maxfield Brown                         | Council Data Project                              |
+| hosting_github_username_or_org | The GitHub username or organization that will host this instance's repository. (Used in the web application's domain name)  | JacksonMaxfield                                | CouncilDataProject                                |
+| hosting_github_repo_name       | A specific name to give to the repository. (Used in the web application's full address)                                     | cdp-seattle                                    | king-county                                       |
+| hosting_github_url             | From the provided information, the expected URL of the GitHub repository.                                                   | https://github.com/JacksonMaxfield/cdp-seattle | https://github.com/CouncilDataProject/king-county |
+| hosting_web_app_address        | From the provided information, the expected URL of the web application.                                                     | https://jacksonmaxfield.github.io/cdp-seattle  | https://councildataproject.org/king-county        |
+| firestore_region               | The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations)) | us-west1                                       | europe-central2                                   |
 
 ### Things to Know
 
@@ -197,6 +198,6 @@ However, to receive notifications for individual CDP front and back-end applicat
 
 See [GitHub's Documentation on Watching individual repositories](https://docs.github.com/en/github/managing-subscriptions-and-notifications-on-github/configuring-notifications#configuring-your-watch-settings-for-an-individual-repository).
 
-## License 
+## License
 
 [MIT](./LICENSE)
