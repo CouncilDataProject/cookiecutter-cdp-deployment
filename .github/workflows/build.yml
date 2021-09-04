@@ -77,7 +77,7 @@ jobs:
     - name: Publish Generated Repo
       uses: JamesIves/github-pages-deploy-action@releases/v3
       with:
-        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BASE_BRANCH: main # The branch the action should deploy from.
         BRANCH: 'example-build' # The branch the action should deploy to.
         FOLDER: example/ # The folder the action should deploy
