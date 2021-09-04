@@ -276,7 +276,7 @@ jobs:
         id: infrastructure-slug
         run: |
           echo ${{ steps.find-validation-results-comment-post.outputs.comment-body }} > validation_results.md
-          slug=$(python -c 'content = open("test.md").read(); print(content[content.index("project=")+len("project="):content.index("`", content.index("project="))]);')
+          slug=$(python -c 'content = open("validation_results.md").read(); print(content[content.index("project=")+len("project="):content.index("`", content.index("project="))]);')
           echo "::set-output name=infra_slug::$slug"
 
       - name: Log Success
@@ -301,9 +301,9 @@ jobs:
             Final steps:
 
             * [ ] Run `make gen-key project=cdp-${{ steps.infrastructure-slug.outputs.slug }}`
-            * [ ] Use the generated as the [repository secret](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
-            * [ ] Rerun the [infrastructure setup job](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/actions/workflows/deploy-infra.yml)
-            * [ ] Enable [GitHub Pages](${{ fromJSON(cookiecutter.json) }}.hosting_github_url )/settings/pages)
+            * [ ] Use the generated as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
+            * [ ] Rerun the [infrastructure setup job](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions/workflows/deploy-infra.yml)
+            * [ ] Enable [GitHub Pages](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/pages)
 
   destroy-instance:
     runs-on: ubuntu-latest
