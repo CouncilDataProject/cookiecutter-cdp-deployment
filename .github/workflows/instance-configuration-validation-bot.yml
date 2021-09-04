@@ -119,7 +119,9 @@ jobs:
         id: municipality-slug
         run: |
           slug=$(jq -r '.municipality_slug' planned-cookiecutter.json)
+          infra_slug=$(jq -r '.infrastructure_slug' planned-cookiecutter.json)
           echo "::set-output name=slug::$slug"
+          echo "::set-output name=infra_slug::$infra_slug"
 
       - name: Find Validation Results Comment - Post Run
         uses: peter-evans/find-comment@v1
@@ -159,7 +161,7 @@ jobs:
             Prior to triggering this deployment:
 
             * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
-            * [ ] Run `make init project=cdp-${{ steps.municipality-slug.outputs.slug }}`
+            * [ ] Run `make init project=${{ steps.municipality-slug.outputs.infra_slug }}`
             * [ ] Comment "/cdp-deploy" and follow the rest of the instructions
             
             _This comment was written by a bot!_
