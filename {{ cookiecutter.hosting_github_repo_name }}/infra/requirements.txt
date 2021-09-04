@@ -1,2 +1,2 @@
-cdp-backend[pipeline]~=3.0.0.dev11
+cdp-backend[pipeline]~=3.0.0.dev12
 pulumi
