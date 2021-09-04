@@ -275,8 +275,7 @@ jobs:
       - name: Get Infrastructure Slug from Prior Run
         id: infrastructure-slug
         run: |
-          echo "${{ steps.find-validation-results-comment-post.outputs.comment-body }}" > validation_results.md
-          slug=$(python -c 'content = open("validation_results.md").read(); print(content[content.index("project=")+len("project="):content.index("`", content.index("project="))]);')
+          slug=$(python -c 'content = """${{ steps.find-validation-results-comment-post.outputs.comment-body }}"""; print(content[content.index("project=")+len("project="):content.index("`", content.index("project="))]);')
           echo "::set-output name=infra_slug::$slug"
 
       - name: Log Success
