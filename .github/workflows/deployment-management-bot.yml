@@ -239,6 +239,7 @@ jobs:
             --enable-wiki=false \
             --confirm
           git remote set-url origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
+          sleep 30s
           git push -u origin main
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
