@@ -16,6 +16,9 @@ jobs:
       #########################################################################
       # Check initiator is a member of CDP
 
+      # TODO:
+      # check for prior run of deploy and fast fail
+
       - name: Get CDP Organization Members
         id: cdp-members
         env:
@@ -133,6 +136,24 @@ jobs:
     
       #########################################################################
       # Proceed with deployment
+
+      - name: Get Prior Infrastructure Slug
+        id: get-infra-slug-comment
+        uses: peter-evans/find-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Generated Infrastructure Slug'
+
+      - name: Parse Prior Infrastructure Slug
+        id: infrastructure-slug
+        run: |
+          slug=$(python -c 'content = """${{ steps.get-infra-slug-comment.outputs.comment-body }}"""; print(content[content.index("`") + 1:content.index("`", content.index("`") + 1)]);')
+          echo "::set-output name=slug::$slug"
+
+      - name: Update Infrastructure Slug in Cookiecutter Options
+        run: |
+          jq '.infrastructure_slug = "${{ steps.infrastructure-slug.outputs.slug }}"' planned-cookiecutter.json
 
       - name: Run Cookiecutter
         run: |
@@ -265,20 +286,6 @@ jobs:
             -f permission='maintain'
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
-
-      - name: Get Prior Infrastructure Slug
-        id: get-infra-slug-comment
-        uses: peter-evans/find-comment@v1
-        with:
-          issue-number: ${{ github.event.issue.number }}
-          comment-author: 'github-actions[bot]'
-          body-includes: 'Generated Infrastructure Slug'
-
-      - name: Parse Prior Infrastructure Slug
-        id: infrastructure-slug
-        run: |
-          slug=$(python -c 'content = """${{ steps.get-infra-slug-comment.outputs.comment-body }}"""; print(content[content.index("`") + 1:content.index("`", content.index("`") + 1)]);')
-          echo "::set-output name=slug::$slug"
 
       - name: Log Success
         uses: peter-evans/create-or-update-comment@v1
