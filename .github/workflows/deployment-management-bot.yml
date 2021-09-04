@@ -212,7 +212,8 @@ jobs:
 
       - name: Remove SETUP.md
         run: |
-          rm ${{ steps.municipality-slug.outputs.slug }}/SETUP.md
+          cd ${{ steps.municipality-slug.outputs.slug }}
+          rm SETUP.md
           git add -A
           git commit -m "Remove SETUP.md"
 
