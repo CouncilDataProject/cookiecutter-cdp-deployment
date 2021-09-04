@@ -7,6 +7,7 @@ import logging
 import sys
 import traceback
 from typing import Dict, List, Optional
+from uuid import uuid4
 
 from cdp_backend.utils.string_utils import clean_text
 
@@ -119,6 +120,7 @@ def parse_form(issue_content_file: str) -> Dict[str, Dict[str, str]]:
             MUNICIPALITY_NAME: form_values[MUNICIPALITY_NAME],
             MUNICIPALITY_SLUG: municipality_slug,
             PYTHON_MUNICIPALITY_SLUG: python_municipality_slug,
+            "infrastructure_slug": f"cdp-{municipality_slug}-{str(uuid4())[:8]}",
             TARGET_MAINTAINER: form_values[TARGET_MAINTAINER],
             "hosting_github_username_or_org": COUNCIL_DATA_PROJECT,
             "hosting_github_repo_name": municipality_slug,
