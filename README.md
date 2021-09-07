@@ -1,7 +1,7 @@
 # CDP - Example
 
 [![Infrastructure Deployment Status](https://github.com/CouncilDataProject/example/workflows/Infrastructure/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
-[![Event Processing Pipeline](https://github.com/CouncilDataProject/example/workflows/Event%20Processing/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Event+Processing%22)
+[![Event Processing Pipeline](https://github.com/CouncilDataProject/example/workflows/Event%20Gather/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Event+Gather%22)
 [![Event Index Pipeline](https://github.com/CouncilDataProject/example/workflows/Event%20Index/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Event+Index%22)
 [![Web Deployment Status](https://github.com/CouncilDataProject/example/workflows/Web%20App/badge.svg)](https://CouncilDataProject/github.io/example)
 [![Repo Build Status](https://github.com/CouncilDataProject/example/workflows/Build%20Main/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Build+Main%22)
