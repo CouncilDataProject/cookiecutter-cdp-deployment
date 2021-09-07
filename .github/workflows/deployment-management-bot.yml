@@ -301,11 +301,13 @@ jobs:
 
             At any point in the future if you would like to destroy this instance, please just add a comment to this thread and a maintainer will help you.
 
+            The remaining setup steps take an additional ~10 minutes to complete. A CDP maintainer will comment on this issue when the instance has been fully deployed.
+
             ---
 
-            #### CDP Maintainers
+            #### Steps for Internal CDP Team
 
-            ##### Final Steps
+            ##### Final Setup
 
             * [ ] Run `make gen-key project=${{ steps.infrastructure-slug.outputs.slug }}`
             * [ ] Use the generated key as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
@@ -318,7 +320,7 @@ jobs:
                 service cloud.firestore {
                   match /databases/{database}/documents {
                     match /{document=**} {
-                      allow read: if request.auth == null;
+                      allow read;
                     }
                   }
                 }
@@ -340,3 +342,5 @@ jobs:
             * [ ] Delete the [instance repository](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings)
             * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
             * [ ] Run `make destroy project=${{ steps.infrastructure-slug.outputs.slug }}`
+
+            More details on the `make` commands can be found in [cdp-backend](https://github.com/CouncilDataProject/cdp-backend/tree/main/dev-infrastructure)
