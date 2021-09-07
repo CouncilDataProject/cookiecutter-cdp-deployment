@@ -18,7 +18,7 @@ jobs:
     - name: Install Packages
       run: |
         sudo apt update
-        sudo apt-get install ffmpeg --fix-missin
+        sudo apt-get install ffmpeg --fix-missing
 
     - name: Install Python Dependencies
       run: |
