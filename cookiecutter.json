@@ -9,6 +9,7 @@
     "hosting_github_url": "{{ '/'.join(['https://github.com', cookiecutter.hosting_github_username_or_org, cookiecutter.hosting_github_repo_name]) }}",
     "hosting_web_app_address": "{{ '/'.join(['https:/', cookiecutter.hosting_github_username_or_org, 'github.io', cookiecutter.hosting_github_repo_name]) }}",
     "firestore_region": [
+        "us-central",
         "us-west1",
         "us-west2",
         "us-west3",
