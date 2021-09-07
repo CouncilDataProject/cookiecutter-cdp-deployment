@@ -102,3 +102,10 @@ python_boilerplate/
 # Vim swap files
 *.swp
 *.swo
+
+# Project specific
+failing-issue.md
+successful-issue.md
+form-validation-results.md
+generation-options.json
+planned-cookiecutter.json

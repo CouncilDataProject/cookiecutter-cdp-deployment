@@ -66,8 +66,8 @@ body:
     id: firestore_region
     attributes:
       label: Firestore Region
-      description: The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations)) Default - 'us-central1'.
-      placeholder: ex. "us-west1", "us-central1"
+      description: The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations)) Default - 'us-central'.
+      placeholder: ex. "us-west1", "us-central"
   - type: checkboxes
     id: terms
     attributes:

@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - main
+  schedule:
+    # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
+    # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
+    # Run every Monday at 23:26:00 UTC (Monday at 15:26:00 PST)
+    # We offset from the hour and half hour to go easy on the servers :)
+    - cron: '26 23 * * 1'
 
 jobs:
   deploy-infra:
@@ -11,11 +17,20 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Run Infrastructure Deploy
-      uses: pulumi/actions@v1
+    - uses: actions/setup-python@v1
       with:
-        command: up -p 4
+        python-version: 3.9
+    - name: Install Dependencies
+      run: |
+        cd infra/
+        pip install -r requirements.txt
+    - name: Run Infrastructure Deploy
+      uses: pulumi/actions@v3
+      with:
+        command: up
+        parallel: 4
+        stack-name: {{ cookiecutter.infrastructure_slug }}
+        work-dir: infra/
       env:
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
         PULUMI_ACCESS_TOKEN: {% raw %}${{ secrets.PULUMI_ACCESS_TOKEN }}{% endraw %}
-        PULUMI_ROOT: infra

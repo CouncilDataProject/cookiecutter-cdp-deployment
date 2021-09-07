@@ -4,7 +4,7 @@ This document outlines the steps necessary to finish initializing this CDP Insta
 
 ## Initial Repository Setup
 
-1.  Create (or sign in to) a Google Cloud Platform (GCP) account. 
+1.  Create (or sign in to) a Google Cloud Platform (GCP) account.
     ([Google Cloud Console Home](https://console.cloud.google.com/))
 
     Google Cloud Platform is where all data and files will be stored, and some
@@ -17,13 +17,13 @@ This document outlines the steps necessary to finish initializing this CDP Insta
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
 3.  Create a new [Google Cloud Project](https://console.cloud.google.com/projectcreate).
-    
-    Set the project name to: **cdp-{{ cookiecutter.municipality_slug }}**.
+
+    Set the project name to: **{{ cookiecutter.infrastructure_slug }}**.
 
 4.  After clicking "Create", Google Cloud will take a second to prevision the project.
-    Once it has, you will have access to the [project's dashboard](https://console.cloud.google.com/home/dashboard?project=cdp-{{ cookiecutter.municipality_slug }}).
+    Once it has, you will have access to the [project's dashboard](https://console.cloud.google.com/home/dashboard?project={{ cookiecutter.infrastructure_slug }}).
 
-5.  Create a [Service Account](https://console.cloud.google.com/iam-admin/serviceaccounts/create?project=cdp-{{ cookiecutter.municipality_slug }}).
+5.  Create a [Service Account](https://console.cloud.google.com/iam-admin/serviceaccounts/create?project={{ cookiecutter.infrastructure_slug }}).
 
     -   Set the Service Acount Name to: "GitHub Actions Runner".
     -   Click "Create".
@@ -43,7 +43,7 @@ This document outlines the steps necessary to finish initializing this CDP Insta
     -   Save the file somewhere safe. We will use it later.
         _Do not save this file to the this repository's directory._
 
-8.  Enable the [Cloud Resource Manager API](https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com?project=cdp-{{ cookiecutter.municipality_slug }}).
+8.  Enable the [Cloud Resource Manager API](https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com?project={{ cookiecutter.infrastructure_slug }}).
 
 9.  Create (or sign in to) a Pulumi account.
     ([Pulumi Account Sign-Up](https://app.pulumi.com/signup))

@@ -41,7 +41,15 @@ jobs:
         echo "$GOOGLE_CREDS" > python/google-creds.json
       env:
         GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
-    - name: Gather and Process New Events
+
+    - name: Gather and Process New Events - CRON
+      if: {% raw %}${{ github.event_name == 'schedule' }}{% endraw %}
+      run: |
+        cd python/
+        run_cdp_event_gather event-gather-config.json --parallel
+    
+    - name: Gather and Process Requested Events - Manual
+      if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}
       run: |
         cd python/
         {% raw %}run_cdp_event_gather event-gather-config.json \
