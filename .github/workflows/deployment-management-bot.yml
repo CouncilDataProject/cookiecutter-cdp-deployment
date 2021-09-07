@@ -343,4 +343,4 @@ jobs:
             * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
             * [ ] Run `make destroy project=${{ steps.infrastructure-slug.outputs.slug }}`
 
-            More details on the `make` commands can be found in [cdp-backend](https://github.com/CouncilDataProject/cdp-backend/tree/main/dev-infrastructure)
+            More details on the `make` commands can be found in [cdp-backend](https://github.com/CouncilDataProject/cdp-backend/tree/main/dev-infrastructure).
