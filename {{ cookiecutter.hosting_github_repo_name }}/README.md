@@ -18,6 +18,44 @@ For more information about Council Data Project, please visit [our website](http
 
 This repo serves the municipality: **{{ cookiecutter.municipality }}**
 
+### Python Access
+
+```python
+from cdp_backend.database import models as db_models
+from cdp_backend.pipeline.transcript_model import Transcript
+import fireo
+from gcsfs import GCSFileSystem
+from google.auth.credentials import AnonymousCredentials
+from google.cloud.firestore import Client
+
+# Connect to Database
+fireo.connection(client=Client(
+    project="{{ cookiecutter.infrastructure_slug }}",
+    credentials=AnonymousCredentials()
+))
+
+# Read from Database
+five_people = list(db_models.Person.collection.fetch(5))
+
+# Connect to File Store
+fs = GCSFileSystem(project="{{ cookiecutter.infrastructure_slug }}", token="anon")
+
+# Read transcript details and download the transcript file to local machine
+transcript_model = list(db_models.Transcript.collection.fetch(1))[0]
+fs.get(transcript_model.file_ref.uri, "local-transcript.json")
+
+# Read transcript
+with open("local-transcript.json", "r") as open_f:
+    transcript = Transcript.from_json(open_f.read())
+```
+
+-   See [CDP Database Schema](https://councildataproject.org/cdp-backend/database_schema.html)
+    for a Council Data Project database schema diagram.
+-   See [FireO documentation](https://octabyte.io/FireO/)
+    to learn how to construct queries against CDP database models models.
+-   See [GCSFS documentation](https://gcsfs.readthedocs.io/en/latest/index.html)
+    to learn how to retrieve files from the file store.
+
 ## Contributing
 
 If you wish to contribute to CDP please note that the best method to do so is to contribute to the upstream libraries that compose the CDP Instances themselves. These are detailed below.
