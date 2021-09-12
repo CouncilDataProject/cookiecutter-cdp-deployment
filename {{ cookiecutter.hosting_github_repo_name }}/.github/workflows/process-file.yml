@@ -1,0 +1,50 @@
+name: Process Special Event
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      event-details-json-string:
+        description: "JSON form of event details (see EventIngestionModel in cdp-backend) in string form."
+        required: true
+
+
+jobs:
+  process-events:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+
+    - name: Install Packages
+      run: |
+        sudo apt update
+        sudo apt-get install ffmpeg --fix-missing
+
+    - name: Install Python Dependencies
+      run: |
+        cd python/
+        pip install .
+
+    - name: Dump Credentials to JSON
+      run: |
+        echo "$GOOGLE_CREDS" > python/google-creds.json
+      env:
+        GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+
+    - name: Dump Event Details to JSON
+      run: |
+        echo {% raw %}${{ github.event.inputs.event-details-json-string }}{% endraw %} > python/event-details.json
+
+    - name: Process special events into event gather pipeline
+      if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}
+      run: |
+        cd python/
+        {% raw %}process_special_event \
+          --event_details_file event-details.json \
+          --event_gather_config_file event-gather-config.json{% endraw %}

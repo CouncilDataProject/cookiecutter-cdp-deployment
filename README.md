@@ -52,7 +52,7 @@ cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
 
 Follow the prompts in your terminal and fill in the details for the instance deployment. At the end of the process a new directory will have been created with all required files and further instructions to set up your new deployment.
 
-Follow the next steps in the generated repository's "Initial Repo Setup" section of the generated README.md file.
+Follow the next steps in the generated repository's "Initial Repo Setup" section of the generated SETUP.md file.
 
 For more details and examples on each parameter of this cookiecutter template, see [Cookiecutter Parameters](#cookiecutter-parameters)
 
