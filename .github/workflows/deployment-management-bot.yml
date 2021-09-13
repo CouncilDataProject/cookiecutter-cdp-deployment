@@ -1,19 +1,16 @@
-# Reference
-# https://github.com/CouncilDataProject/cookiecutter-cdp-deployment
-
-name: Test Scraper
+name: Instance Deployment Bot
 
 on:
   issue_comment:
-    types: [created, edited]
+    types:
+      - created
 
 jobs:
-  test-scraper:
-    if: ${{ startsWith(github.event.comment.body, '/test-scraper') }}
+  deploy-instance:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
+    if: |
+      contains(github.event.comment.html_url, '/issues/') &&
+      contains(github.event.comment.body, '/cdp-deploy')
 
     steps:
       #########################################################################
@@ -24,82 +21,326 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
         run: |
-          echo $GITHUB_TOKEN
-      #    gh auth login --with-token < gh_token
-      #    members="$(gh api -X GET 'orgs/CouncilDataProject/members' -F per_page=100 --paginate --cache 1h --jq '[.[].login] | join("---")')"
-      #    echo "::set-output name=members::$members"
-      #- name: Generate Safe Username Check
-      #  id: safe-username
-      #  run: |
-      #    username=${{ github.event.comment.user.login }}
-      #    username="---$username---"
-      #    echo "::set-output name=username::$username"
-      #- name: Check Job Initiator - Message
-      #  if: |
-      #    !contains(
-      #      steps.cdp-members.outputs.members,
-      #      steps.safe-username.outputs.username
-      #    )
-      #  uses: peter-evans/create-or-update-comment@v1
-      #  with:
-      #    issue-number: ${{ github.event.issue.number }}
-      #    body: |
-      #      ❌ ❌ **Rejected** ❌ ❌
+          members="$(gh api -X GET 'orgs/CouncilDataProject/members' -F per_page=100 --paginate --cache 1h --jq '[.[].login] | join("---")')"
+          echo "::set-output name=members::$members"
 
-      #      User (${{ github.event.comment.user.login }}) attempted to run `/test-scraper` without permissions.
-      #      _Only users which are members of the CouncilDataProject organization may run `/test-scraper` bot._
-      #      **Stopping Scraper Test**
+      - name: Generate Safe Username Check
+        id: safe-username
+        run: |
+          username=${{ github.event.comment.user.login }}
+          username="---$username---"
+          echo "::set-output name=username::$username"
 
-      #- name: Check Job Initiator - Exit
-      #  if: |
-      #    !contains(
-      #      steps.cdp-members.outputs.members,
-      #      steps.safe-username.outputs.username
-      #    )
-      #  run: |
-      #    exit 1
-      ##########################################################################
-      ## Workflow Setup
+      - name: Check Job Initiator - Message
+        if: |
+          !contains(
+            steps.cdp-members.outputs.members,
+            steps.safe-username.outputs.username
+          )
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ## Deployment Status
 
-      ## unlike pull_request and issue triggers
-      ## must specify merge HEAD as ref for action/checkout
-      ## when triggered by comment in pull request
-      #- name: Check Out Merge Repository
-      #  if: ${{ github.event.issue.pull_request }}
-      #  uses: actions/checkout@v2
-      #  with:
-      #    ref: refs/pull/${{ github.event.issue.number }}/merge
+            ❌ ❌ **Rejected** ❌ ❌
+            
+            User (${{ github.event.comment.user.login }}) attempted to deploy without permissions.
 
-      #- name: Check Out Reference Repository
-      #  if: ${{ ! github.event.issue.pull_request }}
-      #  uses: actions/checkout@v2
+            _Only users which are members of the CouncilDataProject organization can deploy new instances with this bot._
 
-      #- name: Set Up Python
-      #  uses: actions/setup-python@v2
-      #  with:
-      #    python-version: 3.9
+            **Stopping Deployment Procedure**
+      
+      - name: Check Job Initiator - Exit
+        if: |
+          !contains(
+            steps.cdp-members.outputs.members,
+            steps.safe-username.outputs.username
+          )
+        run: |
+          exit 1
 
-      #- name: Install Dependencies
-      #  run: |
-      #    python -m pip install --upgrade pip
-      #    pip install .
+      #########################################################################
+      # Workflow Setup
 
-      #- name: Run Scraper
-      #  run: |
-      #    python .github/workflows/scripts/run-scraper.py ${{ github.event.comment.body }}
+      - uses: actions/checkout@v2
+      - name: Set up Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.9
+      - name: Install Bot Scripts Dependencies
+        run: |
+          pip install -r .github/workflows/scripts/requirements.txt
+          pip install cookiecutter
 
-      #- name: Set Scraper Results as Response
-      #  id: test-result
-      #  run: |
-      #    body=$(cat run-scraper-results.md)
-      #    body="${body//'%'/'%25'}"
-      #    body="${body//$'\n'/'%0A'}"
-      #    body="${body//$'\r'/'%0D'}" 
-      #    echo "::set-output name=body::$body"
+      # Run Validation Bot to get Configuration Options
+      - name: Dump Issue Body to File
+        run: |
+          echo "${{ github.event.issue.body }}" > issue-body.md
+      - name: Validate Form and Generate Configuration Files
+        run: |
+          python .github/workflows/scripts/validate_form.py issue-body.md
 
-      #- name: Show Test Result
-      #  uses: peter-evans/create-or-update-comment@v1
-      #  with:
-      #    issue-number: ${{ github.event.issue.number }}
-      #    body: |
-      #      ${{ steps.test-result.outputs.body }}
+      # Store Cookiecutter Options
+      - name: Store Cookiecutter Options
+        id: cookiecutter-options
+        run: |
+          content=$(cat planned-cookiecutter.json)
+          content="${content//'%'/'%25'}"
+          content="${content//$'\n'/'%0A'}"
+          content="${content//$'\r'/'%0D'}" 
+          echo ::set-output name=options::$content
+
+      #########################################################################
+      # Run fast checks
+
+      - name: Read generation-options JSON
+        id: generation-options
+        run: |
+          content="$(cat generation-options.json)"
+          echo "::set-output name=content::$content"
+
+      - name: Error Early - Message
+        uses: peter-evans/create-or-update-comment@v1
+        if: |
+          fromJSON(steps.generation-options.outputs.content).scraper_options == null ||
+          fromJSON(steps.generation-options.outputs.content).maintainer_name == null ||
+          fromJSON(steps.generation-options.outputs.content).repository_path == null
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ## Deployment Status
+
+            :warning: :warning: **Configuration Error** :warning: :warning:
+
+            Not all configuration options are present or some options have errors.
+
+            #### Configuration Options
+
+            ```json
+            ${{ steps.generation-options.outputs.content }}
+            ```
+
+            **Stopping Deployment Procedure**
+      
+      - name: Error Early - Exit
+        if: |
+          fromJSON(steps.generation-options.outputs.content).scraper_options == null ||
+          fromJSON(steps.generation-options.outputs.content).maintainer_name == null ||
+          fromJSON(steps.generation-options.outputs.content).repository_path == null
+        run: |
+          exit 1
+    
+      #########################################################################
+      # Proceed with deployment
+
+      - name: Get Prior Infrastructure Slug
+        id: get-infra-slug-comment
+        uses: peter-evans/find-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: 'Generated Infrastructure Slug'
+
+      - name: Parse Prior Infrastructure Slug
+        id: infrastructure-slug
+        run: |
+          slug=$(python -c 'content = """${{ steps.get-infra-slug-comment.outputs.comment-body }}"""; print(content[content.index("`") + 1:content.index("`", content.index("`") + 1)]);')
+          echo "::set-output name=slug::$slug"
+
+      - name: Update Infrastructure Slug in Cookiecutter Options
+        run: |
+          replacement=$(jq '.infrastructure_slug = "${{ steps.infrastructure-slug.outputs.slug }}"' planned-cookiecutter.json)
+          echo "$replacement" > planned-cookiecutter.json
+          cat planned-cookiecutter.json
+
+      - name: Run Cookiecutter
+        run: |
+          mv planned-cookiecutter.json cookiecutter.json
+          cookiecutter . --no-input
+
+      - name: Get Municipality Slugs
+        id: municipality-slug
+        run: |
+          slug=$(jq -r '.municipality_slug' cookiecutter.json)
+          python_slug=$(jq -r '.python_municipality_slug' cookiecutter.json)
+          echo "::set-output name=slug::$slug"
+          echo "::set-output name=python_slug::$python_slug"
+
+      - name: Init Git
+        run: |
+          cd ${{ steps.municipality-slug.outputs.slug }}
+          git config --global user.email "councildataproject@gmail.com"
+          git config --global user.name "CouncilDataProjectServiceAccount"
+          git init
+          git checkout -b main
+          git add -A
+          git commit -m "Initial commit"
+
+      # Replace scraper with provided
+      - name: Add cdp-scrapers as dependency
+        run: |
+          sed -i \
+              '21 i \    "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]~=0.2",' \
+              ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
+
+      # Get scraper path and update scraper function
+      - name: Get Scraper Path
+        id: selected-scraper
+        run: |
+          scraper_options=$(jq -r '.scraper_options' generation-options.json)
+          scraper_choice=$(echo $scraper_options | cut -f1 -d %)
+          param1=$(echo $scraper_options | cut -f2 -d %)
+          param2=$(echo $scraper_options | cut -f3 -d %)
+          echo "::set-output name=choice::$scraper_choice"
+          echo "::set-output name=param1::$param1"
+          echo "::set-output name=param2::$param2"
+
+      # Use base legistar for scraper
+      - name: Add Base Legistar Scraper
+        if: |
+          contains(steps.selected-scraper.outputs.choice, 'USE_BASE_LEGISTAR')
+        run: |
+          sed -i \
+            's/REPLACE_LEGISTAR_CLIENT/${{ steps.selected-scraper.outputs.param1 }}/g' \
+            .github/workflows/resources/base_legistar_scraper.py
+          sed -i \
+            's/REPLACE_LEGISTAR_TZ/${{ steps.selected-scraper.outputs.param2 }}/g' \
+            .github/workflows/resources/base_legistar_scraper.py
+          mv \
+            .github/workflows/resources/base_legistar_scraper.py \
+            ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
+
+      # Use custom scraper
+      - name: Add Custom Scraper
+        if: |
+          contains(steps.selected-scraper.outputs.choice, 'USE_FOUND_SCRAPER')
+        run: |
+          sed -i \
+            's/REPLACE_CUSTOM_SCRAPER/${{ steps.selected-scraper.outputs.param1 }}/g' \
+            .github/workflows/resources/custom_scraper.py
+          mv \
+            .github/workflows/resources/custom_scraper.py \
+            ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
+      
+      # Commit scraper changes
+      - name: Commit Scraper Dep and Usage
+        run: |
+          cd ${{ steps.municipality-slug.outputs.slug }}
+          git add -A
+          git commit -m "Update scraper dependency and implementation"
+
+      - name: Remove SETUP.md
+        run: |
+          cd ${{ steps.municipality-slug.outputs.slug }}
+          rm SETUP.md
+          git add -A
+          git commit -m "Remove SETUP.md"
+
+      - name: Setup Git SSH
+        run: |
+          eval "$(ssh-agent -s)"
+          mkdir ~/.ssh/
+          echo "${{ secrets.SA_SSH_KEY }}" > ~/.ssh/id_cdp_sa
+          chmod 600 ~/.ssh/id_cdp_sa
+          ssh-add ~/.ssh/id_cdp_sa
+          echo "Host github.com
+            HostName github.com
+            IdentityFile ~/.ssh/id_cdp_sa" > ~/.ssh/config
+
+      - name: Create New Instance Repo and Push
+        run: |
+          cd ${{ fromJSON(steps.cookiecutter-options.outputs.options ).hosting_github_repo_name }}
+          gh repo create \
+            ${{ fromJSON(steps.generation-options.outputs.content).repository_path }} \
+            --public \
+            --description "CDP Instance for ${{ fromJSON(steps.cookiecutter-options.outputs.options).municipality }}" \
+            --homepage "${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_web_app_address }}" \
+            --enable-wiki=false \
+            --confirm
+          git remote set-url origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
+          sleep 10s
+          git push -u origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Generate Safe Maintainer Name Check
+        id: safe-maintainer
+        run: |
+          username=$(jq -r '.maintainer_name' generation-options.json)
+          username="---$username---"
+          echo "::set-output name=username::$username"
+
+      # Add external collaborator to the repo if the maintainer isn't in CDP org
+      - name: Add External Collaborator
+        if: |
+          !contains(
+            steps.cdp-members.outputs.members,
+            steps.safe-maintainer.outputs.username
+          )
+        run: |
+          gh api \
+            repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}/collaborators/$(jq -r '.maintainer_name' generation-options.json) \
+            -X PUT \
+            -f permission='maintain'
+        env:
+          GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+      - name: Log Success
+        uses: peter-evans/create-or-update-comment@v1
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ## Deployment Status
+
+            :tada: :tada: **Completed** :tada: :tada:
+            
+            A new CouncilDataProject Instance Repository was created ([${{ fromJSON(steps.generation-options.outputs.content).repository_path }}](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }})), external collaborator added (@${{ fromJSON(steps.generation-options.outputs.content).maintainer_name }}), and cookiecutter files generated and pushed to repository.
+
+            The instance should be setting itself up right now. See [the instance's GitHub Action job history](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions) for more details as to progress of deployment setup.
+
+            At any point in the future if you would like to destroy this instance, please just add a comment to this thread and a maintainer will help you.
+
+            The remaining setup steps take an additional ~10 minutes to complete. A CDP maintainer will comment on this issue when the instance has been fully deployed.
+
+            ---
+
+            #### Steps for Internal CDP Team
+
+            ##### Final Setup
+
+            * [ ] Run `make gen-key project=${{ steps.infrastructure-slug.outputs.slug }}`
+            * [ ] Use the generated key as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
+            * [ ] Rerun the [infrastructure setup job](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions/workflows/deploy-infra.yml)
+            * [ ] Enable [GitHub Pages](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/pages)
+            * [ ] Navigate to [Firebase Console](https://console.firebase.google.com), login to the CDP Google account, select the `${{ steps.infrastructure-slug.outputs.slug }}` Firebase project
+              * [ ] Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
+                ```
+                rules_version = '2';
+                service cloud.firestore {
+                  match /databases/{database}/documents {
+                    match /{document=**} {
+                      allow read;
+                    }
+                  }
+                }
+                ```
+              * [ ] Navigate to "Storage", select the "Rules" tab, paste the following in:
+                ```
+                rules_version = '2';
+                service firebase.storage {
+                  match /b/{bucket}/o {
+                    match /{allPaths=**} {
+                      allow read;
+                    }
+                  }
+                }
+                ```
+
+            ##### Deletion Steps (Future Reference)
+            
+            * [ ] Delete the [instance repository](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings)
+            * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
+            * [ ] Run `make destroy project=${{ steps.infrastructure-slug.outputs.slug }}`
+
+            More details on the `make` commands can be found in [cdp-backend](https://github.com/CouncilDataProject/cdp-backend/tree/main/dev-infrastructure).
