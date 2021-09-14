@@ -41,6 +41,14 @@ jobs:
       run: |
         cd python/
         pip install .
+
+    - name: Setup gcloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: {{ cookiecutter.infrastructure_slug }}
+        service_account_key: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        export_default_credentials: true
+
     - name: Dump Credentials to JSON
       run: |
         echo "$GOOGLE_CREDS" > python/google-creds.json
