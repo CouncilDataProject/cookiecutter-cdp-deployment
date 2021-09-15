@@ -42,7 +42,15 @@ fs = GCSFileSystem(project="{{ cookiecutter.infrastructure_slug }}", token="anon
 
 # Read transcript details and download the transcript file to local machine
 transcript_model = list(db_models.Transcript.collection.fetch(1))[0]
+
+# Download with `get` and then load from the new local file
 fs.get(transcript_model.file_ref.uri, "local-transcript.json")
+with open("local-transcript.json", "r") as open_resource:
+    transcript = Transcript.from_json(open_resource.read())
+
+# Or load from directly remote
+with fs.open(transcript_model.file_ref.uri, "r") as open_resource:
+    transcript = Transcript.from_json(open_resource.read())
 
 # Read transcript
 with open("local-transcript.json", "r") as open_f:
