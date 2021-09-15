@@ -18,12 +18,12 @@ This document outlines the steps necessary to finish initializing this CDP Insta
 
 3.  Create a new [Google Cloud Project](https://console.cloud.google.com/projectcreate).
 
-    Set the project name to: **cdp-example-eMSoBrJy**.
+    Set the project name to: **cdp-example-ZheRnrQf**.
 
 4.  After clicking "Create", Google Cloud will take a second to prevision the project.
-    Once it has, you will have access to the [project's dashboard](https://console.cloud.google.com/home/dashboard?project=cdp-example-eMSoBrJy).
+    Once it has, you will have access to the [project's dashboard](https://console.cloud.google.com/home/dashboard?project=cdp-example-ZheRnrQf).
 
-5.  Create a [Service Account](https://console.cloud.google.com/iam-admin/serviceaccounts/create?project=cdp-example-eMSoBrJy).
+5.  Create a [Service Account](https://console.cloud.google.com/iam-admin/serviceaccounts/create?project=cdp-example-ZheRnrQf).
 
     -   Set the Service Acount Name to: "GitHub Actions Runner".
     -   Click "Create".
@@ -43,7 +43,7 @@ This document outlines the steps necessary to finish initializing this CDP Insta
     -   Save the file somewhere safe. We will use it later.
         _Do not save this file to the this repository's directory._
 
-8.  Enable the [Cloud Resource Manager API](https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com?project=cdp-example-eMSoBrJy).
+8.  Enable the [Cloud Resource Manager API](https://console.cloud.google.com/apis/library/cloudresourcemanager.googleapis.com?project=cdp-example-ZheRnrQf).
 
 9.  Create (or sign in to) a Pulumi account.
     ([Pulumi Account Sign-Up](https://app.pulumi.com/signup))

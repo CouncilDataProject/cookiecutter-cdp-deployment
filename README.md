@@ -28,40 +28,37 @@ from gcsfs import GCSFileSystem
 from google.auth.credentials import AnonymousCredentials
 from google.cloud.firestore import Client
 
-# Connect to Database
+# Connect to the database
 fireo.connection(client=Client(
-    project="cdp-example-eMSoBrJy",
+    project="cdp-example-ZheRnrQf",
     credentials=AnonymousCredentials()
 ))
 
-# Read from Database
+# Read from the database
 five_people = list(db_models.Person.collection.fetch(5))
 
-# Connect to File Store
-fs = GCSFileSystem(project="cdp-example-eMSoBrJy", token="anon")
+# Connect to the file store
+fs = GCSFileSystem(project="cdp-example-ZheRnrQf", token="anon")
 
-# Read transcript details and download the transcript file to local machine
+# Read a transcript's details from the database
 transcript_model = list(db_models.Transcript.collection.fetch(1))[0]
 
-# Download with `get` and then load from the new local file
-fs.get(transcript_model.file_ref.uri, "local-transcript.json")
-with open("local-transcript.json", "r") as open_resource:
-    transcript = Transcript.from_json(open_resource.read())
-
-# Or load from directly remote
+# Read the transcript directly from the file store
 with fs.open(transcript_model.file_ref.uri, "r") as open_resource:
     transcript = Transcript.from_json(open_resource.read())
 
-# Read transcript
-with open("local-transcript.json", "r") as open_f:
-    transcript = Transcript.from_json(open_f.read())
+# OR download and store the transcript locally with `get`
+fs.get(transcript_model.file_ref.uri, "local-transcript.json")
+# Then read the transcript from your local machine
+with open("local-transcript.json", "r") as open_resource:
+    transcript = Transcript.from_json(open_resource.read())
 ```
 
--   See [CDP Database Schema](https://councildataproject.org/cdp-backend/database_schema.html)
+-   See the [CDP Database Schema](https://councildataproject.org/cdp-backend/database_schema.html)
     for a Council Data Project database schema diagram.
--   See [FireO documentation](https://octabyte.io/FireO/)
+-   See the [FireO documentation](https://octabyte.io/FireO/)
     to learn how to construct queries against CDP database models models.
--   See [GCSFS documentation](https://gcsfs.readthedocs.io/en/latest/index.html)
+-   See the [GCSFS documentation](https://gcsfs.readthedocs.io/en/latest/index.html)
     to learn how to retrieve files from the file store.
 
 ## Contributing
