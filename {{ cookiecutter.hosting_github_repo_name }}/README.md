@@ -57,7 +57,7 @@ with open("local-transcript.json", "r") as open_resource:
 -   See the [CDP Database Schema](https://councildataproject.org/cdp-backend/database_schema.html)
     for a Council Data Project database schema diagram.
 -   See the [FireO documentation](https://octabyte.io/FireO/)
-    to learn how to construct queries against CDP database models models.
+    to learn how to construct queries using CDP database models.
 -   See the [GCSFS documentation](https://gcsfs.readthedocs.io/en/latest/index.html)
     to learn how to retrieve files from the file store.
 
