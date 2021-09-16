@@ -30,7 +30,7 @@ from google.cloud.firestore import Client
 
 # Connect to the database
 fireo.connection(client=Client(
-    project="cdp-example-ZheRnrQf",
+    project="cdp-example-WkptHwij",
     credentials=AnonymousCredentials()
 ))
 
@@ -38,7 +38,7 @@ fireo.connection(client=Client(
 five_people = list(db_models.Person.collection.fetch(5))
 
 # Connect to the file store
-fs = GCSFileSystem(project="cdp-example-ZheRnrQf", token="anon")
+fs = GCSFileSystem(project="cdp-example-WkptHwij", token="anon")
 
 # Read a transcript's details from the database
 transcript_model = list(db_models.Transcript.collection.fetch(1))[0]
@@ -57,7 +57,7 @@ with open("local-transcript.json", "r") as open_resource:
 -   See the [CDP Database Schema](https://councildataproject.org/cdp-backend/database_schema.html)
     for a Council Data Project database schema diagram.
 -   See the [FireO documentation](https://octabyte.io/FireO/)
-    to learn how to construct queries against CDP database models models.
+    to learn how to construct queries using CDP database models.
 -   See the [GCSFS documentation](https://gcsfs.readthedocs.io/en/latest/index.html)
     to learn how to retrieve files from the file store.
 
