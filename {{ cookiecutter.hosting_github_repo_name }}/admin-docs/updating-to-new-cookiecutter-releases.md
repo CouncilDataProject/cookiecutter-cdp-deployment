@@ -40,11 +40,11 @@ To do so, you should feel comfortable with the command line and git.
     - `cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment`
 
     Re-download the latest version and then when prompted for parameter input,
-    escape or exit the process.
+    escape or exit the process (`control+c`).
 
     ![screenshot of terminal after cookiecutter interrupt](./resources/cookiecutter-interrupt.png)
 
-4. Run `make update-from-cookiecutter`:
+4. Update your repo using the latest cookiecutter version:
 
     This will pull in the current cookiecutter updates as changes to the current
     repository.
