@@ -69,3 +69,9 @@ If you wish to contribute to CDP please note that the best method to do so is to
 -   [cdp-frontend](https://github.com/CouncilDataProject/cdp-frontend): Contains all of the components used by the web apps to be hosted on GitHub Pages. Contributions here will be available to all CDP Instances. Entirely written in TypeScript and React.
 -   [cookiecutter-cdp-deployment](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment): The repo used to generate new CDP Instance deployments. Like this repo!
 -   [councildataproject.org](https://github.com/CouncilDataProject/councildataproject.github.io): Our landing page! Contributions here should largely be text changes and admin updates.
+
+## Instance Admin Documentation
+
+You can find documentation on how to customize, update, and maintain this CDP instance
+in the
+[admin-docs directory]({{ cookiecutter.hosting_github_url }}/tree/main/admin-docs).
