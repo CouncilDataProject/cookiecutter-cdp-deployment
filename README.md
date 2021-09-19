@@ -30,7 +30,7 @@ from google.cloud.firestore import Client
 
 # Connect to the database
 fireo.connection(client=Client(
-    project="cdp-example-WkptHwij",
+    project="cdp-example-zumkfgxx",
     credentials=AnonymousCredentials()
 ))
 
@@ -38,7 +38,7 @@ fireo.connection(client=Client(
 five_people = list(db_models.Person.collection.fetch(5))
 
 # Connect to the file store
-fs = GCSFileSystem(project="cdp-example-WkptHwij", token="anon")
+fs = GCSFileSystem(project="cdp-example-zumkfgxx", token="anon")
 
 # Read a transcript's details from the database
 transcript_model = list(db_models.Transcript.collection.fetch(1))[0]
@@ -69,3 +69,9 @@ If you wish to contribute to CDP please note that the best method to do so is to
 -   [cdp-frontend](https://github.com/CouncilDataProject/cdp-frontend): Contains all of the components used by the web apps to be hosted on GitHub Pages. Contributions here will be available to all CDP Instances. Entirely written in TypeScript and React.
 -   [cookiecutter-cdp-deployment](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment): The repo used to generate new CDP Instance deployments. Like this repo!
 -   [councildataproject.org](https://github.com/CouncilDataProject/councildataproject.github.io): Our landing page! Contributions here should largely be text changes and admin updates.
+
+## Instance Admin Documentation
+
+You can find documentation on how to customize, update, and maintain this CDP instance
+in the
+[admin-docs directory](https://github.com/CouncilDataProject/example/tree/main/admin-docs).
