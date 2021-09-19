@@ -2,7 +2,7 @@
     "municipality": "Example",
     "municipality_slug": "{{ cookiecutter.municipality.lower().replace(' ', '-').replace('_', '-') }}",
     "python_municipality_slug": "{{ cookiecutter.municipality_slug.replace('-', '_') }}",
-    "infrastructure_slug": "cdp-{{ cookiecutter.municipality_slug }}-{{ random_ascii_string(8) }}",
+    "infrastructure_slug": "cdp-{{ cookiecutter.municipality_slug }}-{{ random_ascii_string(8).lower() }}",
     "maintainer_or_org_full_name": "Council Data Project Contributors",
     "hosting_github_username_or_org": "CouncilDataProject",
     "hosting_github_repo_name": "{{ cookiecutter.municipality_slug }}",
