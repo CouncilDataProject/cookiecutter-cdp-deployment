@@ -15,7 +15,8 @@ There are additional tasks required after generating this repository.
 While in this `SETUP` directory:
 
 1. Create the GitHub repository for this deployment to live in.
-   [Create a new Repository](https://github.com/new)
+
+    [Create a new Repository](https://github.com/new) with the following parameters:
 
     - Set the repo name to: **{{ cookiecutter.hosting_github_repo_name }}**
     - Set the repo owner to: **{{ cookiecutter.hosting_github_username_or_org }}**
@@ -28,27 +29,33 @@ While in this `SETUP` directory:
     During this process Pulumi will provide a token to use for authentication.
     Keep this token available for use in a later step.
 
+    Run:
+
     ```bash
     make login
     ```
 
 1. Initialize the basic project infrastructure.
 
+    Run:
+
     ```bash
     make init
     ```
 
 1. Create (or re-use) a
-   [billing account](https://console.cloud.google.com/billing/linkedaccount?project={{ cookiecutter.infrastructure_slug }})
-   and attach it to your GCP account and the newly creating project.
+   [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project={{ cookiecutter.infrastructure_slug }})
+   and attach it to the newly created project ({{ cookiecutter.infrastructure_slug }}).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
-1. Generate a Google Service Account JSON Key for your newly create Google Project.
+1. Generate a Google Service Account JSON Key for your Google Cloud Project.
 
     This will create a directory called `.keys` within this `SETUP` directory and
     add a file called `{{ cookiecutter.infrastructure_slug }}.json` to it
     (i.e. `.keys/{{ cookiecutter.infrastructure_slug }})`. This file will be used later on.
+
+    Run:
 
     ```bash
     make gen-key
@@ -97,6 +104,8 @@ While in this `SETUP` directory:
     If you don't see these options immediately you may need to wait a minute or so and then try again.
 
 1. Set the CORS policy for your Storage Bucket.
+
+    Run:
 
     ```bash
     make set-cors
