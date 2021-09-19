@@ -11,7 +11,7 @@ Install the command line tools that will help shorten the setup process
 
 ## Initial Repository Setup
 
-There are additional tasks required after generating this directory.
+There are additional tasks required after generating this repository.
 While in this `SETUP` directory:
 
 1. Create the GitHub repository for this deployment to live in.
