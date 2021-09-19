@@ -106,3 +106,6 @@ ENV/
 
 # VSCode
 .vscode
+
+# Secrets
+.keys/

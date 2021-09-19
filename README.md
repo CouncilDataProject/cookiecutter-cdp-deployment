@@ -23,13 +23,13 @@ For more information about costs and billing, see [Cost](#cost).
 
 ### CDP Instance Features
 
--   Plain text search of past events and legislation<br>
+-   Plain text search of past events and meeting items<br>
     _(search for "missing middle housing" or "bike lanes")_
--   Filter and sort event and legislation search results<br>
+-   Filter and sort event and meeting item search results<br>
     _(filter by date range, committee, etc.)_
 -   Automatic timestamped-transcript generation<br>
     _(jump right to a specific public comment or debate)_
--   Legislation and amendment tracking<br>
+-   Meeting item and amendment tracking<br>
     _(check for amendment passage, upcoming meetings, etc.)_
 -   Share event at timepoint<br>
     _(jump right to the point in the meeting you want to share)_
@@ -42,8 +42,19 @@ _Note: Some features are dependent on how much data is provided during event gat
 
 ## Usage
 
-Install `cookiecutter` and use this template.<br>
-In a terminal with Python 3.5+ installed:
+### Deploying Under the councildataproject.org Domain
+
+If you want your deployment under the councildataproject.org domain (i.e. https://councildataproject.org/seattle),
+you will need to fill out the ["New Instance Deployment" Issue Form](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment/issues/new/choose).
+
+The Council Data Project team will help you along in the process on the issue from there.
+
+### Deploying Under Your Own Domain
+
+If you want to host your deployment under a different domain (i.e. Your-Org-Name.github.io/your-municipality),
+you will need to install `cookiecutter` and use this template.
+
+In a terminal with Python 3.6+ installed:
 
 ```bash
 pip install cookiecutter
@@ -52,7 +63,7 @@ cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
 
 Follow the prompts in your terminal and fill in the details for the instance deployment. At the end of the process a new directory will have been created with all required files and further instructions to set up your new deployment.
 
-Follow the next steps in the generated repository's "Initial Repo Setup" section of the generated SETUP.md file.
+Follow the next steps in the generated repository's "Initial Repository Setup" section of the generated `README.md` file with the `SETUP` directory.
 
 For more details and examples on each parameter of this cookiecutter template, see [Cookiecutter Parameters](#cookiecutter-parameters)
 
