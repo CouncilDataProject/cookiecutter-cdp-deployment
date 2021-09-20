@@ -3,7 +3,7 @@
 [![Infrastructure Deployment Status](https://github.com/CouncilDataProject/example/workflows/Infrastructure/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
 [![Event Processing Pipeline](https://github.com/CouncilDataProject/example/workflows/Event%20Gather/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Event+Gather%22)
 [![Event Index Pipeline](https://github.com/CouncilDataProject/example/workflows/Event%20Index/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Event+Index%22)
-[![Web Deployment Status](https://github.com/CouncilDataProject/example/workflows/Web%20App/badge.svg)](https://CouncilDataProject/github.io/example)
+[![Web Deployment Status](https://github.com/CouncilDataProject/example/workflows/Web%20App/badge.svg)](https://CouncilDataProject.github.io/example)
 [![Repo Build Status](https://github.com/CouncilDataProject/example/workflows/Build%20Main/badge.svg)](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Build+Main%22)
 
 ---
@@ -30,7 +30,7 @@ from google.cloud.firestore import Client
 
 # Connect to the database
 fireo.connection(client=Client(
-    project="cdp-example-zqjgtwnn",
+    project="cdp-example-cidkwtns",
     credentials=AnonymousCredentials()
 ))
 
@@ -38,7 +38,7 @@ fireo.connection(client=Client(
 five_people = list(db_models.Person.collection.fetch(5))
 
 # Connect to the file store
-fs = GCSFileSystem(project="cdp-example-zqjgtwnn", token="anon")
+fs = GCSFileSystem(project="cdp-example-cidkwtns", token="anon")
 
 # Read a transcript's details from the database
 transcript_model = list(db_models.Transcript.collection.fetch(1))[0]

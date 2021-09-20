@@ -1,7 +1,7 @@
 {
     "name": "cdp-example",
     "version": "1.0.0",
-    "homepage": "https://CouncilDataProject/github.io/example",
+    "homepage": "https://CouncilDataProject.github.io/example",
     "license": "MIT",
     "scripts": {
         "start": "react-scripts start",
