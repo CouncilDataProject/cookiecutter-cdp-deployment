@@ -8,6 +8,7 @@ Install the command line tools that will help shorten the setup process
 
 1. Install [gcloud](https://cloud.google.com/sdk/docs/install)
 2. Install [pulumi](https://www.pulumi.com/docs/get-started/install/)
+3. Install [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
 
 ## Initial Repository Setup
 
