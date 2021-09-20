@@ -8,6 +8,7 @@ Install the command line tools that will help shorten the setup process
 
 1. Install [gcloud](https://cloud.google.com/sdk/docs/install)
 2. Install [pulumi](https://www.pulumi.com/docs/get-started/install/)
+3. Install [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
 
 ## Initial Repository Setup
 
@@ -47,16 +48,16 @@ There are additional tasks required after generating this repository.
     ```
 
 1. Create (or re-use) a
-   [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-haxfyeav)
-   and attach it to the newly created project (cdp-example-haxfyeav).
+   [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-pbxivhdf)
+   and attach it to the newly created project (cdp-example-pbxivhdf).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
 1. Generate a Google Service Account JSON Key for your Google Cloud Project.
 
     This will create a directory called `.keys` within this `SETUP` directory and
-    add a file called `cdp-example-haxfyeav.json` to it
-    (i.e. `.keys/cdp-example-haxfyeav)`. This file will be used later on.
+    add a file called `cdp-example-pbxivhdf.json` to it
+    (i.e. `.keys/cdp-example-pbxivhdf)`. This file will be used later on.
 
     Run:
 
@@ -80,7 +81,7 @@ There are additional tasks required after generating this repository.
     Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
     - Set the name to: **GOOGLE_CREDENTIALS**
-    - Set the value to: the contents of the file `.keys/cdp-example-haxfyeav.json`
+    - Set the value to: the contents of the file `.keys/cdp-example-pbxivhdf.json`
     - Click "Add secret"
 
 1. Initialize and push the local repository to GitHub.
@@ -126,7 +127,7 @@ There are additional tasks required after generating this repository.
    Configure Firebase Security Rules.
 
     - Navigate to [Firebase Console](https://console.firebase.google.com),
-      login to the Google Account you used during step #2, select the `cdp-example-haxfyeav` Firebase project
+      login to the Google Account you used during step #2, select the `cdp-example-pbxivhdf` Firebase project
         - Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
             ```
             rules_version = '2';
