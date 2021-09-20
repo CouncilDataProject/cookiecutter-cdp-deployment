@@ -12,7 +12,6 @@ Install the command line tools that will help shorten the setup process
 ## Initial Repository Setup
 
 There are additional tasks required after generating this repository.
-While in this `SETUP` directory:
 
 1. Create the GitHub repository for this deployment to live in.
 
@@ -29,6 +28,8 @@ While in this `SETUP` directory:
     During this process Pulumi will provide a token to use for authentication.
     Keep this token available for use in a later step.
 
+    This step should be run while within the `SETUP` directory (`cd SETUP`).
+
     Run:
 
     ```bash
@@ -37,6 +38,8 @@ While in this `SETUP` directory:
 
 1. Initialize the basic project infrastructure.
 
+    This step should be run while within the `SETUP` directory (`cd SETUP`)
+
     Run:
 
     ```bash
@@ -44,16 +47,16 @@ While in this `SETUP` directory:
     ```
 
 1. Create (or re-use) a
-   [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-zumkfgxx)
-   and attach it to the newly created project (cdp-example-zumkfgxx).
+   [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-odgdbrdn)
+   and attach it to the newly created project (cdp-example-odgdbrdn).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
 1. Generate a Google Service Account JSON Key for your Google Cloud Project.
 
     This will create a directory called `.keys` within this `SETUP` directory and
-    add a file called `cdp-example-zumkfgxx.json` to it
-    (i.e. `.keys/cdp-example-zumkfgxx)`. This file will be used later on.
+    add a file called `cdp-example-odgdbrdn.json` to it
+    (i.e. `.keys/cdp-example-odgdbrdn)`. This file will be used later on.
 
     Run:
 
@@ -77,10 +80,12 @@ While in this `SETUP` directory:
     Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
     - Set the name to: **GOOGLE_CREDENTIALS**
-    - Set the value to: the contents of the file `.keys/cdp-example-zumkfgxx.json`
+    - Set the value to: the contents of the file `.keys/cdp-example-odgdbrdn.json`
     - Click "Add secret"
 
 1. Initialize and push the local repository to GitHub.
+
+    This step should be run while within the base base directory for the repository.
 
     - In a terminal, while in this repository's directory, run:
         ```bash
@@ -103,7 +108,11 @@ While in this `SETUP` directory:
 
     If you don't see these options immediately you may need to wait a minute or so and then try again.
 
-1. Set the CORS policy for your Storage Bucket.
+1. Once the
+   ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
+   Set the CORS policy for your Storage Bucket.
+
+    This step should be run while within the `SETUP` directory (`cd SETUP`)
 
     Run:
 
@@ -111,10 +120,12 @@ While in this `SETUP` directory:
     make set-cors
     ```
 
-1. Configure Firebase Security Rules.
+1. Once the
+   ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
+   Configure Firebase Security Rules.
 
     - Navigate to [Firebase Console](https://console.firebase.google.com),
-      login to the Google Account you used during step #2, select the `cdp-example-zumkfgxx` Firebase project
+      login to the Google Account you used during step #2, select the `cdp-example-odgdbrdn` Firebase project
         - Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
             ```
             rules_version = '2';

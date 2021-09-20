@@ -22,25 +22,25 @@ login: ## Run GCloud and Pulumi logins
 	gcloud auth application-default login
 
 init: ## See README
-	gcloud projects create cdp-example-zumkfgxx --set-as-default
+	gcloud projects create cdp-example-odgdbrdn --set-as-default
 	echo "----------------------------------------------------------------------------"
 	echo "Follow the link to setup billing for the created GCloud account."
-	echo "https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-zumkfgxx"
+	echo "https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-odgdbrdn"
 
 set-cors: ## Set cors for the bucket
-	gsutil cors set cors.json gs://cdp-example-zumkfgxx.appspot.com/
+	gsutil cors set cors.json gs://cdp-example-odgdbrdn.appspot.com/
 
 destroy: ## Fully teardown Pulumi and GCloud
-	gcloud projects delete cdp-example-zumkfgxx
-	rm -f .keys/cdp-example-zumkfgxx.json
+	gcloud projects delete cdp-example-odgdbrdn
+	rm -f .keys/cdp-example-odgdbrdn.json
 
 gen-key: ## Generate a service account JSON
 	mkdir .keys/ -p
-	gcloud iam service-accounts create cdp-example-zumkfgxx \
+	gcloud iam service-accounts create cdp-example-odgdbrdn \
     	--description="CDP Dev Service Account for $(USER)" \
-    	--display-name="cdp-example-zumkfgxx"
-	gcloud projects add-iam-policy-binding cdp-example-zumkfgxx \
-    	--member="serviceAccount:cdp-example-zumkfgxx@cdp-example-zumkfgxx.iam.gserviceaccount.com" \
+    	--display-name="cdp-example-odgdbrdn"
+	gcloud projects add-iam-policy-binding cdp-example-odgdbrdn \
+    	--member="serviceAccount:cdp-example-odgdbrdn@cdp-example-odgdbrdn.iam.gserviceaccount.com" \
 		--role="roles/owner"
-	gcloud iam service-accounts keys create .keys/cdp-example-zumkfgxx.json \
-  		--iam-account "cdp-example-zumkfgxx@cdp-example-zumkfgxx.iam.gserviceaccount.com"
+	gcloud iam service-accounts keys create .keys/cdp-example-odgdbrdn.json \
+  		--iam-account "cdp-example-odgdbrdn@cdp-example-odgdbrdn.iam.gserviceaccount.com"
