@@ -54,6 +54,8 @@ The Council Data Project team will help you along in the process on the issue fr
 If you want to host your deployment under a different domain (i.e. Your-Org-Name.github.io/your-municipality),
 you will need to install `cookiecutter` and use this template.
 
+[**Follow along with the video walkthrough**](https://youtu.be/xdRhh-ocSfc)
+
 In a terminal with Python 3.6+ installed:
 
 ```bash
