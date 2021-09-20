@@ -21,26 +21,25 @@ login: ## Run GCloud and Pulumi logins
 	gcloud auth login
 	gcloud auth application-default login
 
-init: ## See README
-	gcloud projects create cdp-example-odgdbrdn --set-as-default
-	echo "----------------------------------------------------------------------------"
-	echo "Follow the link to setup billing for the created GCloud account."
-	echo "https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-odgdbrdn"
+init: ## Create google project and pulumi stack
+	gcloud projects create cdp-example-haxfyeav --set-as-default
+	pulumi stack init cdp-example-haxfyeav
 
 set-cors: ## Set cors for the bucket
-	gsutil cors set cors.json gs://cdp-example-odgdbrdn.appspot.com/
+	gsutil cors set cors.json gs://cdp-example-haxfyeav.appspot.com/
 
 destroy: ## Fully teardown Pulumi and GCloud
-	gcloud projects delete cdp-example-odgdbrdn
-	rm -f .keys/cdp-example-odgdbrdn.json
+	pulumi stack rm cdp-example-haxfyeav --force
+	gcloud projects delete cdp-example-haxfyeav
+	rm -f .keys/cdp-example-haxfyeav.json
 
 gen-key: ## Generate a service account JSON
 	mkdir .keys/ -p
-	gcloud iam service-accounts create cdp-example-odgdbrdn \
+	gcloud iam service-accounts create cdp-example-haxfyeav \
     	--description="CDP Dev Service Account for $(USER)" \
-    	--display-name="cdp-example-odgdbrdn"
-	gcloud projects add-iam-policy-binding cdp-example-odgdbrdn \
-    	--member="serviceAccount:cdp-example-odgdbrdn@cdp-example-odgdbrdn.iam.gserviceaccount.com" \
+    	--display-name="cdp-example-haxfyeav"
+	gcloud projects add-iam-policy-binding cdp-example-haxfyeav \
+    	--member="serviceAccount:cdp-example-haxfyeav@cdp-example-haxfyeav.iam.gserviceaccount.com" \
 		--role="roles/owner"
-	gcloud iam service-accounts keys create .keys/cdp-example-odgdbrdn.json \
-  		--iam-account "cdp-example-odgdbrdn@cdp-example-odgdbrdn.iam.gserviceaccount.com"
+	gcloud iam service-accounts keys create .keys/cdp-example-haxfyeav.json \
+  		--iam-account "cdp-example-haxfyeav@cdp-example-haxfyeav.iam.gserviceaccount.com"
