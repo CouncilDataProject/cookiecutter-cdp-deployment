@@ -85,7 +85,7 @@ There are additional tasks required after generating this repository.
 
 1. Initialize and push the local repository to GitHub.
 
-    This step should be run while within the base base directory for the repository.
+    This step should be run while within the base directory of the repository (`cd ..`).
 
     - In a terminal, while in this repository's directory, run:
         ```bash
@@ -107,6 +107,7 @@ There are additional tasks required after generating this repository.
     - Click "Save"
 
     If you don't see these options immediately you may need to wait a minute or so and then try again.
+    (We are specifically waiting for the [Web App Deployment GitHub Action]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Web+App%22))
 
 1. Once the
    ["Infrastructure" GitHub Action Successfully Completes]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)

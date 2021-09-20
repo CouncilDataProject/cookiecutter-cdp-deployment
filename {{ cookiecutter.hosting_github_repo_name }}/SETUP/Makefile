@@ -21,16 +21,15 @@ login: ## Run GCloud and Pulumi logins
 	gcloud auth login
 	gcloud auth application-default login
 
-init: ## See README
+init: ## Create google project and pulumi stack
 	gcloud projects create {{ cookiecutter.infrastructure_slug }} --set-as-default
-	echo "----------------------------------------------------------------------------"
-	echo "Follow the link to setup billing for the created GCloud account."
-	echo "https://console.cloud.google.com/billing/linkedaccount?project={{ cookiecutter.infrastructure_slug }}"
+	pulumi stack init {{ cookiecutter.infrastructure_slug }}
 
 set-cors: ## Set cors for the bucket
 	gsutil cors set cors.json gs://{{ cookiecutter.infrastructure_slug }}.appspot.com/
 
 destroy: ## Fully teardown Pulumi and GCloud
+	pulumi stack rm {{ cookiecutter.infrastructure_slug }} --force
 	gcloud projects delete {{ cookiecutter.infrastructure_slug }}
 	rm -f .keys/{{ cookiecutter.infrastructure_slug }}.json
 
