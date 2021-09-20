@@ -14,17 +14,17 @@ Install the command line tools that will help shorten the setup process
 
 There are additional tasks required after generating this repository.
 
-1. Create the GitHub repository for this deployment to live in.
+1.  Create the GitHub repository for this deployment to live in.
 
     [Create a new Repository](https://github.com/new) with the following parameters:
 
-    - Set the repo name to: **example**
-    - Set the repo owner to: **CouncilDataProject**
-    - Set the repo visibility to: "Public"
-    - Do not initialize with any of the extra options
-    - Click "Create repository".
+    -   Set the repo name to: **example**
+    -   Set the repo owner to: **CouncilDataProject**
+    -   Set the repo visibility to: "Public"
+    -   Do not initialize with any of the extra options
+    -   Click "Create repository".
 
-1. Login to both Google Cloud and Pulumi.
+1.  Login to both Google Cloud and Pulumi.
 
     During this process Pulumi will provide a token to use for authentication.
     Keep this token available for use in a later step.
@@ -37,7 +37,7 @@ There are additional tasks required after generating this repository.
     make login
     ```
 
-1. Initialize the basic project infrastructure.
+1.  Initialize the basic project infrastructure.
 
     This step should be run while within the `SETUP` directory (`cd SETUP`)
 
@@ -47,17 +47,17 @@ There are additional tasks required after generating this repository.
     make init
     ```
 
-1. Create (or re-use) a
-   [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-pbxivhdf)
-   and attach it to the newly created project (cdp-example-pbxivhdf).
+1.  Create (or re-use) a
+    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-zqjgtwnn)
+    and attach it to the newly created project (cdp-example-zqjgtwnn).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
-1. Generate a Google Service Account JSON Key for your Google Cloud Project.
+1.  Generate a Google Service Account JSON Key for your Google Cloud Project.
 
     This will create a directory called `.keys` within this `SETUP` directory and
-    add a file called `cdp-example-pbxivhdf.json` to it
-    (i.e. `.keys/cdp-example-pbxivhdf)`. This file will be used later on.
+    add a file called `cdp-example-zqjgtwnn.json` to it
+    (i.e. `.keys/cdp-example-zqjgtwnn)`. This file will be used later on.
 
     Run:
 
@@ -65,54 +65,67 @@ There are additional tasks required after generating this repository.
     make gen-key
     ```
 
-1. Attach the Pulumi Access Token and the
-   Google Service Account JSON as GitHub Repository Secrets.
+1.  Attach the Pulumi Access Token and the
+    Google Service Account JSON as GitHub Repository Secrets.
 
-    1. Pulumi Access Token
+    1. Pulumi Access Token -- Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
-    Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
+    -   Set the name to: **PULUMI_ACCESS_TOKEN**
+    -   Set the value to: The token you kept from step #2
+    -   Click "Add secret"
 
-    - Set the name to: **PULUMI_ACCESS_TOKEN**
-    - Set the value to: The token you kept from step #2
-    - Click "Add secret"
+    2. Google Service Account JSON -- Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
-    2. Google Service Account JSON
+    -   Set the name to: **GOOGLE_CREDENTIALS**
+    -   Set the value to: the contents of the file `.keys/cdp-example-zqjgtwnn.json`
+    -   Click "Add secret"
 
-    Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
-
-    - Set the name to: **GOOGLE_CREDENTIALS**
-    - Set the value to: the contents of the file `.keys/cdp-example-pbxivhdf.json`
-    - Click "Add secret"
-
-1. Initialize and push the local repository to GitHub.
+1.  Initialize and push the local repository to GitHub.
 
     This step should be run while within the base directory of the repository (`cd ..`).
 
-    - In a terminal, while in this repository's directory, run:
-        ```bash
-        git init
-        git add -A
-        git commit -m "Initial commit"
-        git branch -M main
-        git remote add origin https://github.com/CouncilDataProject/example.git
-        git push -u origin main
-        ```
-    - Refresh your repository's dashboard to ensure that all files were pushed.
+    To initialize the repo locally, run:
 
-1. Configure GitHub Pages.
+    ```bash
+    git init
+    git add -A
+    git commit -m "Initial commit"
+    git branch -M main
+    ```
+
+    To setup a connection to our GitHub repo, run either:
+
+    ```bash
+    git remote add origin https://github.com/CouncilDataProject/example.git
+    ```
+
+    Or (with SSH):
+
+    ```bash
+    git remote add origin git@github.com/CouncilDataProject/example.git
+    ```
+
+    Finally, to push this repo to GitHub, run:
+
+    ```bash
+     git push -u origin main
+    ```
+
+    Now refresh your repository's dashboard to ensure that all files were pushed.
+
+1.  Once the
+    ["Web App" GitHub Action Successfully Complete](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Web+App%22)
+    configure GitHub Pages.
 
     Go to your repository's [GitHub Pages Configuration](https://github.com/CouncilDataProject/example/settings/pages)
 
-    - Set the source to: "gh-pages"
-    - Set the folder to: `/ (root)`
-    - Click "Save"
+    -   Set the source to: "gh-pages"
+    -   Set the folder to: `/ (root)`
+    -   Click "Save"
 
-    If you don't see these options immediately you may need to wait a minute or so and then try again.
-    (We are specifically waiting for the [Web App Deployment GitHub Action](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Web+App%22))
-
-1. Once the
-   ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
-   Set the CORS policy for your Storage Bucket.
+1.  Once the
+    ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
+    set the CORS policy for your Storage Bucket.
 
     This step should be run while within the `SETUP` directory (`cd SETUP`)
 
@@ -122,13 +135,13 @@ There are additional tasks required after generating this repository.
     make set-cors
     ```
 
-1. Once the
-   ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
-   Configure Firebase Security Rules.
+1.  Once the
+    ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
+    configure Firebase Security Rules.
 
-    - Navigate to [Firebase Console](https://console.firebase.google.com),
-      login to the Google Account you used during step #2, select the `cdp-example-pbxivhdf` Firebase project
-        - Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
+    -   Navigate to [Firebase Console](https://console.firebase.google.com),
+        login to the Google Account you used during step #2, select the `cdp-example-zqjgtwnn` Firebase project
+        -   Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
             ```
             rules_version = '2';
             service cloud.firestore {
@@ -139,7 +152,8 @@ There are additional tasks required after generating this repository.
                 }
             }
             ```
-        - Navigate to "Storage", select the "Rules" tab, paste the following in:
+        -   Click "Publish"
+        -   Navigate to "Storage", select the "Rules" tab, paste the following in:
             ```
             rules_version = '2';
             service firebase.storage {
@@ -150,6 +164,7 @@ There are additional tasks required after generating this repository.
                 }
             }
             ```
+        -   Click "Publish"
 
 **If all steps complete successful your web application will be viewable at: https://CouncilDataProject/github.io/example**
 
@@ -165,7 +180,7 @@ There are some optional configurations for the data gathering pipeline which can
 
 Be sure to review the [CDP Ingestion Model documentation](https://councildataproject.github.io/cdp-backend/ingestion_models.html) for the object definition to return from your `get_events` function.
 
-Once your function is complete and pushed to the `main` branch, feel free to delete this setup file.
+Once your function is complete and pushed to the `main` branch, feel free to delete this setup directory.
 
 ## Other Documentation
 
