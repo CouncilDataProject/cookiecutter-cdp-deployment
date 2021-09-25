@@ -1,3 +1,4 @@
+{% raw %}
 import React from "react";
 import ReactDOM from "react-dom";
 import { App, AppConfigProvider } from "@councildataproject/cdp-frontend";
@@ -8,12 +9,12 @@ ReactDOM.render(
             appConfig={{
                 firebaseConfig: {
                     options: {
-                        projectId: "{{ cookiecutter.infrastructure_slug }}",
+                        projectId: {% endraw %}"{{ cookiecutter.infrastructure_slug }}"{% raw %},
                     },
                     settings: {},
                 },
                 municipality: {
-                    name: "{{ cookiecutter.municipality_name }}",
+                    name: {% endraw %}"{{ cookiecutter.municipality_name }}"{% raw %},
                     footerLinksSections: [],
                 },
             }}
@@ -23,3 +24,4 @@ ReactDOM.render(
     </div>,
     document.getElementById("root")
 );
+{% endraw %}
