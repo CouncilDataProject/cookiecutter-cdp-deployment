@@ -14,7 +14,7 @@ ReactDOM.render(
                     settings: {},
                 },
                 municipality: {
-                    name: {% endraw %}"{{ cookiecutter.municipality_name }}"{% raw %},
+                    name: {% endraw %}"{{ cookiecutter.municipality }}"{% raw %},
                     footerLinksSections: [],
                 },
             }}
