@@ -293,15 +293,15 @@ jobs:
           body: |
             ## Deployment Status
 
-            :tada: :tada: **Completed** :tada: :tada:
+            :tada: :tada: **Repository Created** :tada: :tada:
             
             A new CouncilDataProject Instance Repository was created ([${{ fromJSON(steps.generation-options.outputs.content).repository_path }}](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }})), external collaborator added (@${{ fromJSON(steps.generation-options.outputs.content).maintainer_name }}), and cookiecutter files generated and pushed to repository.
 
-            The instance should be setting itself up right now. See [the instance's GitHub Action job history](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions) for more details as to progress of deployment setup.
+            The instance is setting itself up right now and the process will take around 10 minutes to complete. Once completed, a CDP maintainer will comment on this issue with your instance's website link. See [the instance's GitHub Action job history](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions) for more details on the deployment setup progress.
+
+            Your CDP instance will be populated with data within 6 hours of website creation.
 
             At any point in the future if you would like to destroy this instance, please just add a comment to this thread and a maintainer will help you.
-
-            The remaining setup steps take an additional ~10 minutes to complete. A CDP maintainer will comment on this issue when the instance has been fully deployed.
 
             ---
 
@@ -337,6 +337,7 @@ jobs:
                   }
                   ```
             * [ ] Enable [GitHub Pages](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/pages)
+            * [ ] Comment on this issue with "Deployment Status - Complete" and the instance URL
 
             ##### Deletion Steps (Future Reference)
             
