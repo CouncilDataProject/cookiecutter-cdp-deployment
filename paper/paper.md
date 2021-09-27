@@ -60,7 +60,7 @@ Council Data Project is a collection of tools for automated (or manual) processi
 
 Council Data Project (CDP) tooling was originally designed for processing and archiving meetings of the Seattle City Council. Recent additions, have made it possible to archive, process, and compile data for any number of recorded events, either manually or in an automated fashion.
 
-CDP tools are meant to act as a platform for research. As more CDP instances are deployed, the larger the pool of standardize event data there is to study. Specifically in cross-municipality studies for public policy, sociology, and more.
+CDP tools are meant to act as a platform for research. As more CDP instances are deployed, the larger the pool of standardized event data there is to study. Specifically, in scaling CDP instances to many deployments, scientists can test their models against multiple municipalities to see how well their model generalizes or study how different municipalities react to similar policy discussions.
 
 # Architecture
 
@@ -68,35 +68,35 @@ Council Data Project consists of three primary tools:
 
 1. [cookiecutter-cdp-deployment](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment): a Python [cookiecutter](https://cookiecutter.readthedocs.io/) template to assist users in fully deploying a new CDP instance.
 
-2. [cdp-backend](https://github.com/CouncilDataProject/cdp-backend): a Python package containing the database schema definition, transcript file format, our infrastructure definition, and our pipeline definitions.
+2. [cdp-backend](https://github.com/CouncilDataProject/cdp-backend): a Python package containing the database schema definition, the transcript file format, our infrastructure specification, and our processing pipeline implementations.
 
-3. [cdp-frontend](https://github.com/CouncilDataProject/cdp-frontend): a TypeScript library containing all frontend components and our web application.
+3. [cdp-frontend](https://github.com/CouncilDataProject/cdp-frontend): a TypeScript library containing all frontend components and our compiled web application.
 
 ## Cookiecutter and the Produced Repository
 
-`cookiecutter-cdp-deployment` will generate all necessary files for an entirely new CDP deployment as well as generate additional setup documentation for the user to follow to complete the instance deployment process.
+`cookiecutter-cdp-deployment` will generate all necessary files for an entirely new CDP deployment as well as additional setup documentation for the user to follow to complete the instance deployment process.
 
-Utilizing [GitHub Actions](https://github.com/features/actions) and [GitHub Pages](https://pages.github.com/), data processing and web hosting is entirely free. While the limited primary costs of CDP tools, are:
+Utilizing [GitHub Actions](https://github.com/features/actions) and [GitHub Pages](https://pages.github.com/), data processing and web hosting is entirely free. While the limited primary costs of CDP tools are:
 
 1. [Google Speech-to-Text](https://cloud.google.com/speech-to-text/) for transcript generation.
-2. [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore/) for feature and meta event data storage and access.
+2. [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore/) for event metadata storage and access.
 3. [Firebase Storage](https://firebase.google.com/docs/storage) for file storage and access.
 
-CDP tools create an extremely cost effective solution while providing decentralized control over each deployment to the deployment maintainer(s) because each deployment is contained and managed with a unique GitHub repository.
+Because each CDP deployment is contained and managed as a unique GitHub repository, CDP tools create an extremely cost effective solution while providing decentralized control over each deployment to the deployment maintainer(s).
 
 ![CDP Core Infrastructure Figure. Event Gather Pipeline: inputs, GitHub Action, Python Pipeline tasks, and storage. Event Index Pipeline: inputs, GitHub Action, Python n-gram generation, and storage. Web Application Building: inputs, GitHub Action, and GitHub Pages.\label{fig:core-infra}](./assets/cdp_core_infrastructure.png)
 
-Additionally, because the CDP deployment repository is separate from the `cdp-backend` and `cdp-frontend` libraries, any time a data processing pipeline or the web application build jobs are initiated (any of the "Action Triggered" tasks in \autoref{fig:core-infra}), both libraries are updated with non-breaking changes prior to processing or build and deployment.
+Additionally, because the produced CDP deployment repository is separate from the `cdp-backend` and `cdp-frontend` libraries, any time the data processing pipeline or the web application build jobs are initiated (any of the "Action Triggered" tasks in \autoref{fig:core-infra}), both libraries are updated with non-breaking changes prior to processing or build and deployment.
 
-This allows for new additions and features to be automatically added to each deployment independent of updating all deployments. For example, we are currently developing a feature for automatic "meeting chapter" generation that would generate and attach timestamps to the meeting transcripts that correspond to the different portions of the meeting. When this feature is released to `cdp-backend`, it will become available to all CDP deployments during the next run of their event processing pipeline run (unless the maintainer has changed their repository from the default deployment configuration).
+This allows for new additions and features to be automatically added to each deployment independent of updating all deployments. For example, we are currently developing a feature for automatic "meeting chapter" generation that would generate and attach timestamps to the meeting transcripts that correspond to the different portions of the meeting. When this feature is released to `cdp-backend`, it will become available to all CDP deployments during the next run of their event processing pipeline (unless the maintainer has changed their repository from the default deployment configuration).
 
-All combined, CDP tools allow for decentralized control over the management and deployment of each CDP instance while producing a standardized dataset.
+All combined, CDP tools allow for decentralized control over the management and deployment of each CDP instance while producing a standardized open-access dataset for both research as well as a tool for municipal transparency and accessible government.
 
 ## Data Access
 
-Once data is processed, it is available through our interactive web application with plain text search for event discovery.
+Once data is processed, it is available through our interactive web application.
 
-![CDP Web Application. Screenshot of a single events page, with navigation tabs for basic event details such as the minutes items, the entire transcript, and voting information. Additionally both the transcript search and the full transcript have links to jump to a specific sentence in the meeting](./assets/event-page-screenshot.png)
+![CDP Web Application. Screenshot of a single event's page. Navigation tabs for basic event details such as the minutes items, the entire transcript, and voting information. Additionally both the transcript search and the full transcript have links to jump to a specific sentence in the meeting.](./assets/event-page-screenshot.png)
 
 Additionally, as all of our database models are documented in the `cdp-backend` [library documentation](https://councildataproject.org/cdp-backend/database_schema.html), our backend tooling additionally allows for easy Python API access:
 
