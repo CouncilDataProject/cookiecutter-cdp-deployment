@@ -43,10 +43,6 @@ jobs:
       run: |
         cd web/
         npm i
-    - name: Lint and Format Web App
-      run: |
-        cd web/
-        npm run lint
     - name: Build Web App
       run: |
         cd web/

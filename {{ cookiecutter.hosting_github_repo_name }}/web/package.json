@@ -6,24 +6,18 @@
     "scripts": {
         "start": "react-scripts start",
         "build": "react-scripts build",
-        "test": "react-scripts test",
-        "lint": "eslint --ignore-path .gitignore .",
+        "clean": "rimraf build",
         "deploy": "gh-pages -d build"
     },
     "dependencies": {
-        "@councildataproject/cdp-frontend": "^0.2.0",
+        "@councildataproject/cdp-frontend": "^0.4.3",
         "react": "^16.13.1",
         "react-dom": "^16.13.1"
     },
     "devDependencies": {
-        "eslint-config-strongloop": "^2.1.0",
-        "eslint-plugin-jsdoc": "^15.11.0",
-        "eslint-utils": "^1.4.2",
         "gh-pages": "^2.2.0",
-        "react-scripts": "^3.4.1"
-    },
-    "eslintConfig": {
-        "extends": "react-app"
+        "react-scripts": "^4.0.3",
+        "rimraf": "^3.0.2"
     },
     "browserslist": {
         "production": [
