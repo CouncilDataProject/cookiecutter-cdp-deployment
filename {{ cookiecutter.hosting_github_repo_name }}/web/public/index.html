@@ -17,10 +17,16 @@
       a single website."
         />
         <meta charset="utf-8" />
-        <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+        <link
+            rel="icon"
+            href="{{ cookiecutter.hosting_web_app_address }}/favicon.ico"
+        />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+        <link
+            rel="manifest"
+            href="{{ cookiecutter.hosting_web_app_address }}/manifest.json"
+        />
 
         <!-- Open Graph / Facebook -->
         <meta property="og:type" content="website" />
@@ -38,7 +44,10 @@
             content="City council videos, transcripts, voting records, and legislation all searchable under 
       a single website."
         />
-        <meta property="og:image" content="%PUBLIC_URL%/cdp-og-seo.png" />
+        <meta
+            property="og:image"
+            content="{{ cookiecutter.hosting_web_app_address }}/cdp-og-seo.png"
+        />
 
         <!-- Twitter -->
         <meta property="twitter:card" content="summary_large_image" />
@@ -58,7 +67,7 @@
         />
         <meta
             property="twitter:image"
-            content="%PUBLIC_URL%/cdp-twitter-seo.png"
+            content="{{ cookiecutter.hosting_web_app_address }}/cdp-twitter-seo.png"
         />
     </head>
     <body>
