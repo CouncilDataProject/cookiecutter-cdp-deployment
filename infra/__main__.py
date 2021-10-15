@@ -7,7 +7,7 @@ from pulumi import export
 ###############################################################################
 
 cdp_stack = CDPStack(
-    gcp_project_id="cdp-example-pqfmpxzu",
+    gcp_project_id="cdp-example-pzxwfbaj",
     firestore_location="us-central",
 )
 
