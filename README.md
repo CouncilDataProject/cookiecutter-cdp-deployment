@@ -20,6 +20,12 @@ This repo serves the municipality: **Example**
 
 ### Python Access
 
+Install:
+
+`pip install cdp-backend`
+
+Quickstart:
+
 ```python
 from cdp_backend.database import models as db_models
 from cdp_backend.pipeline.transcript_model import Transcript
@@ -30,7 +36,7 @@ from google.cloud.firestore import Client
 
 # Connect to the database
 fireo.connection(client=Client(
-    project="cdp-example-pzxwfbaj",
+    project="cdp-example-lwjgsviu",
     credentials=AnonymousCredentials()
 ))
 
@@ -38,17 +44,17 @@ fireo.connection(client=Client(
 five_people = list(db_models.Person.collection.fetch(5))
 
 # Connect to the file store
-fs = GCSFileSystem(project="cdp-example-pzxwfbaj", token="anon")
+fs = GCSFileSystem(project="cdp-example-lwjgsviu", token="anon")
 
 # Read a transcript's details from the database
 transcript_model = list(db_models.Transcript.collection.fetch(1))[0]
 
 # Read the transcript directly from the file store
-with fs.open(transcript_model.file_ref.uri, "r") as open_resource:
+with fs.open(transcript_model.file_ref.get().uri, "r") as open_resource:
     transcript = Transcript.from_json(open_resource.read())
 
 # OR download and store the transcript locally with `get`
-fs.get(transcript_model.file_ref.uri, "local-transcript.json")
+fs.get(transcript_model.file_ref.get().uri, "local-transcript.json")
 # Then read the transcript from your local machine
 with open("local-transcript.json", "r") as open_resource:
     transcript = Transcript.from_json(open_resource.read())
