@@ -20,6 +20,12 @@ This repo serves the municipality: **{{ cookiecutter.municipality }}**
 
 ### Python Access
 
+Install:
+
+`pip install cdp-backend`
+
+Quickstart:
+
 ```python
 from cdp_backend.database import models as db_models
 from cdp_backend.pipeline.transcript_model import Transcript
@@ -44,11 +50,11 @@ fs = GCSFileSystem(project="{{ cookiecutter.infrastructure_slug }}", token="anon
 transcript_model = list(db_models.Transcript.collection.fetch(1))[0]
 
 # Read the transcript directly from the file store
-with fs.open(transcript_model.file_ref.uri, "r") as open_resource:
+with fs.open(transcript_model.file_ref.get().uri, "r") as open_resource:
     transcript = Transcript.from_json(open_resource.read())
 
 # OR download and store the transcript locally with `get`
-fs.get(transcript_model.file_ref.uri, "local-transcript.json")
+fs.get(transcript_model.file_ref.get().uri, "local-transcript.json")
 # Then read the transcript from your local machine
 with open("local-transcript.json", "r") as open_resource:
     transcript = Transcript.from_json(open_resource.read())
