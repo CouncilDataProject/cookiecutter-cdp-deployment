@@ -102,7 +102,7 @@ There are additional tasks required after generating this repository.
     Or (with SSH):
 
     ```bash
-    git remote add origin git@github.com/{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.hosting_github_repo_name }}.git
+    git remote add origin git@github.com:{{ cookiecutter.hosting_github_username_or_org }}/{{ cookiecutter.hosting_github_repo_name }}.git
     ```
 
     Finally, to push this repo to GitHub, run:
