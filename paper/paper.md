@@ -55,11 +55,18 @@ bibliography: paper.bib
 ---
 
 # Summary
-Cities, counties, and states throughout the USA are bound by law to archive recordings of public meetings. Most local governments comply with these laws by posting documents, audio recordings, and the results of legislature votes to content management systems.  Council Data Project (CDP) is a collection of three open-source tools that improve the accessibility of local government data by systematically collecting, transforming, and re-publishing this data to the web. The software provided here can be used by civic technologists to promote government transparency, or in support of research by using processed data for public policy, natural language processing and machine learning, or information retrieval and discovery.
+
+Cities, counties, and states throughout the USA are bound by law to archive recordings of public meetings. Most local governments comply with these laws by posting documents, audio or video recordings, and the results of legislature votes to content management systems. Council Data Project (CDP) is a collection of three open-source tools that improve the accessibility of local government data by systematically collecting, transforming, and re-publishing this data to the web. The software provided here can be used by civic technologists to promote government transparency, or in support of research by using processed data for public policy, natural language processing and machine learning, or information retrieval and discovery.
 
 # Statement of Need
 
 [Describe CDP as three tools that can be deployed as instances that correspond with a municipality] (max two sentences)
+
+Research into municipal government, whether that be in processes, actions, legislation, or more, is incredible difficult due to the fact that each municipal government is unique. This has resulted in
+
+There is a drought of research on municipal governance behaviors
+largely because municipal government is so fractured, different technologies, regulations, etc
+but CDP offers a simple solution to act as a general simple standard for building corpora for research and accessibility
 
 ## CDP Architecture
 
@@ -127,7 +134,6 @@ fs.get(transcript_model.file_ref.uri, "local-transcript.json")
 with open("local-transcript.json", "r") as open_resource:
     transcript = Transcript.from_json(open_resource.read())
 ```
-
 
 # Acknowledgements
 
