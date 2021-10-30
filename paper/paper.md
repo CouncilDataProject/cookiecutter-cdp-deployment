@@ -92,11 +92,13 @@ CDP tools allow for decentralized control over the management and deployment of 
 
 ## Data Access
 
+### Web
+
 Once data is processed by a CDP instance, it is available through that instance's interactive web application.
 
-![CDP Web Application. Screenshot of a single event's page. Navigation tabs for basic event details such as the minutes items, the entire transcript, and voting information. Additionally both the transcript search and the full transcript have links to jump to a specific sentence in the meeting.\label{fig:event-page}](./assets/event-page-screenshot.png)
+![CDP Web Application. Screenshot of a single event's page. Navigation tabs for basic event details such as the minutes items, the entire transcript, and voting information. Additionally both the transcript search and the full transcript have links to jump to a specific sentence in the meeting. This example event page can be found on our Seattle City Council "staging" instance: http://councildataproject.org/seattle-staging/#/events/0ec08c565d45 \label{fig:event-page}](./assets/event-page-screenshot.png)
 
-This example event page can be found on our integration test instance: https://councildataproject.org/test-deployment/#/events/2b8d08eeea1a
+### Python
 
 For users who want programmatic access, each instance's repository README includes a programmatic quickstart guide and our database schema is auto-generated and stored in our `cdp-backend` [documentation](https://councildataproject.org/cdp-backend/database_schema.html).
 
