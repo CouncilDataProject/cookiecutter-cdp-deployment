@@ -43,7 +43,7 @@ affiliations:
       index: 1
     - name: University of Washington, Seattle
       index: 2
-    - name: McKelvey School of Engineering, Washington University, St. Louis
+    - name: Washington University, St. Louis
       index: 3
     - name: Independent Contributor
       index: 4
