@@ -34,8 +34,6 @@ authors:
       affiliation: 4
     - name: Shak Ragoler
       affiliation: 4
-    - name: Dhanya Pisharasyar
-      affiliation: 4
     - name: Nicholas Weber
       orcid: 0000-0002-6008-3763
       affiliation: 1
