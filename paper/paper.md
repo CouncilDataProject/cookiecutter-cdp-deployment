@@ -24,7 +24,7 @@ authors:
       affiliation: 1
     - name: Hawk Ticehurst
       affiliation: 1
-    - name: Sara Liu
+    - name: Sarah Liu
       affiliation: 4
     - name: Emily Giles
       affiliation: 4
