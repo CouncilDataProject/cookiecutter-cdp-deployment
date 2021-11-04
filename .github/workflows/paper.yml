@@ -1,7 +1,7 @@
 on:
   push:
     branches:
-      - 'admin/joss-paper'
+      - main
 
 jobs:
   paper:
