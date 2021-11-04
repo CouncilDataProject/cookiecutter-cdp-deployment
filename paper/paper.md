@@ -26,9 +26,9 @@ authors:
       affiliation: 1
     - name: Sarah Liu
       affiliation: 4
-    - name: Emily Giles
+    - name: Emily Gilles
       affiliation: 4
-    - name: Katlyn Greene
+    - name: Katlyn M. F. Greene
       affiliation: 4
     - name: Sung Cho
       affiliation: 4
