@@ -58,7 +58,7 @@ Cities, counties, and states throughout the USA are bound by law to archive reco
 
 # Statement of Need
 
-Comparative research into municipal governance in the USA is often prohibitively difficult due to a broad federal system where states, counties, and cities divide legislative powers differently. This has contributed to the lack of large-scale quantitative studies of municipal government, and impeded necessary research into effective procedural elements of administrative and legislative processes [@Trounstine:2009]. Council Data Project enables large-scale quantitative studies by generating standardized municipal governance corpora - including legislative voting records, timestamped transcripts, and full legislative matter attachments (related reports, presentations, amendments, etc.).
+Comparative research into municipal governance in the USA is often prohibitively difficult due to a broad federal system where states, counties, and cities divide legislative powers differently. This has contributed to the lack of large-scale quantitative studies of municipal government, and impeded necessary research into effective procedural elements of administrative and legislative processes [@Trounstine2009]. Council Data Project enables large-scale quantitative studies by generating standardized municipal governance corpora - including legislative voting records, timestamped transcripts, and full legislative matter attachments (related reports, presentations, amendments, etc.).
 
 ## Related Work
 
