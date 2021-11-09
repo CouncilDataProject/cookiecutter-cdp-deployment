@@ -2,7 +2,7 @@ default_context:
     municipality: "Example"
     municipality_slug: "example"
     python_municipality_slug: "example"
-    infrastructure_slug: "cdp-example-usptvjgo"
+    infrastructure_slug: "cdp-example-bubumbnu"
     maintainer_or_org_full_name: "Council Data Project Contributors"
     hosting_github_username_or_org: "CouncilDataProject"
     hosting_github_repo_name: "example"
