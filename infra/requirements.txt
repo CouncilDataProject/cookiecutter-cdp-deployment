@@ -1,2 +1,2 @@
-cdp-backend[infrastructure]~=3.0.0.dev18
+cdp-backend[infrastructure]~=3.0.0.dev27
 pulumi
