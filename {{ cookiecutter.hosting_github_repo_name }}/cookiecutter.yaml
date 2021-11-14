@@ -1,5 +1,6 @@
 default_context:
     municipality: "{{ cookiecutter.municipality }}"
+    governing_body_type: "{{ cookiecutter.governing_body_type }}"
     municipality_slug: "{{ cookiecutter.municipality_slug }}"
     python_municipality_slug: "{{ cookiecutter.python_municipality_slug }}"
     infrastructure_slug: "{{ cookiecutter.infrastructure_slug }}"

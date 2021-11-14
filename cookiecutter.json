@@ -1,5 +1,11 @@
 {
     "municipality": "Example",
+    "governing_body_type": [
+        "city council",
+        "county council",
+        "school board",
+        "other"
+    ],
     "municipality_slug": "{{ cookiecutter.municipality.lower().replace(' ', '-').replace('_', '-') }}",
     "python_municipality_slug": "{{ cookiecutter.municipality_slug.replace('-', '_') }}",
     "infrastructure_slug": "cdp-{{ cookiecutter.municipality_slug }}-{{ random_ascii_string(8).lower() }}",

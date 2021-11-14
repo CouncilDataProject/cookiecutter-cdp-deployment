@@ -8,6 +8,7 @@ import logging
 import sys
 import traceback
 
+from cdp_backend.infrastructure.cdp_stack import GoverningBody
 from cdp_scrapers.legistar_utils import LegistarScraper
 from cdp_scrapers import instances
 import requests
@@ -16,6 +17,7 @@ from parse_form import (
     COOKIECUTTER_OPTIONS,
     FORM_VALUES,
     MUNICIPALITY_SLUG,
+    GOVERNING_BODY_TYPE,
     MUNICIPALITY_NAME,
     LEGISTAR_CLIENT_ID,
     LEGISTAR_CLIENT_TIMEZONE,
@@ -88,6 +90,11 @@ def validate_form(issue_content_file: str) -> None:
     python_municipality_slug = form_values_and_cookiecutter_options[
         COOKIECUTTER_OPTIONS
     ][PYTHON_MUNICIPALITY_SLUG]
+
+    # Governing body type in allowed
+    governing_body_type_allowed = form_values[GOVERNING_BODY_TYPE] in [
+        attr for attr in dir(GoverningBody) if "__" not in attr
+    ]
 
     # Check planned maintainer exists
     planned_maintainer_exists = _check_github_resource_exists(
@@ -282,6 +289,15 @@ def validate_form(issue_content_file: str) -> None:
             scraper_ready = False
 
     # Construct message content
+    if governing_body_type_allowed:
+        governing_body_response = "✅ Governing body type is an accepted value."
+    else:
+        governing_body_response = (
+            f"❌ The provided governing body type is not an allowed value "
+            f"({form_values[GOVERNING_BODY_TYPE]}). "
+            f"Allowed values are: 'city_council', 'county_council', 'other', "
+            f"or 'school_board'."
+        )
     maintainer_name = None
     if planned_maintainer_exists:
         maintainer_name = form_values[TARGET_MAINTAINER]
@@ -316,6 +332,7 @@ def validate_form(issue_content_file: str) -> None:
     # Join all together
     comment_response = "\n".join(
         [
+            governing_body_response,
             maintainer_response,
             repository_response,
             scraper_response,

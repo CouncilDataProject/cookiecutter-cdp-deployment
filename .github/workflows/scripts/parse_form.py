@@ -28,6 +28,7 @@ FORM_VALUES = "form_values"
 COOKIECUTTER_OPTIONS = "cookiecutter_options"
 
 MUNICIPALITY_NAME = "municipality"
+GOVERNING_BODY_TYPE = "governing_body_type"
 MUNICIPALITY_SLUG = "municipality_slug"
 PYTHON_MUNICIPALITY_SLUG = "python_municipality_slug"
 TARGET_MAINTAINER = "maintainer_or_org_full_name"
@@ -118,6 +119,7 @@ def parse_form(issue_content_file: str) -> Dict[str, Dict[str, str]]:
         FORM_VALUES: form_values,
         COOKIECUTTER_OPTIONS: {
             MUNICIPALITY_NAME: form_values[MUNICIPALITY_NAME],
+            GOVERNING_BODY_TYPE: form_values[GOVERNING_BODY_TYPE],
             MUNICIPALITY_SLUG: municipality_slug,
             PYTHON_MUNICIPALITY_SLUG: python_municipality_slug,
             "infrastructure_slug": f"cdp-{municipality_slug}-{str(uuid4())[:8]}",
@@ -125,7 +127,7 @@ def parse_form(issue_content_file: str) -> Dict[str, Dict[str, str]]:
             "hosting_github_username_or_org": COUNCIL_DATA_PROJECT,
             "hosting_github_repo_name": municipality_slug,
             "hosting_github_url": (
-                f"https://github.com/" f"{COUNCIL_DATA_PROJECT}/{municipality_slug}"
+                f"https://github.com/{COUNCIL_DATA_PROJECT}/{municipality_slug}"
             ),
             "hosting_web_app_address": (
                 f"https://councildataproject.org/{municipality_slug}"
