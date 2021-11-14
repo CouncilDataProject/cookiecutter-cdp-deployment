@@ -7,12 +7,12 @@ from pulumi import export
 ###############################################################################
 
 cdp_stack = CDPStack(
-    gcp_project_id="cdp-example-qnghgagv",
+    gcp_project_id="cdp-example-xgszbeub",
     municipality_name="Example",
     firestore_location="us-central",
     hosting_github_url="https://github.com/CouncilDataProject/example",
     hosting_web_app_address="https://CouncilDataProject.github.io/example",
-    governing_body="city council"
+    governing_body="city council",
 )
 
 export("firestore_address", cdp_stack.firestore_app.app_id)
