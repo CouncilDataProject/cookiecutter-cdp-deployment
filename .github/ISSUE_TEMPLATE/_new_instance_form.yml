@@ -46,9 +46,9 @@ body:
 
         These fields are entirely optional however if your municipality utilizes Legistar, they are highly recommended as our tools may be entirely able to automate the creation and management of your scraper.
 
-        To find out if your municipality uses Legistar for its legislation management software follow the steps outlined in our [Legistar Documentation](TODO). If Legistar is used, this instance configuration process could potentially be automated for you and you can fill in your Legistar Id below. If not, you will need to write a [custom event scraper](TODO) to complete the process.
+        To find out if your municipality uses Legistar for its legislation management software follow the steps outlined in our [Legistar Documentation](https://councildataproject.org/cdp-scrapers/finding_legistar_id.html). If Legistar is used, this instance configuration process could potentially be automated for you and you can fill in your Legistar Id below. If not, you will need to write a [custom event scraper](https://councildataproject.org/cdp-scrapers/index.html#creating-a-custom-scraper) to complete the process.
         
-        If you plan on using Legistar, all fields in this section are required. I.e. the municipality's Legistar Client Id is required and can be found by following our recommendations in [documentation](TODO) and the timezone for your municipality is required.
+        If you plan on using Legistar, all fields in this section are required. I.e. the municipality's Legistar Client Id is required and can be found by following our recommendations in [documentation](https://councildataproject.org/cdp-scrapers/legistar_scraper.html) and the timezone for your municipality is required.
   - type: input
     id: legistar_client_id
     attributes:
