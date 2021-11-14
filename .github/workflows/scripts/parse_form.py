@@ -39,6 +39,7 @@ LEGISTAR_CLIENT_TIMEZONE = "legistar_client_timezone"
 
 FORM_FIELD_TO_HEADER = {
     MUNICIPALITY_NAME: "Municipality Name",
+    GOVERNING_BODY_TYPE: "Governing Body Type",
     MUNICIPALITY_SLUG: "Municipality Slug",
     TARGET_MAINTAINER: "Maintainer GitHub Name",
     FIRESTORE_REGION: "Firestore Region",
