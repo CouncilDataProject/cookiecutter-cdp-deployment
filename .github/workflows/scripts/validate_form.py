@@ -93,7 +93,7 @@ def validate_form(issue_content_file: str) -> None:
 
     # Governing body type in allowed
     governing_body_type_allowed = form_values[GOVERNING_BODY_TYPE] in [
-        attr for attr in dir(GoverningBody) if "__" not in attr
+        getattr(GoverningBody, attr) for attr in dir(GoverningBody) if "__" not in attr
     ]
 
     # Check planned maintainer exists
@@ -324,7 +324,14 @@ def validate_form(issue_content_file: str) -> None:
         repository_ready = True
 
     # Construct "ready"
-    if all([scraper_ready, maintainer_ready, repository_ready]):
+    if all(
+        [
+            scraper_ready,
+            maintainer_ready,
+            repository_ready,
+            governing_body_type_allowed,
+        ]
+    ):
         ready_response = "#### ✅ All checks successful :tada:"
     else:
         ready_response = "#### ❌ Some checks failing"
