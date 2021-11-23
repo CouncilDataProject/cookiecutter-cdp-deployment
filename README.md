@@ -98,6 +98,9 @@ The short summary of setup tasks remaining are:
 * Write an event scraper for your municipality (it may be useful to
   build off of [cdp-scrapers](https://github.com/CouncilDataProject/cdp-scrapers))
 
+You can also an example generated repository and the full steps listed
+[here](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment/tree/example-build/SETUP).
+
 ### Cookiecutter Parameters
 
 | Parameter                      | Description                                                                                                                 | Example 1                                      | Example 2                                         |
