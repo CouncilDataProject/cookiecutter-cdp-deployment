@@ -42,6 +42,9 @@ _Note: Some features are dependent on how much data is provided during event gat
 
 ## Usage
 
+Regardless of your deployment strategy, you may find reading the
+[Things to Know](#things-to-know) section prior to deployment.
+
 ### Deploying Under the councildataproject.org Domain
 
 If you want your deployment under the councildataproject.org domain (i.e. https://councildataproject.org/seattle),
@@ -56,6 +59,16 @@ you will need to install `cookiecutter` and use this template.
 
 [**Follow along with the video walkthrough**](https://youtu.be/xdRhh-ocSfc)
 
+Before you begin, please note that you will need to install or have available the following:
+
+* [gcloud](https://cloud.google.com/sdk/docs/install)
+* [pulumi](https://www.pulumi.com/docs/get-started/install/)
+* [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
+* [Python 3.6+](https://www.python.org/downloads/) (Any Python version greater than or equal to 3.6)
+
+Once all tools are installed, the rest of the infrastructure setup process
+should take about 15 minutes.
+
 In a terminal with Python 3.6+ installed:
 
 ```bash
@@ -65,11 +78,25 @@ cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
 
 Follow the prompts in your terminal and fill in the details for the instance deployment. At the end of the process a new directory will have been created with all required files and further instructions to set up your new deployment.
 
-Follow the next steps in the generated repository's "Initial Repository Setup" section of the generated `README.md` file with the `SETUP` directory.
-
 For more details and examples on each parameter of this cookiecutter template, see [Cookiecutter Parameters](#cookiecutter-parameters)
 
+Follow the next steps in the generated repository's "Initial Repository Setup" section of the generated `README.md` file with the `SETUP` directory.
+
 For more details on what is created from using this cookiecutter template, see [Cookiecutter Repo Generation](#cookiecutter-repo-generation)
+
+The short summary of setup tasks remaining are:
+
+* The creation of a new GitHub repository for the instance.
+* Logging in or creating accounts for Google Cloud and Pulumi.
+* Initialize the basic infrastructure.
+* Assign a billing account to the created Google Cloud project.
+* Generate credentials for the Google Project for use in automated scripts.
+* Attach credentials as secrets to the GitHub repository.
+* Push the cookiecutter generated files to the GitHub repository.
+* Setup web hosting through GitHub Pages.
+* Enable open access for data with CORS rules and public read.
+* Write an event scraper for your municipality (it may be useful to
+  build off of [cdp-scrapers](https://github.com/CouncilDataProject/cdp-scrapers))
 
 ### Cookiecutter Parameters
 
