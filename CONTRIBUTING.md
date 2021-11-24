@@ -7,7 +7,7 @@ helps, and credit will always be given.
 
 Please note that this repository is only the cookiecutter and not the entire
 CDP tooling and infrastructure ecosystem. This repository ties all of our
-tooling together into a single easy to deploy and maintain repository.
+tooling together into a single repository that is easy to deploy and maintain.
 Contributions to this repository should largely be documentation,
 devops, bugfixes, or similar.
 
