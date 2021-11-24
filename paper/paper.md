@@ -138,6 +138,6 @@ with open("local-transcript.json", "r") as open_resource:
 
 # Acknowledgements
 
-We wish to thank DemocracyLab volunteers for the many hours of work and contributions. From DemocracyLab, we would like to specifically thank Mark Frischmuth for the continued support and helpful discussions. We wish to thank the University of Washington Information School for support.
+We wish to thank the many volunteers that have contributed code, design, conversation, and ideas to the project. We wish to thank DemocracyLab and Open Seattle for helping build a civic technology community. From DemocracyLab, we would specifically like to thank Mark Frischmuth for the continued support and helpful discussions. We wish to thank the University of Washington Information School for support. We thank Code for Science and Society and the Digital Infrastructure Incubator program for providing insight and space for developing our project governance and organizational structure.
 
 # References
