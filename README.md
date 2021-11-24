@@ -43,7 +43,7 @@ _Note: Some features are dependent on how much data is provided during event gat
 ## Usage
 
 Regardless of your deployment strategy, you may find reading the
-[Things to Know](#things-to-know) section prior to deployment.
+[Things to Know](#things-to-know) section helpful prior to deployment.
 
 ### Deploying Under the councildataproject.org Domain
 
