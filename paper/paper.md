@@ -86,7 +86,7 @@ Deploying a CDP instance incurs some small primary costs by using:
 2. [Firebase Cloud Firestore](https://firebase.google.com/docs/firestore/) for event metadata storage and access.
 3. [Firebase Storage](https://firebase.google.com/docs/storage) for file storage and access.
 
-![CDP Core Infrastructure Figure. Event Gather Pipeline: inputs, GitHub Action, Python Pipeline tasks, and storage. Event Index Pipeline: inputs, GitHub Action, Python n-gram generation, and storage. Web Application Building: inputs, GitHub Action, and GitHub Pages.\label{fig:core-infra}](./assets/cdp_core_infrastructure.png)
+![CDP Core Infrastructure and Pipelines. A CDP instance's event gather and processing pipeline can be triggered by providing the GitHub Action a custom datetime range to process, providing a pre-constructed JSON object (useful for special events like debates and such), or the pipeline will automatically run every 6 hours. Once initiated, the event gather pipeline will get the events for the provided or default date range, create a transcript and extra metadata objects (thumbnails, and more), then will finally archive the event to Firebase. A CDP instance's event indexing pipeline can be triggered by running the pipeline manually or will automatically run every two days.Once initiated, the event index pipeline will in parallel, generate and store unigrams, bigrams, and trigrams from all event transcripts and store them to Firebase for query. Finally, the web application is built from a manual trigger or once a week and simply runs a standard NPM build process then publishes the generated web application to GitHub Pages. Once built and published, the deployment website fetches data from Firebase for search and web access.\label{fig:core-infra}](./assets/cdp_core_infrastructure.png)
 
 CDP tools allow for decentralized control over the management and deployment of each CDP instance while producing a standardized open-access dataset for both research and for municipal transparency and accessibility.
 
@@ -138,6 +138,6 @@ with open("local-transcript.json", "r") as open_resource:
 
 # Acknowledgements
 
-We wish to thank DemocracyLab volunteers for the many hours of work and contributions. From DemocracyLab, we would like to specifically thank Mark Frischmuth for the continued support and helpful discussions. We wish to thank the University of Washington Information School for support.
+We wish to thank the many volunteers that have contributed code, design, conversation, and ideas to the project. We wish to thank DemocracyLab and Open Seattle for helping build a civic technology community. From DemocracyLab, we would specifically like to thank Mark Frischmuth for the continued support and helpful discussions. We wish to thank the University of Washington Information School for support. We wish to thank Code for Science and Society and the Digital Infrastructure Incubator for providing guidance on developing a sustainable open source project.
 
 # References
