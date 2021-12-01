@@ -1,0 +1,60 @@
+{
+    "creators": [
+        {
+            "name": "Brown, Jackson Maxfield",
+            "affiliation": "University of Washington iSchool, University of Washington, Seattle",
+            "orcid": "0000-0003-2564-0373"
+        },
+        {
+            "name": "Huynh, To",
+            "affiliation": "University of Washington, Seattle",
+            "orcid": "0000-0002-9664-3662"
+        },
+        {
+            "name": "Na, Isaac",
+            "affiliation": "Washington University, St. Louis",
+            "orcid": "0000-0002-0182-1615"
+        },
+        {
+            "name": "Ledbetter, Brian",
+            "affiliation": "University of Washington iSchool, University of Washington, Seattle"
+        },
+        {
+            "name": "Ticehurst, Hawk",
+            "affiliation": "University of Washington iSchool, University of Washington, Seattle"
+        },
+        {
+            "name": "Liu, Sarah"
+        },
+        {
+            "name": "Gilles, Emily"
+        },
+        {
+            "name": "Greene, Katlyn M. F."
+        },
+        {
+            "name": "Cho, Sung"
+        },
+        {
+            "name": "Ragoler, Shak"
+        },
+        {
+            "name": "Weber, Nicholas",
+            "affiliation": "University of Washington iSchool, University of Washington, Seattle",
+            "orcid": "0000-0002-6008-3763"
+        }
+    ],
+    "keywords": [
+        "Python",
+        "JavaScript",
+        "open-government",
+        "open-data",
+        "open-infrastructure",
+        "municipal-governance",
+        "data-archival",
+        "civic-technology",
+        "natural-language-processing"
+    ],
+    "license": "MIT",
+    "upload_type": "software"
+}
