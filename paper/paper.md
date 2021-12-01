@@ -39,7 +39,7 @@ authors:
       affiliation: 1
 
 affiliations:
-    - name: University of Washington iSchool, University of Washington, Seattle
+    - name: University of Washington Information School, University of Washington, Seattle
       index: 1
     - name: University of Washington, Seattle
       index: 2
