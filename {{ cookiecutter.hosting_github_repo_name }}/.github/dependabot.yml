@@ -1,6 +1,13 @@
 version: 2
 updates:
   - package-ecosystem: "pip"
+    directory: "/infra"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-name: "cdp-backend"
+
+  - package-ecosystem: "pip"
     directory: "/python"
     schedule:
       interval: "daily"
