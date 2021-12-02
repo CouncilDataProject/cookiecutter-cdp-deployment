@@ -81,3 +81,9 @@ If you wish to contribute to CDP please note that the best method to do so is to
 You can find documentation on how to customize, update, and maintain this CDP instance
 in the
 [admin-docs directory]({{ cookiecutter.hosting_github_url }}/tree/main/admin-docs).
+
+## License
+
+CDP software is licensed under a [MIT License](./LICENSE).
+
+Content produced by this instance is available under a [Creative Commons Attribution 4.0 International License](https://creativecommons.org/licenses/by/4.0/).
