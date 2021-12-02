@@ -1,6 +1,7 @@
 # cookiecutter-cdp-deployment
 
 [![Cookiecutter Check Status](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment/workflows/Build%20Example%20Repo/badge.svg)](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment/tree/example-build)
+[![DOI](https://joss.theoj.org/papers/10.21105/joss.03904/status.svg)](https://doi.org/10.21105/joss.03904)
 
 Cookiecutter template for creating new Council Data Project deployments.
 
@@ -241,6 +242,27 @@ However, to receive notifications for individual CDP front and back-end applicat
 -   [cdp-backend](https://github.com/CouncilDataProject/cdp-backend)
 
 See [GitHub's Documentation on Watching individual repositories](https://docs.github.com/en/github/managing-subscriptions-and-notifications-on-github/configuring-notifications#configuring-your-watch-settings-for-an-individual-repository).
+
+## Citation
+
+If you have found CDP software, data, or ideas useful in your own work, please consider citing us:
+
+Brown et al., (2021). Council Data Project: Software for Municipal Data Collection, Analysis, and Publication. Journal of Open Source Software, 6(68), 3904, https://doi.org/10.21105/joss.03904
+
+```bibtex
+@article{Brown2021,
+  doi = {10.21105/joss.03904},
+  url = {https://doi.org/10.21105/joss.03904},
+  year = {2021},
+  publisher = {The Open Journal},
+  volume = {6},
+  number = {68},
+  pages = {3904},
+  author = {Jackson Maxfield Brown and To Huynh and Isaac Na and Brian Ledbetter and Hawk Ticehurst and Sarah Liu and Emily Gilles and Katlyn M. f. Greene and Sung Cho and Shak Ragoler and Nicholas Weber},
+  title = {{Council Data Project: Software for Municipal Data Collection, Analysis, and Publication}},
+  journal = {Journal of Open Source Software}
+}
+```
 
 ## License
 
