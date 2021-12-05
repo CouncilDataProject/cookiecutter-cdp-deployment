@@ -67,7 +67,7 @@
         <!-- Analytics -->
         <script
             defer
-            data-domain="{{ cookiecutter.hosting_web_app_address.replace('https://', '').replace('http://', '').split('/')[0] }}"
+            data-domain="{{ cookiecutter.hosting_web_app_address.replace('https://', '').replace('http://', '').split('/')[0].lower() }}"
             src="https://plausible.io/js/plausible.hash.js"
         ></script>
     </head>
