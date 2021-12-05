@@ -131,7 +131,7 @@ def parse_form(issue_content_file: str) -> Dict[str, Dict[str, str]]:
                 f"https://github.com/{COUNCIL_DATA_PROJECT}/{municipality_slug}"
             ),
             "hosting_web_app_address": (
-                f"https://councildataproject.org/{municipality_slug}"
+                f"https://councildataproject.github.io/{municipality_slug}"
             ),
             FIRESTORE_REGION: firestore_region,
         },
