@@ -12,8 +12,8 @@ should be set to `councildataproject.github.io` for you.
 
 If it isn't however, please update the `data-domain` value to `councildataproject.github.io`.
 
-Once done, the analytics for your CDP instance should be publicaly available at:
-https://plausible.io/councildataproject.github.io?page=%2Fexample%2F\*\*
+Once done, the analytics for your CDP instance should be publicly available on our
+[Plausible Dashboard](https://plausible.io/councildataproject.github.io?page=%2Fexample%2F**).
 
 ## Self Hosted Instances
 
