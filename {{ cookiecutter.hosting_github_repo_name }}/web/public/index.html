@@ -63,6 +63,13 @@
             property="twitter:image"
             content="{{ cookiecutter.hosting_web_app_address }}/cdp-twitter-seo.png"
         />
+
+        <!-- Analytics -->
+        <script
+            defer
+            data-domain="{{ cookiecutter.hosting_web_app_address.replace('https://', '').replace('http://', '').split('/')[0] }}"
+            src="https://plausible.io/js/plausible.hash.js"
+        ></script>
     </head>
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
