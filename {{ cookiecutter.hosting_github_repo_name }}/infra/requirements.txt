@@ -1,2 +1,2 @@
-cdp-backend[infrastructure]==3.0.0
+cdp-backend[infrastructure]==3.0.1
 pulumi
