@@ -13,10 +13,10 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "cdp-backend"
-  
+
   - package-ecosystem: "npm"
     directory: "/web"
     schedule:
       interval: "daily"
     allow:
-      - dependency-name: "cdp-frontend"
+      - dependency-name: "@councildataproject/cdp-frontend"
