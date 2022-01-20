@@ -137,6 +137,15 @@ There are additional tasks required after generating this repository.
 
 1.  Once the
     ["Infrastructure" GitHub Action Successfully Completes]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
+    enable data-logging for the Google Speech-to-Text service.
+
+    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project={{ cookiecutter.infrastructure_slug }})
+
+    If the above direct link doesn't work, follow the instructions from
+    [Google Documentation](https://cloud.google.com/speech-to-text/docs/enable-data-logging).
+
+1.  Once the
+    ["Infrastructure" GitHub Action Successfully Completes]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
     configure Firebase Security Rules.
 
     -   Navigate to [Firebase Console](https://console.firebase.google.com),
