@@ -1,0 +1,50 @@
+name: Run Command
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      command-and-args:
+        description: "A command and all arguments to passthrough to the runner."
+        required: true
+
+jobs:
+  run-command:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+
+    - name: Install Packages
+      run: |
+        sudo apt update
+        sudo apt-get install ffmpeg --fix-missing
+
+    - name: Install Python Dependencies
+      run: |
+        cd python/
+        pip install .
+
+    - name: Setup gcloud
+      uses: google-github-actions/setup-gcloud@master
+      with:
+        project_id: {{ cookiecutter.infrastructure_slug }}
+        service_account_key: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        export_default_credentials: true
+
+    - name: Dump Credentials to JSON
+      run: |
+        echo "$GOOGLE_CREDS" > python/google-creds.json
+      env:
+        GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+    
+    - name: Run Command
+      if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}
+      run: |
+        cd python/
+        {% raw %}${{ github.event.inputs.command-and-args }}{% endraw %}
