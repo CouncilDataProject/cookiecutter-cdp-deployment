@@ -1,4 +1,4 @@
-cdp-backend[infrastructure]>=3.0.5
+cdp-backend[infrastructure]>=3.0.6
 cdp-scrapers~=0.3
 cookiecutter~=1.7
 requests~=2.25
