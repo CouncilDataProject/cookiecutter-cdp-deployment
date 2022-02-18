@@ -27,7 +27,7 @@ body:
     id: governing_body_type
     attributes:
       label: Governing Body Type
-      description: What type of governing body this instance is for. Must be one of, 'city_council', 'county_council', 'other', or 'school_board'.
+      description: What type of governing body this instance is for. Must be one of, 'city council', 'county council', 'other', or 'school board'.
       placeholder: ex. "city council", "county council"
     validations:
       required: true

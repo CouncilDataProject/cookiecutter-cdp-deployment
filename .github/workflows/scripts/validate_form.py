@@ -92,9 +92,12 @@ def validate_form(issue_content_file: str) -> None:
     ][PYTHON_MUNICIPALITY_SLUG]
 
     # Governing body type in allowed
-    governing_body_type_allowed = form_values[GOVERNING_BODY_TYPE] in [
+    governing_body_allowed_strings = [
         getattr(GoverningBody, attr) for attr in dir(GoverningBody) if "__" not in attr
     ]
+    governing_body_type_allowed = (
+        form_values[GOVERNING_BODY_TYPE] in governing_body_allowed_strings
+    )
 
     # Check planned maintainer exists
     planned_maintainer_exists = _check_github_resource_exists(
@@ -295,8 +298,7 @@ def validate_form(issue_content_file: str) -> None:
         governing_body_response = (
             f"❌ The provided governing body type is not an allowed value "
             f"({form_values[GOVERNING_BODY_TYPE]}). "
-            f"Allowed values are: 'city_council', 'county_council', 'other', "
-            f"or 'school_board'."
+            f"Allowed values are: {governing_body_allowed_strings}."
         )
     maintainer_name = None
     if planned_maintainer_exists:
