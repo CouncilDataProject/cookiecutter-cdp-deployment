@@ -256,8 +256,8 @@ jobs:
             --public \
             --description "CDP Instance for ${{ fromJSON(steps.cookiecutter-options.outputs.options).municipality }}" \
             --homepage "${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_web_app_address }}" \
-            --enable-wiki=false \
-            --confirm
+            --disable-wiki
+          sleep 10s
           git remote set-url origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
           sleep 10s
           git push -u origin main
