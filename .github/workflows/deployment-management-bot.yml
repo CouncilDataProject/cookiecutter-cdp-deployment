@@ -258,7 +258,7 @@ jobs:
             --homepage "${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_web_app_address }}" \
             --disable-wiki
           sleep 10s
-          git remote set-url origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}
+          git remote add origin git@github.com:${{ fromJSON(steps.generation-options.outputs.content).repository_path }}.git
           sleep 10s
           git push -u origin main
         env:
