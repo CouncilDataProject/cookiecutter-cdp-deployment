@@ -313,7 +313,7 @@ jobs:
             * [ ] Use the generated key as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
             * [ ] Rerun the [infrastructure setup job](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions/workflows/deploy-infra.yml), then:
               * [ ] Run `make set-cors project=${{ steps.infrastructure-slug.outputs.slug }}`
-              * [ ] Enable [Google Speech-to-Text Data Logging](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project={{ cookiecutter.infrastructure_slug }})
+              * [ ] Enable [Google Speech-to-Text Data Logging](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=${{ steps.infrastructure-slug.outputs.slug }})
               * [ ] Navigate to [Firebase Console](https://console.firebase.google.com), login to the CDP Google account, select the `${{ steps.infrastructure-slug.outputs.slug }}` Firebase project
                 * [ ] Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
                   ```
