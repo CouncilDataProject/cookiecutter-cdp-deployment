@@ -1,0 +1,96 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Council Data Project: Software for Municipal Data
+  Collection, Analysis, and Publication
+message: Please cite this software using these metadata.
+type: software
+authors:
+  - given-names: Jackson Maxfield
+    family-names: Brown
+    email: jmxbrown@uw.edu
+    affiliation: >-
+      University of Washington Information School,
+      University of Washington, Seattle
+    orcid: 'https://orcid.org/0000-0003-2564-0373'
+  - given-names: To
+    family-names: Huynh
+    affiliation: 'University of Washington, Seattle'
+    orcid: 'https://orcid.org/0000-0002-9664-3662'
+  - given-names: Isaac
+    family-names: Na
+    affiliation: 'Washington University, St. Louis'
+    orcid: 'https://orcid.org/0000-0002-0182-1615'
+  - given-names: Brian
+    family-names: Ledbetter
+    affiliation: >-
+      University of Washington Information School,
+      University of Washington, Seattle
+  - given-names: Hawk
+    family-names: Ticehurst
+    affiliation: >-
+      University of Washington Information School,
+      University of Washington, Seattle
+  - given-names: Sarah
+    family-names: Liu
+  - given-names: Emily
+    family-names: Gilles
+  - given-names: Katlyn M. F.
+    family-names: Greene
+  - given-names: Sung
+    family-names: Cho
+  - given-names: Shak
+    family-names: Ragoler
+  - given-names: Nicholas
+    family-names: Weber
+    email: nmweber@uw.edu
+    affiliation: >-
+      University of Washington Information School,
+      University of Washington, Seattle
+    orcid: 'https://orcid.org/0000-0002-6008-3763'
+identifiers:
+  - type: doi
+    value: 10.21105/joss.03904
+  - type: url
+    value: 'https://doi.org/10.21105/joss.03904'
+repository-code: >-
+  https://github.com/CouncilDataProject/cookiecutter-cdp-deployment
+url: 'https://councildataproject.org'
+abstract: >-
+  Cities, counties, and states throughout the USA are
+  bound by law to archive recordings of public
+  meetings. Most local governments comply with these
+  laws by posting documents, audio, or video
+  recordings online. As there is no set standard for
+  municipal data archives however, parsing and
+  processing such data is typically time consuming
+  and highly dependent on each municipality. Council
+  Data Project (CDP) is a set of open-source tools
+  that improve the accessibility of local government
+  data by systematically collecting, transforming,
+  and re-publishing this data to the web. The data
+  re-published by CDP is packaged and presented
+  within a searchable web application that vastly
+  simplifies the process of finding specific
+  information within the archived data. We envision
+  this project being used by a variety of groups
+  including civic technologists hoping to promote
+  government transparency, researchers focused on
+  public policy, natural language processing, machine
+  learning, or information retrieval and discovery,
+  and many others.
+keywords:
+  - public interest technology
+  - open government
+  - open data
+  - data archival
+  - municipal governance
+  - Python
+  - JavaScript
+  - natural language processing
+license: MIT
+commit: 59c30846b40c289b1a8b6ab10b0b46b5bdfc3c59
+version: 3.0.0
+date-released: '2021-12-02'
