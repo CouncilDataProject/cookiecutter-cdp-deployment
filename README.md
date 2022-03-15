@@ -36,7 +36,7 @@ from google.cloud.firestore import Client
 
 # Connect to the database
 fireo.connection(client=Client(
-    project="cdp-example-yahvxpub",
+    project="cdp-example-gnfmbgfb",
     credentials=AnonymousCredentials()
 ))
 
@@ -44,7 +44,7 @@ fireo.connection(client=Client(
 five_people = list(db_models.Person.collection.fetch(5))
 
 # Connect to the file store
-fs = GCSFileSystem(project="cdp-example-yahvxpub", token="anon")
+fs = GCSFileSystem(project="cdp-example-gnfmbgfb", token="anon")
 
 # Read a transcript's details from the database
 transcript_model = list(db_models.Transcript.collection.fetch(1))[0]

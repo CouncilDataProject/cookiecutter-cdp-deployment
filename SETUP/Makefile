@@ -22,24 +22,24 @@ login: ## Run GCloud and Pulumi logins
 	gcloud auth application-default login
 
 init: ## Create google project and pulumi stack
-	gcloud projects create cdp-example-yahvxpub --set-as-default
-	pulumi stack init cdp-example-yahvxpub
+	gcloud projects create cdp-example-gnfmbgfb --set-as-default
+	pulumi stack init cdp-example-gnfmbgfb
 
 set-cors: ## Set cors for the bucket
-	gsutil cors set cors.json gs://cdp-example-yahvxpub.appspot.com/
+	gsutil cors set cors.json gs://cdp-example-gnfmbgfb.appspot.com/
 
 destroy: ## Fully teardown Pulumi and GCloud
-	pulumi stack rm cdp-example-yahvxpub --force
-	gcloud projects delete cdp-example-yahvxpub
-	rm -f .keys/cdp-example-yahvxpub.json
+	pulumi stack rm cdp-example-gnfmbgfb --force
+	gcloud projects delete cdp-example-gnfmbgfb
+	rm -f .keys/cdp-example-gnfmbgfb.json
 
 gen-key: ## Generate a service account JSON
 	mkdir .keys/ -p
-	gcloud iam service-accounts create cdp-example-yahvxpub \
+	gcloud iam service-accounts create cdp-example-gnfmbgfb \
     	--description="CDP Dev Service Account for $(USER)" \
-    	--display-name="cdp-example-yahvxpub"
-	gcloud projects add-iam-policy-binding cdp-example-yahvxpub \
-    	--member="serviceAccount:cdp-example-yahvxpub@cdp-example-yahvxpub.iam.gserviceaccount.com" \
+    	--display-name="cdp-example-gnfmbgfb"
+	gcloud projects add-iam-policy-binding cdp-example-gnfmbgfb \
+    	--member="serviceAccount:cdp-example-gnfmbgfb@cdp-example-gnfmbgfb.iam.gserviceaccount.com" \
 		--role="roles/owner"
-	gcloud iam service-accounts keys create .keys/cdp-example-yahvxpub.json \
-  		--iam-account "cdp-example-yahvxpub@cdp-example-yahvxpub.iam.gserviceaccount.com"
+	gcloud iam service-accounts keys create .keys/cdp-example-gnfmbgfb.json \
+  		--iam-account "cdp-example-gnfmbgfb@cdp-example-gnfmbgfb.iam.gserviceaccount.com"
