@@ -26,8 +26,8 @@ There are additional tasks required after generating this repository.
 
 1.  Login to both Google Cloud and Pulumi.
 
-    During this process Pulumi will provide a token to use for authentication.
-    Keep this token available for use in a later step.
+    **IMPORTANT:** During this process Pulumi will provide a token to use for authentication.
+    **Keep this token available for use in a later step.**
 
     This step should be run while within the `SETUP` directory (`cd SETUP`).
 
@@ -183,7 +183,9 @@ Once your repository, infrastructure, and web application have been set up, you 
 
 Navigate and follow the instructions in the the file: `python/cdp_{{ cookiecutter.python_municipality_slug }}_backend/scraper.py`.
 
-As soon as you push your updates to your event gather function (`get_events`) to your GitHub repository, everything will be tested and configured for the next pipeline run.
+As soon as you push your updates to your event gather function (`get_events`) to your GitHub repository, everything will be tested and configured for the next pipeline run. Events are gathered from this function every 6 hours from the default branch via a Github Action cron job. If you'd like to manually run event gathering, you can do so from within the Actions tab of your repo -> Event Gather -> Run workflow.
+
+It is expected that the Event Index workflow will fail to start, as your database will not yet be populated with events to index.
 
 There are some optional configurations for the data gathering pipeline which can be added to `python/event-gather-config.json`. No action is needed for a barebones pipeline run, but the optional parameters can be checked in the [CDP pipeline config documentation](https://councildataproject.org/cdp-backend/cdp_backend.pipeline.html#module-cdp_backend.pipeline.pipeline_config). Note that `google_credentials_file` and `get_events_function_path` should not be modified and will populate automatically if you have followed the steps above.
 
