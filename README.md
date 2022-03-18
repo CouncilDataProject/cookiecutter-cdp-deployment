@@ -233,7 +233,7 @@ Free Resources and Infrastructure:
 The backend resources and processing are the only real costs and depend on usage.
 The more users that use your web application, the more the database and
 file storage cost. The CDP-Seattle monthly averages below are for the most utilized
-months of its existance so take these as close to upper-bounds.
+months of its existence so take these as close to upper-bounds.
 
 Billed Resources and Infrastructure:
 
@@ -245,6 +245,11 @@ Billed Resources and Infrastructure:
     _CDP-Seattle monthly average: ~$40.00_
 
 **Total Average Monthly Cost**: $60.00
+
+This is the ongoing cost of storing new meetings as they occur once your instance is deployed.
+You may have an additonal upfront cost if you are seeding your database with older videos and
+using speech-to-text to transcribe them. At the time of this writing, it cost around $1.25 per
+2 hours of video to transcribe and store.
 
 ### Speech-to-Text
 
