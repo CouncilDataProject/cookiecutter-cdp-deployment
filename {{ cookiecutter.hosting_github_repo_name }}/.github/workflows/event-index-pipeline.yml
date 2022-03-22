@@ -27,7 +27,7 @@ jobs:
         python-version: 3.9
 
     - name: Setup gcloud
-      uses: google-github-actions/setup-gcloud@master
+      uses: google-github-actions/setup-gcloud@v0
       with:
         project_id: {{ cookiecutter.infrastructure_slug }}
         service_account_key: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
