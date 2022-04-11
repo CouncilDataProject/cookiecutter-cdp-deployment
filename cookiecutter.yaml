@@ -3,7 +3,7 @@ default_context:
     governing_body_type: "city council"
     municipality_slug: "example"
     python_municipality_slug: "example"
-    infrastructure_slug: "cdp-example-gqoolcve"
+    infrastructure_slug: "cdp-example-qxbnubxr"
     maintainer_or_org_full_name: "Council Data Project Contributors"
     hosting_github_username_or_org: "CouncilDataProject"
     hosting_github_repo_name: "example"
