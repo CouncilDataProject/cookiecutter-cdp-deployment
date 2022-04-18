@@ -48,16 +48,16 @@ There are additional tasks required after generating this repository.
     ```
 
 1.  Create (or re-use) a
-    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-qxbnubxr)
-    and attach it to the newly created project (cdp-example-qxbnubxr).
+    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-gajquzfm)
+    and attach it to the newly created project (cdp-example-gajquzfm).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
 1.  Generate a Google Service Account JSON Key for your Google Cloud Project.
 
     This will create a directory called `.keys` within this `SETUP` directory and
-    add a file called `cdp-example-qxbnubxr.json` to it
-    (i.e. `.keys/cdp-example-qxbnubxr)`. This file will be used later on.
+    add a file called `cdp-example-gajquzfm.json` to it
+    (i.e. `.keys/cdp-example-gajquzfm)`. This file will be used later on.
 
     Run:
 
@@ -77,7 +77,7 @@ There are additional tasks required after generating this repository.
     2. Google Service Account JSON -- Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
     -   Set the name to: **GOOGLE_CREDENTIALS**
-    -   Set the value to: the contents of the file `.keys/cdp-example-qxbnubxr.json`
+    -   Set the value to: the contents of the file `.keys/cdp-example-gajquzfm.json`
     -   Click "Add secret"
 
 1.  Initialize and push the local repository to GitHub.
@@ -139,7 +139,7 @@ There are additional tasks required after generating this repository.
     ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
     enable data-logging for the Google Speech-to-Text service.
 
-    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=cdp-example-qxbnubxr)
+    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=cdp-example-gajquzfm)
 
     If the above direct link doesn't work, follow the instructions from
     [Google Documentation](https://cloud.google.com/speech-to-text/docs/enable-data-logging).
@@ -149,7 +149,7 @@ There are additional tasks required after generating this repository.
     configure Firebase Security Rules.
 
     -   Navigate to [Firebase Console](https://console.firebase.google.com),
-        login to the Google Account you used during step #2, select the `cdp-example-qxbnubxr` Firebase project
+        login to the Google Account you used during step #2, select the `cdp-example-gajquzfm` Firebase project
         -   Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
             ```
             rules_version = '2';
