@@ -7,7 +7,7 @@ import "@councildataproject/cdp-frontend/dist/index.css";
 const config = {
     firebaseConfig: {
         options: {
-            projectId: "cdp-example-ckdkfngp",
+            projectId: "cdp-example-axngxjey",
         },
         settings: {},
     },
