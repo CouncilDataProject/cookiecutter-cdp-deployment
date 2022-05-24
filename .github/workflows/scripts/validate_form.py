@@ -165,8 +165,8 @@ def validate_form(issue_content_file: str) -> None:
                         events = scraper.get_events(
                             begin=datetime.utcnow() - timedelta(days=days_prior),
                         )
-                        single_event = events[0].to_dict()
-                        event_as_json_str = json.dumps(single_event, indent=4)
+                        single_event = events[0]
+                        event_as_json_str = single_event.to_json(index=4)
 
                         scraper_response = (
                             f"✅ The municipality's Legistar instance "
@@ -192,7 +192,7 @@ def validate_form(issue_content_file: str) -> None:
                         "attempting to simply pull data for logging."
                     )
                     # Check if _any_ data was returned
-                    for days_prior in [7, 14, 28]:
+                    for days_prior in [3, 7, 14, 28]:
                         log.info(
                             f"Attempting to pull Legistar data for "
                             f"previous {days_prior} days."
@@ -205,8 +205,8 @@ def validate_form(issue_content_file: str) -> None:
                                 f"Received Legistar data for "
                                 f"previous {days_prior} days."
                             )
-                            single_event = events[0].to_dict()
-                            event_as_json_str = json.dumps(single_event, indent=4)
+                            single_event = events[0]
+                            event_as_json_str = single_event.to_json(index=4)
                             scraper_response = (
                                 f"❌ Your municipality uses Legistar but the minimum "
                                 f"required data for CDP event ingestion wasn't found. "
