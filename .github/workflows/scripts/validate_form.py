@@ -158,7 +158,7 @@ def validate_form(issue_content_file: str) -> None:
 
                 # If everything runs correctly, log success and show event
                 # model in comment
-                for days_prior in [7, 14, 28]:
+                for days_prior in [3, 7, 14, 28]:
                     log.info(f"Attempting minimum CDP data for {days_prior} days")
                     if scraper.check_for_cdp_min_ingestion(check_days=days_prior):
                         log.info("Legistar client has minimum data")
@@ -251,7 +251,7 @@ def validate_form(issue_content_file: str) -> None:
                 )
                 scraper_ready = False
 
-            except Exception:
+            except Exception as e:
                 scraper_response = (
                     f"❌ Something went wrong during Legistar client data validation. "
                     f"A [cdp-scrapers]"
@@ -259,6 +259,8 @@ def validate_form(issue_content_file: str) -> None:
                     f"{COUNCIL_DATA_PROJECT}/cdp-scrapers) maintainer "
                     f"will look into the logs for this bug. Sorry about this!"
                 )
+                log.error(e)
+                log.error(traceback.format_exc())
                 scraper_ready = False
 
     # Handle bad / mis-parametrized legistar info
