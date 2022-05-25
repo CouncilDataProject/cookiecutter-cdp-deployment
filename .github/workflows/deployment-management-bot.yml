@@ -190,7 +190,7 @@ jobs:
           scraper_choice=$(echo $scraper_options | cut -f1 -d %)
           param1=$(echo $scraper_options | cut -f2 -d %)
           param2=$(echo $scraper_options | cut -f3 -d %)
-          param2=sed 's/\//\\\//g' <<< $param2
+          param2=$(sed 's/\//\\\//g' <<< $param2)
           echo "::set-output name=choice::$scraper_choice"
           echo "::set-output name=param1::$param1"
           echo "::set-output name=param2::$param2"
