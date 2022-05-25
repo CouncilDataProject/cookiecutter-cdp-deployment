@@ -182,7 +182,7 @@ jobs:
         run: |
           sed -i \
               '21 i \    
-              "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]",' \
+              '"cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]",' \
               ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
 
       # Get scraper path and update scraper function
