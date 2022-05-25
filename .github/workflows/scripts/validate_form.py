@@ -175,7 +175,7 @@ def validate_form(issue_content_file: str) -> None:
                             f"<details>\n\n"  # Extra new line for proper rendering
                             f"```json\n"
                             f"{event_as_json_str}\n"
-                            f"```"
+                            f"```\n"
                             f"</details>"
                         )
                         scraper_ready = True
@@ -221,7 +221,7 @@ def validate_form(issue_content_file: str) -> None:
                                 f"<details>\n\n"  # Extra new line for proper rendering
                                 f"```json\n"
                                 f"{event_as_json_str}\n"
-                                f"```"
+                                f"```\n"
                                 f"</details>"
                             )
                             scraper_ready = False
