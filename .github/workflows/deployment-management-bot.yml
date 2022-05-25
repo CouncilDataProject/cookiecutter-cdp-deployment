@@ -179,11 +179,7 @@ jobs:
 
       # Replace scraper with provided
       - name: Add cdp-scrapers as dependency
-        run: |
-          sed -i \
-              '21 i \    
-              '"cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]",' \
-              ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
+        run: sed -i '21 i \    "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]",' ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
 
       # Get scraper path and update scraper function
       - name: Get Scraper Path
