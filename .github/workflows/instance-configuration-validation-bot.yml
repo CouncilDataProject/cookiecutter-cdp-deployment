@@ -81,9 +81,9 @@ jobs:
 
       - uses: actions/checkout@v2
       - name: Set up Python
-        uses: actions/setup-python@v1
+        uses: actions/setup-python@v3
         with:
-          python-version: 3.9
+          python-version: '3.9'
       - name: Install Bot Scripts Dependencies
         run: |
           pip install --upgrade pip
