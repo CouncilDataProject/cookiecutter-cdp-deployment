@@ -86,6 +86,7 @@ jobs:
           python-version: 3.9
       - name: Install Bot Scripts Dependencies
         run: |
+          pip install --upgrade pip
           pip install -r .github/workflows/scripts/requirements.txt
 
       #########################################################################
