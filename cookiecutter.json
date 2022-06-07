@@ -1,5 +1,6 @@
 {
     "municipality": "Example",
+    "iana_timezone": "America/Los_Angeles",
     "governing_body_type": [
         "city council",
         "county council",

@@ -13,6 +13,7 @@ const config = {
     },
     municipality: {
         name: "{{ cookiecutter.municipality }}",
+        timeZone: "{{ cookiecutter.iana_timezone }}",
         footerLinksSections: [],
     },
 }
