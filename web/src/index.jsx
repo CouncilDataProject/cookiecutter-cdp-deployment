@@ -7,12 +7,13 @@ import "@councildataproject/cdp-frontend/dist/index.css";
 const config = {
     firebaseConfig: {
         options: {
-            projectId: "cdp-example-sfmpvqdq",
+            projectId: "cdp-example-ixdauwlr",
         },
         settings: {},
     },
     municipality: {
         name: "Example",
+        timeZone: "America/Los_Angeles",
         footerLinksSections: [],
     },
 }
