@@ -17,7 +17,7 @@ def get_events(
 ) -> List[EventIngestionModel]:
     scraper = LegistarScraper(
         client="REPLACE_LEGISTAR_CLIENT",
-        timezone="REPLACE_LEGISTAR_TZ",
+        timezone="REPLACE_IANA_CLIENT_TZ",
     )
 
     return scraper.get_events(begin=from_dt, end=to_dt)

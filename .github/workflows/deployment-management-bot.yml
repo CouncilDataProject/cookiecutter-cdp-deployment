@@ -205,7 +205,7 @@ jobs:
             's/REPLACE_LEGISTAR_CLIENT/${{ steps.selected-scraper.outputs.param1 }}/g' \
             .github/workflows/resources/base_legistar_scraper.py
           sed -i \
-            's/REPLACE_LEGISTAR_TZ/${{ steps.selected-scraper.outputs.param2 }}/g' \
+            's/REPLACE_IANA_CLIENT_TZ/${{ steps.selected-scraper.outputs.param2 }}/g' \
             .github/workflows/resources/base_legistar_scraper.py
           mv \
             .github/workflows/resources/base_legistar_scraper.py \

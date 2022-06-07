@@ -35,7 +35,7 @@ TARGET_MAINTAINER = "maintainer_or_org_full_name"
 FIRESTORE_REGION = "firestore_region"
 
 LEGISTAR_CLIENT_ID = "legistar_client_id"
-LEGISTAR_CLIENT_TIMEZONE = "legistar_client_timezone"
+IANA_CLIENT_TIMEZONE = "iana_timezone"
 
 FORM_FIELD_TO_HEADER = {
     MUNICIPALITY_NAME: "Municipality Name",
@@ -44,7 +44,7 @@ FORM_FIELD_TO_HEADER = {
     TARGET_MAINTAINER: "Maintainer GitHub Name",
     FIRESTORE_REGION: "Firestore Region",
     LEGISTAR_CLIENT_ID: "Legistar Client Id",
-    LEGISTAR_CLIENT_TIMEZONE: "Municipality Timezone",
+    IANA_CLIENT_TIMEZONE: "Municipality Timezone",
 }
 
 NO_RESPONSE = "_No response_"
@@ -120,6 +120,7 @@ def parse_form(issue_content_file: str) -> Dict[str, Dict[str, str]]:
         FORM_VALUES: form_values,
         COOKIECUTTER_OPTIONS: {
             MUNICIPALITY_NAME: form_values[MUNICIPALITY_NAME],
+            IANA_CLIENT_TIMEZONE: form_values[IANA_CLIENT_TIMEZONE],
             GOVERNING_BODY_TYPE: form_values[GOVERNING_BODY_TYPE],
             MUNICIPALITY_SLUG: municipality_slug,
             PYTHON_MUNICIPALITY_SLUG: python_municipality_slug,

@@ -20,7 +20,7 @@ from parse_form import (
     GOVERNING_BODY_TYPE,
     MUNICIPALITY_NAME,
     LEGISTAR_CLIENT_ID,
-    LEGISTAR_CLIENT_TIMEZONE,
+    IANA_CLIENT_TIMEZONE,
     PYTHON_MUNICIPALITY_SLUG,
     TARGET_MAINTAINER,
     COUNCIL_DATA_PROJECT,
@@ -130,14 +130,14 @@ def validate_form(issue_content_file: str) -> None:
     except AttributeError:
         if (
             form_values[LEGISTAR_CLIENT_ID] is not None
-            and form_values[LEGISTAR_CLIENT_TIMEZONE] is not None
+            and form_values[IANA_CLIENT_TIMEZONE] is not None
         ):
             log.info("Attempting Legistar data retrieval")
 
             # Init temp scraper and run
             scraper = LegistarScraper(
                 client=form_values[LEGISTAR_CLIENT_ID],
-                timezone=form_values[LEGISTAR_CLIENT_TIMEZONE],
+                timezone=form_values[IANA_CLIENT_TIMEZONE],
             )
             try:
                 # Check that the provided client information
@@ -182,7 +182,7 @@ def validate_form(issue_content_file: str) -> None:
                         scraper_options = (
                             f"USE_BASE_LEGISTAR"
                             f"%{form_values[LEGISTAR_CLIENT_ID]}"
-                            f"%{form_values[LEGISTAR_CLIENT_TIMEZONE]}"
+                            f"%{form_values[IANA_CLIENT_TIMEZONE]}"
                         )
                         break
 
@@ -265,33 +265,22 @@ def validate_form(issue_content_file: str) -> None:
 
     # Handle bad / mis-parametrized legistar info
     if scraper_response is None:
-        if (
-            form_values[LEGISTAR_CLIENT_ID] is not None
-            and form_values[LEGISTAR_CLIENT_TIMEZONE] is None
-        ):
-            scraper_response = (
-                "❌ You provided a Legistar Client Id but no Timezone. "
-                "**Timezone is required** for Legistar scraping. "
-                "Please edit your original submission to include this information."
-            )
-            scraper_ready = False
-        else:
-            scraper_response = (
-                f"❌ **You didn't provide Legistar Client "
-                f"information and no existing scraper was found in `cdp-scrapers`**. "
-                f"Please either provide Legistar Client information and / or add a "
-                f"custom scraper to "
-                f"[cdp-scrapers]"
-                f"(https://github.com/"
-                f"{COUNCIL_DATA_PROJECT}/cdp-scrapers). "
-                f"Please refer to our "
-                f"[documentation for writing custom scrapers](TODO) "
-                f"for more information. "
-                f"Note, either a successful basic Legistar scraper run or the "
-                f"addition of a custom scraper to `cdp-scrapers` is required before "
-                f"moving on in the deployment process."
-            )
-            scraper_ready = False
+        scraper_response = (
+            f"❌ **You didn't provide Legistar Client "
+            f"information and no existing scraper was found in `cdp-scrapers`**. "
+            f"Please either provide Legistar Client information and / or add a "
+            f"custom scraper to "
+            f"[cdp-scrapers]"
+            f"(https://github.com/"
+            f"{COUNCIL_DATA_PROJECT}/cdp-scrapers). "
+            f"Please refer to our "
+            f"[documentation for writing custom scrapers](TODO) "
+            f"for more information. "
+            f"Note, either a successful basic Legistar scraper run or the "
+            f"addition of a custom scraper to `cdp-scrapers` is required before "
+            f"moving on in the deployment process."
+        )
+        scraper_ready = False
 
     # Construct message content
     if governing_body_type_allowed:

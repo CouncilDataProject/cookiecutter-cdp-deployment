@@ -24,6 +24,14 @@ body:
     validations:
       required: true
   - type: input
+    id: timezone
+    attributes:
+      label: Municipality Timezone
+      description: The timezone of your municipality. See [the TZ database name column](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to find the appropriate timezone string.
+      placeholder: ex. "America/Los_Angeles"
+    validations:
+      required: true
+  - type: input
     id: governing_body_type
     attributes:
       label: Governing Body Type
@@ -48,7 +56,7 @@ body:
 
         To find out if your municipality uses Legistar for its legislation management software follow the steps outlined in our [Legistar Documentation](https://councildataproject.org/cdp-scrapers/finding_legistar_id.html). If Legistar is used, this instance configuration process could potentially be automated for you and you can fill in your Legistar Id below. If not, you will need to write a [custom event scraper](https://councildataproject.org/cdp-scrapers/index.html#creating-a-custom-scraper) to complete the process.
         
-        If you plan on using Legistar, all fields in this section are required. I.e. the municipality's Legistar Client Id is required and can be found by following our recommendations in [documentation](https://councildataproject.org/cdp-scrapers/legistar_scraper.html) and the timezone for your municipality is required.
+        If you plan on using Legistar, all fields in this section are required. I.e. the municipality's Legistar Client Id is required and can be found by following our recommendations in [documentation](https://councildataproject.org/cdp-scrapers/legistar_scraper.html).
 
         **Note:** If you already have a scraper written and published in `cdp-scrapers`,
         you can provide the municipality slug instead of these Legistar options.
@@ -58,12 +66,6 @@ body:
       label: Legistar Client Id
       description: If planning on using Legistar, the municipalities Legistar Client Id as described in above documentation.
       placeholder: ex. "seattle"
-  - type: input
-    id: timezone
-    attributes:
-      label: Municipality Timezone
-      description: If planning on using Legistar, the timezone of your municipality. See [the TZ database name column](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) to find the appropriate timezone string.
-      placeholder: ex. "America/Los_Angeles"
   - type: markdown
     attributes:
       value: '## Optional Infrastructure Options'
