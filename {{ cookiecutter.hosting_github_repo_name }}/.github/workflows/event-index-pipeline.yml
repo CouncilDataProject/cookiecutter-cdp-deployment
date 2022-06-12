@@ -49,6 +49,13 @@ jobs:
         cd python/
         pip install .
 
+    - uses: actions/checkout@v2
+      repository: 'councildataproject/cdp-backend'
+      ref: 'feature/reduce-ngram-index'
+      path: 'cdp-backend-branch'
+    - run: |
+        pip install ./cdp-backend-branch[pipeline]
+
     # Index
     - name: Index Events {% raw %}${{ matrix.n-gram }}{% endraw %}-grams
       run: |
