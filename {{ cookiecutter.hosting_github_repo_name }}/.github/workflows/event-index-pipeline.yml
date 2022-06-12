@@ -1,9 +1,8 @@
 name: Event Index
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+
   schedule:
     # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
     # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
@@ -12,39 +11,127 @@ on:
     # We offset from the hour and half hour to go easy on the servers :)
     - cron: '26 3 * * 4'
 
+# We doubly fan out
+# We first generate indexs for uni, bi, and trigrams with a matrix
+# Each index is split into chunks of 50,000 grams
+# Then we fan out by every chunk and upload
+
 jobs:
-  index-events:
+  generate-index-chunks:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # We fan out on n-gram to make it possible to run on GitHub Actions
         n-gram: [1, 2, 3]
 
     steps:
+    # Setup Runner
     - uses: actions/checkout@v2
     - uses: actions/setup-python@v1
       with:
         python-version: 3.9
 
+    # Setup GCloud / Creds
     - name: Setup gcloud
       uses: google-github-actions/setup-gcloud@v0
       with:
         project_id: {{ cookiecutter.infrastructure_slug }}
         service_account_key: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
         export_default_credentials: true
-
-    - name: Install Python Dependencies
-      run: |
-        cd python/
-        pip install .
     - name: Dump Credentials to JSON
       run: |
         echo "$GOOGLE_CREDS" > python/google-creds.json
       env:
         GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+
+    # Installs
+    - name: Install Python Dependencies
+      run: |
+        cd python/
+        pip install .
+
+    # Index
     - name: Index Events {% raw %}${{ matrix.n-gram }}{% endraw %}-grams
       run: |
         cd python/
-        {% raw %}run_cdp_event_index event-index-config.json \
+        {% raw %}run_cdp_event_index_generation event-index-config.json \
           --n_grams ${{ matrix.n-gram }} \
+          --parallel{% endraw %}
+
+    # Storage and Outputs
+    - name: Store Index Chunks to Artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        path: python/index/*
+        if-no-files-found: error
+        retention-days: 6
+    - name: Store Index Fileset to Outputs
+      run: |
+        {% raw %}cd python/index/
+        output=$(python -c 'import os, json; print(json.dumps(os.listdir(".")))')
+        echo "::set-output name=ngram-${{ matrix.n-gram }}-chunkset::$output"{% endraw %}
+
+  combine-matrix-ngram-chunksets:
+    needs: generate-index-chunks
+    runs-on: ubuntu-latest
+    steps:
+    # Setup Runner
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+
+    # Process
+    - name: Combine Chunksets
+      id: 'combine-index-chunksets'
+      run: |
+       {% raw %} echo 'print('${{ needs.generate-index-chunks.outputs.ngram-1-chunkset }}' + '${{ needs.generate-index-chunks.outputs.ngram-2-chunkset }}' + '${{ needs.generate-index-chunks.outputs.ngram-3-chunkset }}')' >> print-combined-chunkset.py
+        output=$(python print-combined-chunkset.py)
+        echo "::set-output name=combined-chunkset::$output"{% endraw %}
+
+  upload-index-chunks:
+    needs: combine-matrix-ngram-chunksets
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 6
+      matrix: 
+        filename: {% raw %}${{ fromJson(needs.combine-matrix-ngram-chunksets.outputs.combined-chunkset) }}{% endraw %}
+    
+    steps:
+    # Setup Runner
+    - uses: actions/checkout@v2
+    - uses: actions/setup-python@v1
+      with:
+        python-version: 3.9
+
+    # Setup GCloud / Creds
+    - name: Setup gcloud
+      uses: google-github-actions/setup-gcloud@v0
+      with:
+        project_id: {{ cookiecutter.infrastructure_slug }}
+        service_account_key: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        export_default_credentials: true
+    - name: Dump Credentials to JSON
+      run: |
+        echo "$GOOGLE_CREDS" > python/google-creds.json
+      env:
+        GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+
+    # Installs
+    - name: Install Python Dependencies
+      run: |
+        cd python/
+        pip install .
+
+    # Download Chunk File
+    - uses: actions/download-artifact@v3
+      with:
+        name: {% raw %}${{ matrix.filename }}{% endraw %}
+        path: python/index/
+    
+    # Upload Index Chunk
+    - name: Process Upload
+      run: |
+        cd python/
+        {% raw %}upload_cdp_event_index_chunk event-index-config.json \
+          index/${{ matrix.filename }} \
           --parallel{% endraw %}
