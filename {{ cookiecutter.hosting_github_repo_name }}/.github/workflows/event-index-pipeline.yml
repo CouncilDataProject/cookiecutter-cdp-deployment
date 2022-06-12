@@ -111,7 +111,7 @@ jobs:
       max-parallel: 6
       matrix: 
         filename: {% raw %}${{ fromJson(needs.combine-matrix-ngram-chunksets.outputs.combined-chunkset) }}{% endraw %}
-        fail-fast: false
+      fail-fast: false
     
     steps:
     # Setup Runner
