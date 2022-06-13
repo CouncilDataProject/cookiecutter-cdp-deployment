@@ -15,7 +15,7 @@ on:
 # We first generate indexs for uni, bi, and trigrams with a matrix
 # Each index is split into chunks of 50,000 grams
 # Then we fan out by every chunk and upload
-
+{% raw %}
 jobs:
   generate-index-chunks:
     runs-on: ubuntu-latest
@@ -24,6 +24,11 @@ jobs:
         n-gram: [1, 2, 3]
       fail-fast: false
 
+    outputs:
+      ngram-1-chunks: ${{ steps.output-index-chunks.outputs.ngram-1-chunks }}
+      ngram-2-chunks: ${{ steps.output-index-chunks.outputs.ngram-2-chunks }}
+      ngram-3-chunks: ${{ steps.output-index-chunks.outputs.ngram-3-chunks }}
+
     steps:
     # Setup Runner
     - uses: actions/checkout@v2
@@ -35,14 +40,14 @@ jobs:
     - name: Setup gcloud
       uses: google-github-actions/setup-gcloud@v0
       with:
-        project_id: {{ cookiecutter.infrastructure_slug }}
-        service_account_key: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        project_id: {% endraw %}{{ cookiecutter.infrastructure_slug }}{% raw %}
+        service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
         export_default_credentials: true
     - name: Dump Credentials to JSON
       run: |
         echo "$GOOGLE_CREDS" > python/google-creds.json
       env:
-        GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
     # Installs
     - name: Install Python Dependencies
@@ -50,45 +55,29 @@ jobs:
         cd python/
         pip install .
 
-    - uses: actions/checkout@v2
-      with:
-        repository: 'councildataproject/cdp-backend'
-        ref: 'feature/reduce-ngram-index'
-        path: 'cdp-backend-branch'
-    - run: |
-        pip install ./cdp-backend-branch[pipeline]
-
-    - uses: actions/checkout@v2
-      repository: 'councildataproject/cdp-backend'
-      ref: 'feature/reduce-ngram-index'
-      path: 'cdp-backend-branch'
-    - run: |
-        pip install ./cdp-backend-branch[pipeline]
-
     # Index
-    - name: Index Events {% raw %}${{ matrix.n-gram }}{% endraw %}-grams
+    - name: Index Events ${{ matrix.n-gram }}-grams
       run: |
         cd python/
-        {% raw %}run_cdp_event_index_generation event-index-config.json \
+        run_cdp_event_index_generation event-index-config.json \
           --n_grams ${{ matrix.n-gram }} \
-          --parallel{% endraw %}
+          --store_remote \
+          --parallel
 
-    # Storage and Outputs
-    - name: Store Index Chunks to Artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        path: python/index/*
-        if-no-files-found: error
-        retention-days: 6
+    # Store generated files to step output
     - name: Store Index Fileset to Outputs
+      id: output-index-chunks
       run: |
-        {% raw %}cd python/index/
+        cd python/index/
         output=$(python -c 'import os, json; print(json.dumps(os.listdir(".")))')
-        echo "::set-output name=ngram-${{ matrix.n-gram }}-chunkset::$output"{% endraw %}
+        echo "::set-output name=ngram-${{ matrix.n-gram }}-chunks::$output"
 
-  combine-matrix-ngram-chunksets:
+  combine-matrix-ngram-chunks:
     needs: generate-index-chunks
     runs-on: ubuntu-latest
+    outputs:
+      all-chunks: ${{ steps.combine-index-chunks.outputs.combined-chunks }}
+
     steps:
     # Setup Runner
     - uses: actions/checkout@v2
@@ -97,20 +86,20 @@ jobs:
         python-version: 3.9
 
     # Process
-    - name: Combine Chunksets
-      id: 'combine-index-chunksets'
+    - name: Combine Chunks
+      id: 'combine-index-chunks'
       run: |
-       {% raw %} echo 'print('${{ needs.generate-index-chunks.outputs.ngram-1-chunkset }}' + '${{ needs.generate-index-chunks.outputs.ngram-2-chunkset }}' + '${{ needs.generate-index-chunks.outputs.ngram-3-chunkset }}')' >> print-combined-chunkset.py
-        output=$(python print-combined-chunkset.py)
-        echo "::set-output name=combined-chunkset::$output"{% endraw %}
+        echo 'print(${{ needs.generate-index-chunks.outputs.ngram-1-chunks }} + ${{ needs.generate-index-chunks.outputs.ngram-2-chunks }} + ${{ needs.generate-index-chunks.outputs.ngram-3-chunks }})' >> print-combined-chunks.py
+        output=$(python print-combined-chunks.py)
+        echo "::set-output name=combined-chunks::$output"
 
   upload-index-chunks:
-    needs: combine-matrix-ngram-chunksets
+    needs: combine-matrix-ngram-chunks
     runs-on: ubuntu-latest
     strategy:
       max-parallel: 6
       matrix: 
-        filename: {% raw %}${{ fromJson(needs.combine-matrix-ngram-chunksets.outputs.combined-chunkset) }}{% endraw %}
+        filename: ${{ fromJson(needs.combine-matrix-ngram-chunks.outputs.all-chunks) }}
       fail-fast: false
     
     steps:
@@ -124,39 +113,26 @@ jobs:
     - name: Setup gcloud
       uses: google-github-actions/setup-gcloud@v0
       with:
-        project_id: {{ cookiecutter.infrastructure_slug }}
-        service_account_key: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        project_id: {% endraw $}{{ cookiecutter.infrastructure_slug }}{$ raw $}
+        service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
         export_default_credentials: true
     - name: Dump Credentials to JSON
       run: |
         echo "$GOOGLE_CREDS" > python/google-creds.json
       env:
-        GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
     # Installs
     - name: Install Python Dependencies
       run: |
         cd python/
         pip install .
-
-    - uses: actions/checkout@v2
-      with:
-        repository: 'councildataproject/cdp-backend'
-        ref: 'feature/reduce-ngram-index'
-        path: 'cdp-backend-branch'
-    - run: |
-        pip install ./cdp-backend-branch[pipeline]
-
-    # Download Chunk File
-    - uses: actions/download-artifact@v3
-      with:
-        name: {% raw %}${{ matrix.filename }}{% endraw %}
-        path: python/index/
     
     # Upload Index Chunk
     - name: Process Upload
       run: |
         cd python/
-        {% raw %}upload_cdp_event_index_chunk event-index-config.json \
-          index/${{ matrix.filename }} \
-          --parallel{% endraw %}
+        process_cdp_event_index_chunk event-index-config.json \
+          ${{ matrix.filename }} \
+          --parallel
+{% endraw %}
