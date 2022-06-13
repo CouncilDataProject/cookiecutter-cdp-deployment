@@ -10,7 +10,7 @@
         "deploy": "gh-pages -d build"
     },
     "dependencies": {
-        "@councildataproject/cdp-frontend": "3.1.0",
+        "@councildataproject/cdp-frontend": "3.1.2",
         "react": "^16.13.1",
         "react-dom": "^16.13.1"
     },
