@@ -6,6 +6,8 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "cdp-backend"
+    commit-message:
+      prefix: "ci(dependabot):"
 
   - package-ecosystem: "npm"
     directory: "/web"
@@ -13,3 +15,5 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "@councildataproject/cdp-frontend"
+    commit-message:
+      prefix: "ci(dependabot):"

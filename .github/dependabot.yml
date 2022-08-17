@@ -1,9 +1,9 @@
 version: 2
 updates:
   - package-ecosystem: "github-actions"
-    directory: "/.github"
+    directory: "/"
     schedule:
-      interval: "monthly"
+      interval: "daily"
     commit-message:
       prefix: "ci(dependabot):"
 
@@ -13,6 +13,8 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "cdp-backend"
+    commit-message:
+      prefix: "ci(dependabot):"
 
   - package-ecosystem: "npm"
     directory: "/"
@@ -20,3 +22,5 @@ updates:
       interval: "daily"
     allow:
       - dependency-name: "@councildataproject/cdp-frontend"
+    commit-message:
+      prefix: "ci(dependabot):"
