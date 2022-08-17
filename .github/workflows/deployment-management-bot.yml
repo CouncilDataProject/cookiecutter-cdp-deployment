@@ -170,7 +170,7 @@ jobs:
 
       - name: Init Git
         run: |
-          cd ${{ steps.infra-meta.outputs.slug }}
+          cd ${{ steps.municipality-slug.outputs.slug }}
           git config --global user.email "councildataproject@gmail.com"
           git config --global user.name "CouncilDataProjectServiceAccount"
           git init
@@ -180,7 +180,7 @@ jobs:
 
       # Replace scraper with provided
       - name: Add cdp-scrapers as dependency
-        run: sed -i '21 i \    "cdp-scrapers[${{ steps.infra-meta.outputs.python_slug }}]",' ${{ steps.infra-meta.outputs.slug }}/python/setup.py
+        run: sed -i '21 i \    "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]",' ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
 
       # Get scraper path and update scraper function
       # The sed after param2 extract is to replace `/` with `\/` to escape the char
@@ -209,7 +209,7 @@ jobs:
             .github/workflows/resources/base_legistar_scraper.py
           mv \
             .github/workflows/resources/base_legistar_scraper.py \
-            ${{ steps.infra-meta.outputs.slug }}/python/cdp_${{ steps.infra-meta.outputs.python_slug }}_backend/scraper.py
+            ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
 
       # Use custom scraper
       - name: Add Custom Scraper
@@ -221,18 +221,18 @@ jobs:
             .github/workflows/resources/custom_scraper.py
           mv \
             .github/workflows/resources/custom_scraper.py \
-            ${{ steps.infra-meta.outputs.slug }}/python/cdp_${{ steps.infra-meta.outputs.python_slug }}_backend/scraper.py
+            ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
       
       # Commit scraper changes
       - name: Commit Scraper Dep and Usage
         run: |
-          cd ${{ steps.infra-meta.outputs.slug }}
+          cd ${{ steps.municipality-slug.outputs.slug }}
           git add -A
           git commit -m "Update scraper dependency and implementation"
 
       - name: Remove SETUP
         run: |
-          cd ${{ steps.infra-meta.outputs.slug }}
+          cd ${{ steps.municipality-slug.outputs.slug }}
           git add -A
           git commit -m "Remove SETUP dir"
 
@@ -279,7 +279,7 @@ jobs:
           )
         run: |
           gh api \
-            repos/CouncilDataProject/${{ steps.infra-meta.outputs.slug }}/collaborators/$(jq -r '.maintainer_name' generation-options.json) \
+            repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}/collaborators/$(jq -r '.maintainer_name' generation-options.json) \
             -X PUT \
             -f permission='maintain'
         env:
