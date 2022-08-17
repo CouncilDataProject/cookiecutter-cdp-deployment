@@ -18,7 +18,7 @@ jobs:
       # Initial Hello and Documentation
 
       - name: Find Validation Results Comment - Pre Run
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@v2
         id: find-validation-results-comment-pre
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -127,7 +127,7 @@ jobs:
           echo "::set-output name=region::$region"
 
       - name: Find Validation Results Comment - Post Run
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@v2
         id: find-validation-results-comment-post
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -174,7 +174,7 @@ jobs:
             _This comment was written by a bot!_
 
       - name: Find Infrastructure Slug Comment
-        uses: peter-evans/find-comment@v1
+        uses: peter-evans/find-comment@v2
         id: find-infra-slug-comment
         with:
           issue-number: ${{ github.event.issue.number }}
