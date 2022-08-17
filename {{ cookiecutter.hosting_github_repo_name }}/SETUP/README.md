@@ -7,8 +7,8 @@ This document outlines the steps necessary to finish initializing this CDP Insta
 Install the command line tools that will help shorten the setup process
 
 1. Install [gcloud](https://cloud.google.com/sdk/docs/install)
-2. Install [pulumi](https://www.pulumi.com/docs/get-started/install/)
-3. Install [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
+2. Install [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
+3. Install [firebase-tools](https://firebase.google.com/docs/cli/)
 
 ## Initial Repository Setup
 
@@ -24,17 +24,30 @@ There are additional tasks required after generating this repository.
     -   Do not initialize with any of the extra options
     -   Click "Create repository".
 
-1.  Login to both Google Cloud and Pulumi.
+1. Install `cdp-backend`.
 
-    **IMPORTANT:** During this process Pulumi will provide a token to use for authentication.
-    **Keep this token available for use in a later step.**
+    This step should be ran while within the `SETUP` directory (`cd SETUP`).
+
+    ```bash
+    pip install ../python/
+    ```
+
+1. Get the infrastructure files.
+
+    This step should be ran while within the `SETUP` directory (`cd SETUP`).
+
+    ```bash
+    get_cdp_infrastructure_stack .
+    ```
+
+1.  Login to Google Cloud.
 
     This step should be run while within the `SETUP` directory (`cd SETUP`).
 
     Run:
 
     ```bash
-    make login
+    just login
     ```
 
 1.  Initialize the basic project infrastructure.
@@ -44,7 +57,17 @@ There are additional tasks required after generating this repository.
     Run:
 
     ```bash
-    make init
+    just init {{ cookiecutter.infrastructure_slug }}
+    ```
+
+    This step will also generate a Google Service Account JSON file and store it
+    in a directory called `.keys` in the root of this repository.
+
+1.  Set or update the `GOOGLE_APPLICATION_CREDENTIALS` environment variable to the
+    path to the key that was just generated.
+
+    ```bash
+    export GOOGLE_APPLICATION_CREDENTIALS="INSERT/PATH/HERE"
     ```
 
 1.  Create (or re-use) a
@@ -53,32 +76,35 @@ There are additional tasks required after generating this repository.
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
-1.  Generate a Google Service Account JSON Key for your Google Cloud Project.
-
-    This will create a directory called `.keys` within this `SETUP` directory and
-    add a file called `{{ cookiecutter.infrastructure_slug }}.json` to it
-    (i.e. `.keys/{{ cookiecutter.infrastructure_slug }})`. This file will be used later on.
-
-    Run:
+1.  Generate a Firebase CI token.
 
     ```bash
-    make gen-key
+    firebase login:ci
     ```
 
-1.  Attach the Pulumi Access Token and the
-    Google Service Account JSON as GitHub Repository Secrets.
+    Save this token for the next step!
 
-    1. Pulumi Access Token -- Create a [new secret]({{ cookiecutter.hosting_github_url }}/settings/secrets/actions/new)
+1.  Attach the Google Service Account JSON as GitHub Repository Secret.
 
-    -   Set the name to: **PULUMI_ACCESS_TOKEN**
-    -   Set the value to: The token you kept from step #2
-    -   Click "Add secret"
-
-    2. Google Service Account JSON -- Create a [new secret]({{ cookiecutter.hosting_github_url }}/settings/secrets/actions/new)
+    1. Create a [new secret]({{ cookiecutter.hosting_github_url }}/settings/secrets/actions/new)
 
     -   Set the name to: **GOOGLE_CREDENTIALS**
     -   Set the value to: the contents of the file `.keys/{{ cookiecutter.infrastructure_slug }}.json`
     -   Click "Add secret"
+
+    2. Create a [new secret]({{ cookiecutter.hosting_github_url }}/settings/secrets/actions/new)
+
+    -   Set the name to: **FIREBASE_TOKEN**
+    -   Set the value to: the value of the token you created in the prior step.
+    -   Click "Add secret"
+
+1.  Build the basic project infrastructure.
+
+    This step should be run while within the `SETUP` directory (`cd SETUP`)
+
+    ```bash
+    just setup {{ cookiecutter.firestore_region }}
+    ```
 
 1.  Initialize and push the local repository to GitHub.
 
@@ -125,55 +151,12 @@ There are additional tasks required after generating this repository.
 
 1.  Once the
     ["Infrastructure" GitHub Action Successfully Completes]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
-    set the CORS policy for your Storage Bucket.
-
-    This step should be run while within the `SETUP` directory (`cd SETUP`)
-
-    Run:
-
-    ```bash
-    make set-cors
-    ```
-
-1.  Once the
-    ["Infrastructure" GitHub Action Successfully Completes]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
     enable data-logging for the Google Speech-to-Text service.
 
     [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project={{ cookiecutter.infrastructure_slug }})
 
     If the above direct link doesn't work, follow the instructions from
     [Google Documentation](https://cloud.google.com/speech-to-text/docs/enable-data-logging).
-
-1.  Once the
-    ["Infrastructure" GitHub Action Successfully Completes]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
-    configure Firebase Security Rules.
-
-    -   Navigate to [Firebase Console](https://console.firebase.google.com),
-        login to the Google Account you used during step #2, select the `{{ cookiecutter.infrastructure_slug }}` Firebase project
-        -   Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
-            ```
-            rules_version = '2';
-            service cloud.firestore {
-                match /databases/{database}/documents {
-                    match /{document=**} {
-                        allow read;
-                    }
-                }
-            }
-            ```
-        -   Click "Publish"
-        -   Navigate to "Storage", select the "Rules" tab, paste the following in:
-            ```
-            rules_version = '2';
-            service firebase.storage {
-                match /b/{bucket}/o {
-                    match /{allPaths=**} {
-                        allow read;
-                    }
-                }
-            }
-            ```
-        -   Click "Publish"
 
 **If all steps complete successful your web application will be viewable at: {{ cookiecutter.hosting_web_app_address }}**
 

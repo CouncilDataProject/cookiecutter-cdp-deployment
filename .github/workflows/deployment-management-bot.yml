@@ -67,7 +67,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.9'
+          python-version: '3.10'
       - name: Install Bot Scripts Dependencies
         run: |
           pip install --upgrade pip
@@ -170,7 +170,7 @@ jobs:
 
       - name: Init Git
         run: |
-          cd ${{ steps.municipality-slug.outputs.slug }}
+          cd ${{ steps.infra-meta.outputs.slug }}
           git config --global user.email "councildataproject@gmail.com"
           git config --global user.name "CouncilDataProjectServiceAccount"
           git init
@@ -180,7 +180,7 @@ jobs:
 
       # Replace scraper with provided
       - name: Add cdp-scrapers as dependency
-        run: sed -i '21 i \    "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]",' ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
+        run: sed -i '21 i \    "cdp-scrapers[${{ steps.infra-meta.outputs.python_slug }}]",' ${{ steps.infra-meta.outputs.slug }}/python/setup.py
 
       # Get scraper path and update scraper function
       # The sed after param2 extract is to replace `/` with `\/` to escape the char
@@ -209,7 +209,7 @@ jobs:
             .github/workflows/resources/base_legistar_scraper.py
           mv \
             .github/workflows/resources/base_legistar_scraper.py \
-            ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
+            ${{ steps.infra-meta.outputs.slug }}/python/cdp_${{ steps.infra-meta.outputs.python_slug }}_backend/scraper.py
 
       # Use custom scraper
       - name: Add Custom Scraper
@@ -221,19 +221,18 @@ jobs:
             .github/workflows/resources/custom_scraper.py
           mv \
             .github/workflows/resources/custom_scraper.py \
-            ${{ steps.municipality-slug.outputs.slug }}/python/cdp_${{ steps.municipality-slug.outputs.python_slug }}_backend/scraper.py
+            ${{ steps.infra-meta.outputs.slug }}/python/cdp_${{ steps.infra-meta.outputs.python_slug }}_backend/scraper.py
       
       # Commit scraper changes
       - name: Commit Scraper Dep and Usage
         run: |
-          cd ${{ steps.municipality-slug.outputs.slug }}
+          cd ${{ steps.infra-meta.outputs.slug }}
           git add -A
           git commit -m "Update scraper dependency and implementation"
 
       - name: Remove SETUP
         run: |
-          cd ${{ steps.municipality-slug.outputs.slug }}
-          rm -Rf SETUP/
+          cd ${{ steps.infra-meta.outputs.slug }}
           git add -A
           git commit -m "Remove SETUP dir"
 
@@ -280,7 +279,7 @@ jobs:
           )
         run: |
           gh api \
-            repos/CouncilDataProject/${{ steps.municipality-slug.outputs.slug }}/collaborators/$(jq -r '.maintainer_name' generation-options.json) \
+            repos/CouncilDataProject/${{ steps.infra-meta.outputs.slug }}/collaborators/$(jq -r '.maintainer_name' generation-options.json) \
             -X PUT \
             -f permission='maintain'
         env:
@@ -309,41 +308,17 @@ jobs:
 
             ##### Final Setup
 
-            * [ ] Run `make gen-key project=${{ steps.infrastructure-slug.outputs.slug }}`
+            * [ ] Copy the key generated from the prior `just init` process
             * [ ] Use the generated key as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
             * [ ] Rerun the [infrastructure setup job](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions/workflows/deploy-infra.yml), then:
-              * [ ] Run `make set-cors project=${{ steps.infrastructure-slug.outputs.slug }}`
               * [ ] Enable [Google Speech-to-Text Data Logging](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=${{ steps.infrastructure-slug.outputs.slug }})
-              * [ ] Navigate to [Firebase Console](https://console.firebase.google.com), login to the CDP Google account, select the `${{ steps.infrastructure-slug.outputs.slug }}` Firebase project
-                * [ ] Navigate to "Firestore Database", select the "Rules" tab, paste the following in:
-                  ```
-                  rules_version = '2';
-                  service cloud.firestore {
-                    match /databases/{database}/documents {
-                      match /{document=**} {
-                        allow read;
-                      }
-                    }
-                  }
-                  ```
-                * [ ] Navigate to "Storage", select the "Rules" tab, paste the following in:
-                  ```
-                  rules_version = '2';
-                  service firebase.storage {
-                    match /b/{bucket}/o {
-                      match /{allPaths=**} {
-                        allow read;
-                      }
-                    }
-                  }
-                  ```
             * [ ] Enable [GitHub Pages](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/pages)
             * [ ] Comment on this issue with "Deployment Status - Complete" and the instance URL
 
             ##### Deletion Steps (Future Reference)
             
             * [ ] Delete the [instance repository](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings)
-            * [ ] Run `make login` and login to the CDP gcloud and pulumi accounts
-            * [ ] Run `make destroy project=${{ steps.infrastructure-slug.outputs.slug }}`
+            * [ ] Run `just login` and login to the CDP gcloud
+            * [ ] Run `just destroy project=${{ steps.infrastructure-slug.outputs.slug }}`
 
-            More details on the `make` commands can be found in [cdp-backend](https://github.com/CouncilDataProject/cdp-backend/tree/main/dev-infrastructure).
+            More details on the `just` commands can be found in [cdp-backend](https://github.com/CouncilDataProject/cdp-backend/tree/main/dev-infrastructure).

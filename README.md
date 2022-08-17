@@ -79,7 +79,6 @@ you will need to install `cookiecutter` and use this template.
 Before you begin, please note that you will need to install or have available the following:
 
 -   [gcloud](https://cloud.google.com/sdk/docs/install)
--   [pulumi](https://www.pulumi.com/docs/get-started/install/)
 -   [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
 -   [Python 3.6+](https://www.python.org/downloads/) (Any Python version greater than or equal to 3.6)
 
@@ -109,7 +108,7 @@ see [Cookiecutter Repo Generation](#cookiecutter-repo-generation).
 The short summary of setup tasks remaining are:
 
 -   The creation of a new GitHub repository for the instance.
--   Logging in or creating accounts for Google Cloud and Pulumi.
+-   Logging in or creating an account for Google Cloud.
 -   Initialize the basic infrastructure.
 -   Assign a billing account to the created Google Cloud project.
 -   Generate credentials for the Google Project for use in automated scripts.
@@ -152,12 +151,6 @@ file storage, and (if needed) [speech-to-text](#speech-to-text) for transcriptio
 You can see more about the average monthly cost of running a
 CDP Instance in [Cost](#cost).
 
-[Pulumi](#pulumi) is a service to manage and track infrastructure deployment state.
-For those familiar with [Terraform](https://www.terraform.io/),
-the two are quite similar. Pulumi's purpose is to ensure that we can move from
-infrastructure upgrade to infrastructure upgrade without breaking anything
-(and skipping things that don't need to be done).
-
 For more details see [Cookiecutter Repo Generation](#cookiecutter-repo-generation).
 _After creating the repo, the following steps will have instructions and links specific_
 _to your deployment in the generated repository's README._
@@ -186,7 +179,7 @@ cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment
 ```
 
 _Note: This will only create the basic repository._
-_You will still need to setup Google Cloud and Pulumi accounts._
+_You will still need to set up a Google Cloud account._
 
 ### Google Cloud
 
@@ -196,25 +189,6 @@ Google Cloud Platform (GCP).
 -   Your deployment's provided and generated data (meeting dates, committee names, councilmember details, etc) will live in [Firestore](https://cloud.google.com/firestore).
 -   Your deployment's generated files (audio clips, transcripts, etc.) will live in [Filestore](https://cloud.google.com/filestore).
 -   When provided a video without closed captions, the audio from the provided video will be processed using [Speech-to-Text](https://cloud.google.com/speech-to-text).
-
-All of these resources will be set up for you using [Pulumi](#pulumi) but
-you will need to create both Google Cloud and Pulumi accounts. More information
-on these services and the steps for account creation can be found in the
-generated repository's README.
-
-### Pulumi
-
-Pulumi allows CDP developers and Instance maintainers to create, deploy, and manage
-infrastructure on any cloud using familiar programming languages and tools.
-It additionally, stores and tracks the _state_ of the CDP infrastructure,
-i.e. how many and which file storage, database, and processing resources are available.
-
-For CDP Instance maintainers, this simply means, the infrastructure management is
-packaged up as a part of `cdp-backend`, _and_ the infrastructure will never be
-incompatible with the pipelines as they are versioned together.
-
-Pulumi is free, and generally, you as an instance maintainer should never have to
-interact with Pulumi other than during the CDP Instance creation and setup process.
 
 ## Cost
 
@@ -229,7 +203,6 @@ Free Resources and Infrastructure:
 -   Event Processing (GitHub Actions)
 -   Event and Legislation Indexing (GitHub Actions)
 -   Web Hosting (GitHub Pages)
--   Infrastructure State Management (Pulumi)
 
 The backend resources and processing are the only real costs and depend on usage.
 The more users that use your web application, the more the database and

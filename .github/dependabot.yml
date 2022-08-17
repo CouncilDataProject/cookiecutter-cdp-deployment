@@ -1,14 +1,21 @@
 version: 2
 updates:
+  - package-ecosystem: "github-actions"
+    directory: "/.github"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "ci(dependabot):"
+
   - package-ecosystem: "pip"
-    directory: "/python"
+    directory: "/"
     schedule:
       interval: "daily"
     allow:
       - dependency-name: "cdp-backend"
 
   - package-ecosystem: "npm"
-    directory: "/web"
+    directory: "/"
     schedule:
       interval: "daily"
     allow:

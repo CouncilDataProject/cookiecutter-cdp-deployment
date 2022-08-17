@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
     # Setup Node
     - name: Setup Node
@@ -35,10 +35,7 @@ jobs:
         npm run build
 
     # Deploy Web
-    - name: Deploy Web
-      uses: JamesIves/github-pages-deploy-action@3.7.1
-      with:
-        GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
-        BASE_BRANCH: main # The branch the action should deploy from.
-        BRANCH: gh-pages # The branch the action should deploy to.
-        FOLDER: web/build/ # The folder the action should deploy.
+    - name: Publish Docs
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: web/build/

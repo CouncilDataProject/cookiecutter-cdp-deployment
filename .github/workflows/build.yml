@@ -22,7 +22,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v1
       with:
-        python-version: 3.9
+        python-version: '3.10'
     - name: Setup Node
       uses: actions/setup-node@v1
       with:
@@ -59,11 +59,7 @@ jobs:
         npm run build
 
     # Publish the generated repo
-    - name: Publish Generated Repo
-      uses: JamesIves/github-pages-deploy-action@releases/v3
+    - name: Publish Docs
+      uses: JamesIves/github-pages-deploy-action@v4
       with:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BASE_BRANCH: main # The branch the action should deploy from.
-        BRANCH: 'example-build' # The branch the action should deploy to.
-        FOLDER: example/ # The folder the action should deploy
-        CLEAN: true
+        folder: example/

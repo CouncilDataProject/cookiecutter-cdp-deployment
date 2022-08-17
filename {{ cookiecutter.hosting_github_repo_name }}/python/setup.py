@@ -5,10 +5,20 @@
 
 from setuptools import find_packages, setup
 
+requirements = [
+    "cdp-backend==3.2.0.dev0",
+]
+
+pipeline_requirements = [
+    "cdp-backend==3.2.0.dev0",
+]
+
+
 test_requirements = [
     "black>=19.10b0",
     "flake8>=3.8.3",
     "flake8-debugger>=3.2.1",
+    *pipeline_requirements,
 ]
 
 dev_requirements = [
@@ -16,15 +26,13 @@ dev_requirements = [
     "wheel>=0.34.2",
 ]
 
-requirements = [
-    "cdp-backend[pipeline]==3.1.1",
-]
-
 extra_requirements = {
+    "pipeline": pipeline_requirements,
     "test": test_requirements,
     "dev": dev_requirements,
     "all": [
         *requirements,
+        *pipeline_requirements,
         *dev_requirements,
     ],
 }
@@ -36,7 +44,7 @@ setup(
         "Intended Audience :: Developers",
         "License :: OSI Approved :: MIT License",
         "Natural Language :: English",
-        "Programming Language :: Python :: 3.9",
+        "Programming Language :: Python :: 3.10",
     ],
     description="Package containing the gather functions for Example.",
     install_requires=requirements,
@@ -46,7 +54,7 @@ setup(
     keywords="civic technology, open government",
     name="cdp-{{ cookiecutter.python_municipality_slug }}-backend",
     packages=find_packages(exclude=["tests", "*.tests", "*.tests.*"]),
-    python_requires=">=3.9",
+    python_requires=">=3.10",
     tests_require=test_requirements,
     extras_require=extra_requirements,
     url="{{ cookiecutter.hosting_github_url }}",
