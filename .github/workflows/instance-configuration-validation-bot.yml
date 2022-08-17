@@ -26,7 +26,7 @@ jobs:
           body-includes: 'Form Validation Results'
 
       - name: Set Initial Comment State
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         if: ${{ steps.find-validation-results-comment-pre.outputs.comment-id == 0 }}
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -51,7 +51,7 @@ jobs:
             _This comment was written by a bot!_
       
       - name: Reset Initial Comment State
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         if: ${{ steps.find-validation-results-comment-pre.outputs.comment-id != 0 }}
         with:
           comment-id: ${{ steps.find-validation-results-comment-pre.outputs.comment-id }}
@@ -135,7 +135,7 @@ jobs:
           body-includes: 'Form Validation Results'
 
       - name: Post Validation Results
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{ steps.find-validation-results-comment-post.outputs.comment-id }}
           edit-mode: 'replace'
@@ -182,7 +182,7 @@ jobs:
           body-includes: 'Generated Infrastructure Slug'
 
       - name: Set Initial Infra Slug Comment State
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         if: ${{ steps.find-infra-slug-comment.outputs.comment-id == 0 }}
         with:
           issue-number: ${{ github.event.issue.number }}
@@ -194,7 +194,7 @@ jobs:
             _This comment was written by a bot!_
       
       - name: Reset Infra Slug Comment State
-        uses: peter-evans/create-or-update-comment@v1
+        uses: peter-evans/create-or-update-comment@v2
         if: ${{ steps.find-infra-slug-comment.outputs.comment-id != 0 }}
         with:
           comment-id: ${{ steps.find-infra-slug-comment.outputs.comment-id }}
