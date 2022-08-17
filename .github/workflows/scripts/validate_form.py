@@ -8,7 +8,7 @@ import logging
 import sys
 import traceback
 
-from cdp_backend.infrastructure.cdp_stack import GoverningBody
+from cdp_backend.infrastructure import GoverningBody
 from cdp_scrapers.legistar_utils import LegistarScraper
 from cdp_scrapers import instances
 import requests

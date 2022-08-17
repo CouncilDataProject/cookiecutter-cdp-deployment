@@ -83,7 +83,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v3
         with:
-          python-version: '3.9'
+          python-version: '3.10'
       - name: Install Bot Scripts Dependencies
         run: |
           pip install --upgrade pip
@@ -116,13 +116,15 @@ jobs:
           body="${body//$'\r'/'%0D'}" 
           echo ::set-output name=body::$body
 
-      - name: Get Municipality Slug
-        id: municipality-slug
+      - name: Get Infrastructure Metadata
+        id: infra-meta
         run: |
           slug=$(jq -r '.municipality_slug' planned-cookiecutter.json)
           infra_slug=$(jq -r '.infrastructure_slug' planned-cookiecutter.json)
+          region=$(jq -r '.firestore_region' planned-cookiecutter.json)
           echo "::set-output name=slug::$slug"
           echo "::set-output name=infra_slug::$infra_slug"
+          echo "::set-output name=region::$region"
 
       - name: Find Validation Results Comment - Post Run
         uses: peter-evans/find-comment@v1
@@ -161,11 +163,13 @@ jobs:
 
             To proceed with the deployment process, please do the following:
 
-            * [ ] Run `make login` in cdp-backend/dev-infrastructure and login to the CDP gcloud and pulumi accounts
-            * [ ] Run `make init project=${{ steps.municipality-slug.outputs.infra_slug }}` in cdp-backend/dev-infrastructure
+            * [ ] Run `get_cdp_infrastructure_stack dev-infrastructure/`
+            * [ ] Run `just login` in cdp-backend/dev-infrastructure and login to the CDP gcloud account
+            * [ ] Run `just init ${{ steps.infra-meta.outputs.infra_slug }}` in cdp-backend/dev-infrastructure
+            * [ ] Run `just setup ${{ steps.infra-meta.outputs.region }}` in cdp-backend/dev-infrastructure
             * [ ] Comment "/cdp-deploy" on this issue and follow the rest of the instructions
 
-            More details on the `make` commands can be found in [cdp-backend](https://github.com/CouncilDataProject/cdp-backend/tree/main/dev-infrastructure).
+            More details on the `just` commands can be found in [cdp-backend](https://github.com/CouncilDataProject/cdp-backend/tree/main/dev-infrastructure).
             
             _This comment was written by a bot!_
 

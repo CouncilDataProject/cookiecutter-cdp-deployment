@@ -1,7 +1,14 @@
 version: 2
 updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "ci(dependabot):"
+
   - package-ecosystem: "pip"
-    directory: "/python"
+    directory: "/"
     schedule:
       interval: "daily"
     allow:
@@ -10,7 +17,7 @@ updates:
       prefix: "ci(dependabot):"
 
   - package-ecosystem: "npm"
-    directory: "/web"
+    directory: "/"
     schedule:
       interval: "daily"
     allow:

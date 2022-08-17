@@ -32,19 +32,7 @@ To do so, you should feel comfortable with the command line and git.
 
     - `pip install cookiecutter`
 
-3. _Partially_ run `cookiecutter`:
-
-    We simply want to download the latest version of this cookiecutter template,
-    to do so:
-
-    - `cookiecutter gh:CouncilDataProject/cookiecutter-cdp-deployment`
-
-    Re-download the latest version and then when prompted for parameter input,
-    escape or exit the process (`control+c`).
-
-    ![screenshot of terminal after cookiecutter interrupt](./resources/cookiecutter-interrupt.png)
-
-4. Update your repo using the latest cookiecutter version:
+3. Update your repo using the latest cookiecutter version:
 
     This will pull in the current cookiecutter updates as changes to the current
     repository.
@@ -55,9 +43,11 @@ To do so, you should feel comfortable with the command line and git.
 
     Then run:
 
-    - `make update-from-cookiecutter`
+    - `just update-from-cookiecutter`
 
-5. Select the desired changes to commit:
+    **Note: you may need to install [just](https://github.com/casey/just#packages).**
+
+4. Select the desired changes to commit:
 
     In an editor or in the terminal you can now review the changes to commit.
 
@@ -67,13 +57,13 @@ To do so, you should feel comfortable with the command line and git.
     - `git add {some-file}`
     - OR `git restore {some-file}`
 
-    ![screenshot of make update and resulting git status](./resources/update-and-git-status.png)
+    ![screenshot of just update and resulting git status](./resources/update-and-git-status.png)
 
     In VS Code:
 
     ![screenshot of source control pane in vs code](./resources/vs-code-status.png)
 
-6. Commit and push:
+5. Commit and push:
 
     With the desired changes selected, commit and push to update your repository.
     It is recommended to include the cookiecutter version in your commit message.

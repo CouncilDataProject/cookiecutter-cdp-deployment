@@ -17,20 +17,43 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
+
+    # Install OS Deps
     - uses: actions/setup-python@v1
       with:
-        python-version: 3.9
+        python-version: '3.10'
+    - uses: extractions/setup-just@v1
+      env:
+        GITHUB_TOKEN: {% raw %}${{ secrets.GITHUB_TOKEN }}{% endraw %}
+    - name: Install firebase-cli
+      run: |
+        curl -sL https://firebase.tools | bash
+
+    # Install cdp-backend
     - name: Install Dependencies
       run: |
-        cd infra/
-        pip install -r requirements.txt
-    - name: Run Infrastructure Deploy
-      uses: pulumi/actions@v3
+        cd python/
+        pip install .
+    
+    # Setup gcloud
+    - uses: 'google-github-actions/auth@v0'
       with:
-        command: up
-        parallel: 4
-        stack-name: {{ cookiecutter.infrastructure_slug }}
-        work-dir: infra/
+        credentials_json: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+    - name: Set up Cloud SDK
+      uses: google-github-actions/setup-gcloud@v0
+
+    # Generate / copy infrastructure files
+    - name: Copy and Generate Infrastructure Files
+      run: |
+        get_cdp_infrastructure_stack infrastructure
+    
+    # Run infrastructure deploy
+    - name: Run Infrastructure Deploy
+      run: |
+        cd infrastructure
+        echo "$GOOGLE_CREDENTIALS" > google-creds.json
+        export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-creds.json
+        just deploy {{ cookiecutter.infrastructure_slug }} ../cookiecutter.yaml
       env:
+        FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
-        PULUMI_ACCESS_TOKEN: {% raw %}${{ secrets.PULUMI_ACCESS_TOKEN }}{% endraw %}
