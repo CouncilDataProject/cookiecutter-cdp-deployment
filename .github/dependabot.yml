@@ -24,3 +24,28 @@ updates:
       - dependency-name: "@councildataproject/cdp-frontend"
     commit-message:
       prefix: "ci(dependabot):"
+
+  - package-ecosystem: "github-actions"
+    directory: "/{{ cookiecutter.hosting_github_repo_name }}/"
+    schedule:
+      interval: "daily"
+    commit-message:
+      prefix: "ci(dependabot):"
+
+  - package-ecosystem: "pip"
+    directory: "/{{ cookiecutter.hosting_github_repo_name }}/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-name: "cdp-backend"
+    commit-message:
+      prefix: "ci(dependabot):"
+
+  - package-ecosystem: "npm"
+    directory: "/{{ cookiecutter.hosting_github_repo_name }}/"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-name: "@councildataproject/cdp-frontend"
+    commit-message:
+      prefix: "ci(dependabot):"
