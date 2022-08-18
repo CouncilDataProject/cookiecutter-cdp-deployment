@@ -230,12 +230,6 @@ jobs:
           git add -A
           git commit -m "Update scraper dependency and implementation"
 
-      - name: Remove SETUP
-        run: |
-          cd ${{ steps.municipality-slug.outputs.slug }}
-          git add -A
-          git commit -m "Remove SETUP dir"
-
       - name: Setup Git SSH
         run: |
           eval "$(ssh-agent -s)"
