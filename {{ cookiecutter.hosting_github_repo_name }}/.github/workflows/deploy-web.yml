@@ -36,6 +36,6 @@ jobs:
 
     # Deploy Web
     - name: Publish Docs
-        uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: web/build/
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: web/build/
