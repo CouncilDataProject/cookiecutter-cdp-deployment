@@ -57,7 +57,7 @@ There are additional tasks required after generating this repository.
     Run:
 
     ```bash
-    just init cdp-example-gcsvieda
+    just init cdp-example-mpupsfnl
     ```
 
     This step will also generate a Google Service Account JSON file and store it
@@ -71,8 +71,8 @@ There are additional tasks required after generating this repository.
     ```
 
 1.  Create (or re-use) a
-    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-gcsvieda)
-    and attach it to the newly created project (cdp-example-gcsvieda).
+    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-mpupsfnl)
+    and attach it to the newly created project (cdp-example-mpupsfnl).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
@@ -89,7 +89,7 @@ There are additional tasks required after generating this repository.
     1. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
     -   Set the name to: **GOOGLE_CREDENTIALS**
-    -   Set the value to: the contents of the file `.keys/cdp-example-gcsvieda.json`
+    -   Set the value to: the contents of the file `.keys/cdp-example-mpupsfnl.json`
     -   Click "Add secret"
 
     2. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
@@ -153,7 +153,7 @@ There are additional tasks required after generating this repository.
     ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
     enable data-logging for the Google Speech-to-Text service.
 
-    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=cdp-example-gcsvieda)
+    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=cdp-example-mpupsfnl)
 
     If the above direct link doesn't work, follow the instructions from
     [Google Documentation](https://cloud.google.com/speech-to-text/docs/enable-data-logging).
