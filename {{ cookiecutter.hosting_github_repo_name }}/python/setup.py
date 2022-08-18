@@ -10,9 +10,8 @@ requirements = [
 ]
 
 pipeline_requirements = [
-    "cdp-backend==3.2.0.dev0",
+    "cdp-backend[pipeline]==3.2.0.dev0",
 ]
-
 
 test_requirements = [
     "black>=19.10b0",
