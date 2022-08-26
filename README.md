@@ -138,6 +138,8 @@ You can also see an example generated repository and the full steps listed
 | hosting_github_url             | From the provided information, the expected URL of the GitHub repository.                                                                   | https://github.com/JacksonMaxfield/cdp-seattle | https://github.com/CouncilDataProject/king-county |
 | hosting_web_app_address        | From the provided information, the expected URL of the web application.                                                                     | https://jacksonmaxfield.github.io/cdp-seattle  | https://councildataproject.org/king-county        |
 | firestore_region               | The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations))                 | us-west1                                       | europe-central2                                   |
+| default_event_gather_timedelta_lookback_days               | The number of days to look back from the current date every time the event scraper runs.                  | 2                                       | 6                                   |
+| default_event_gather_cron               | The event gather CRON configuration. ([GitHub Actions CRON Details](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule))                 | 26 0,6,12,18 * * *                                       | 17 3,9,15,21 * * *                                   |
 
 ### Things to Know
 
