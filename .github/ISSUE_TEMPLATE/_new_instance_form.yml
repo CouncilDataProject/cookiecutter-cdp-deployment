@@ -4,7 +4,7 @@ title: "[Instance]: "
 labels:
   - "new instance"
 assignees:
-  - JacksonMaxfield
+  - evamaxfield
 body:
   - type: markdown
     attributes:
@@ -44,7 +44,7 @@ body:
     attributes:
       label: Maintainer GitHub Name
       description: Who will act as the primary maintainer of the new CDP Instance.
-      placeholder: ex. "JacksonMaxfield"
+      placeholder: ex. "evamaxfield"
     validations:
       required: true
   - type: markdown

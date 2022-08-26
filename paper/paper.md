@@ -11,7 +11,7 @@ tags:
     - civic technology
     - natural language processing
 authors:
-    - name: Jackson Maxfield Brown
+    - name: Eva Maxfield Brown
       orcid: 0000-0003-2564-0373
       affiliation: 1
     - name: To Huynh
