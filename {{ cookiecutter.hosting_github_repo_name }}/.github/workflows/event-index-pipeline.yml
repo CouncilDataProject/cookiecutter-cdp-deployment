@@ -126,7 +126,7 @@ jobs:
     - name: Install Python Dependencies
       run: |
         cd python/
-        pip install .
+        pip install .[pipeline]
     
     # Upload Index Chunk
     - name: Process Upload
