@@ -4,5 +4,5 @@
     "gcs_bucket_name": null,
     "caption_new_speaker_turn_pattern": null,
     "caption_confidence": null,
-    "default_event_gather_from_days_timedelta": {{ cookiecutter.default_event_gather_timedelta_lookback_days }}
+    "default_event_gather_from_days_timedelta": {{ cookiecutter.event_gather_timedelta_lookback_days }}
 }

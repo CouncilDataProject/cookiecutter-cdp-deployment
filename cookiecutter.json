@@ -39,7 +39,7 @@
         "asia-northeast3",
         "australia-southeast1"
     ],
-    "default_event_gather_timedelta_lookback_days": 2,
-    "default_event_gather_cron": "26 0,6,12,18 * * *",
+    "event_gather_timedelta_lookback_days": 2,
+    "event_gather_cron": "26 0,6,12,18 * * *",
     "_extensions": ["cookiecutter.extensions.RandomStringExtension"]
 }
