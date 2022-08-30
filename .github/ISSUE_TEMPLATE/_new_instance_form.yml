@@ -91,8 +91,8 @@ body:
     id: event_gather_cron
     attributes:
       label: Event Gather CRON
-      description: The event gather CRON configuration. ([GitHub Actions CRON Details](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)) Default - '26 0,6,12,18 * * *'
-      placeholder: ex. "26 0,6,12,18 * * *", "17 3,9,15,21 * * *"
+      description: The event gather CRON configuration. ([GitHub Actions CRON Details](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule)) Default - randomly twice per day, twelve hours apart
+      placeholder: ex. "26 0,6,12,18 * * *", "17 3,15 * * *"
   - type: checkboxes
     id: terms
     attributes:

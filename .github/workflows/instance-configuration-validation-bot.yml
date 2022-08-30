@@ -115,7 +115,7 @@ jobs:
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
           cat planned-cookiecutter.json
-          echo ::set-output name=body::$body
+          echo ::set-output name=body::'$body'
 
       - name: Get Infrastructure Metadata
         id: infra-meta

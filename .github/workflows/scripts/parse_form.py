@@ -8,6 +8,7 @@ import sys
 import traceback
 from typing import Dict, List, Optional
 from uuid import uuid4
+from random import randint
 
 from cdp_backend.utils.string_utils import clean_text
 
@@ -55,7 +56,11 @@ NO_RESPONSE = "_No response_"
 
 DEFAULT_FIRESTORE_REGION = "us-central"
 DEFAULT_EVENT_GATHER_TIMEDELTA = 2
-DEFAULT_EVENT_GATHER_CRON = "26 0,6,12,18 * * *"
+
+RANDOM_MINUTE = randint(0, 59)  # inclusive
+RANDOM_HOUR = randint(0, 23)  # inclusive
+OFFSET_HOUR = (RANDOM_HOUR + 12) % 24
+DEFAULT_EVENT_GATHER_CRON = f"{RANDOM_MINUTE} {RANDOM_HOUR},{OFFSET_HOUR} * * *"
 
 ###############################################################################
 
@@ -126,7 +131,7 @@ def parse_form(issue_content_file: str) -> Dict[str, Dict[str, str]]:
     if form_values[EVENT_GATHER_TIMEDELTA] is None:
         event_gather_timedelta = DEFAULT_EVENT_GATHER_TIMEDELTA
     else:
-        event_gather_timedelta = form_values[EVENT_GATHER_TIMEDELTA]
+        event_gather_timedelta = int(form_values[EVENT_GATHER_TIMEDELTA])
 
     # Get event gather cron
     if form_values[EVENT_GATHER_CRON] is None:
