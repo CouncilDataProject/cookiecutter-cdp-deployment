@@ -36,6 +36,8 @@ FIRESTORE_REGION = "firestore_region"
 
 LEGISTAR_CLIENT_ID = "legistar_client_id"
 IANA_CLIENT_TIMEZONE = "iana_timezone"
+EVENT_GATHER_TIMEDELTA = "event_gather_timedelta_lookback_days"
+EVENT_GATHER_CRON = "event_gather_cron"
 
 FORM_FIELD_TO_HEADER = {
     MUNICIPALITY_NAME: "Municipality Name",
@@ -45,11 +47,15 @@ FORM_FIELD_TO_HEADER = {
     FIRESTORE_REGION: "Firestore Region",
     LEGISTAR_CLIENT_ID: "Legistar Client Id",
     IANA_CLIENT_TIMEZONE: "Municipality Timezone",
+    EVENT_GATHER_TIMEDELTA: "Event Gather Timedelta Lookback Days",
+    EVENT_GATHER_CRON: "Event Gather CRON",
 }
 
 NO_RESPONSE = "_No response_"
 
 DEFAULT_FIRESTORE_REGION = "us-central"
+DEFAULT_EVENT_GATHER_TIMEDELTA = 2
+DEFAULT_EVENT_GATHER_CRON = "26 0,6,12,18 * * *"
 
 ###############################################################################
 
@@ -116,6 +122,18 @@ def parse_form(issue_content_file: str) -> Dict[str, Dict[str, str]]:
     else:
         firestore_region = form_values[FIRESTORE_REGION]
 
+    # Get event gather timedelta
+    if form_values[EVENT_GATHER_TIMEDELTA] is None:
+        event_gather_timedelta = DEFAULT_EVENT_GATHER_TIMEDELTA
+    else:
+        event_gather_timedelta = form_values[EVENT_GATHER_TIMEDELTA]
+
+    # Get event gather cron
+    if form_values[EVENT_GATHER_CRON] is None:
+        event_gather_cron = DEFAULT_EVENT_GATHER_CRON
+    else:
+        event_gather_cron = form_values[EVENT_GATHER_CRON]
+
     all_options = {
         FORM_VALUES: form_values,
         COOKIECUTTER_OPTIONS: {
@@ -135,6 +153,8 @@ def parse_form(issue_content_file: str) -> Dict[str, Dict[str, str]]:
                 f"https://councildataproject.github.io/{municipality_slug}"
             ),
             FIRESTORE_REGION: firestore_region,
+            EVENT_GATHER_TIMEDELTA: event_gather_timedelta,
+            EVENT_GATHER_CRON: event_gather_cron,
         },
     }
 
