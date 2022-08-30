@@ -110,12 +110,11 @@ jobs:
       - name: Dump Cookiecutter Parameters
         id: dump-cookiecutter-parameters
         run: |
-          body=$(cat planned-cookiecutter.json)
+          body='$(cat planned-cookiecutter.json)'
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
-          cat planned-cookiecutter.json
-          echo ::set-output name=body::'$body'
+          echo ::set-output name=body::$body
 
       - name: Get Infrastructure Metadata
         id: infra-meta
@@ -191,7 +190,7 @@ jobs:
           body: |
             ##### Generated Infrastructure Slug
 
-            `${{ fromJSON(steps.dump-cookiecutter-parameters.outputs.body).infrastructure_slug }}`
+            `${{ steps.infra-meta.outputs.infra_slug }}`
             
             _This comment was written by a bot!_
       
@@ -204,6 +203,6 @@ jobs:
           body: |
             ##### Generated Infrastructure Slug
 
-            `${{ fromJSON(steps.dump-cookiecutter-parameters.outputs.body).infrastructure_slug }}`
+            `${{ steps.infra-meta.outputs.infra_slug }}`
             
             _This comment was written by a bot!_
