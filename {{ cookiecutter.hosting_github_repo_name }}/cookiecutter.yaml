@@ -11,5 +11,5 @@ default_context:
     hosting_github_url: "{{ cookiecutter.hosting_github_url }}"
     hosting_web_app_address: "{{ cookiecutter.hosting_web_app_address }}"
     firestore_region: "{{ cookiecutter.firestore_region }}"
-    event_gather_timedelta_lookback_days: {{ event_gather_timedelta_lookback_days }}
-    event_gather_cron: "{{ event_gather_cron }}"
+    event_gather_timedelta_lookback_days: {{ cookiecutter.event_gather_timedelta_lookback_days }}
+    event_gather_cron: "{{ cookiecutter.event_gather_cron }}"
