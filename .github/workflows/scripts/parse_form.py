@@ -58,8 +58,8 @@ DEFAULT_FIRESTORE_REGION = "us-central"
 DEFAULT_EVENT_GATHER_TIMEDELTA = 2
 
 RANDOM_MINUTE = randint(0, 59)  # inclusive
-RANDOM_HOUR = randint(0, 23)  # inclusive
-OFFSET_HOUR = (RANDOM_HOUR + 12) % 24
+RANDOM_HOUR = randint(0, 11)  # inclusive
+OFFSET_HOUR = RANDOM_HOUR + 12
 DEFAULT_EVENT_GATHER_CRON = f"{RANDOM_MINUTE} {RANDOM_HOUR},{OFFSET_HOUR} * * *"
 
 ###############################################################################

@@ -43,6 +43,10 @@ jobs:
             :hourglass_flowing_sand: Validating planned instance maintainer
             :hourglass_flowing_sand: Validating planned instance repository name
             :hourglass_flowing_sand: Determining event scraper strategy and optionally testing Legistar
+
+            #### All Cookiecutter Parameters
+
+            :hourglass_flowing_sand: Generating...
             
             _This comment was written by a bot!_
       
@@ -94,7 +98,6 @@ jobs:
       - name: Validate Form and Create Bot Response
         run: |
           python .github/workflows/scripts/validate_form.py issue-body.md
-          cat planned-cookiecutter.json
       - name: Set Response Content
         id: validation-message-response
         run: |
@@ -102,6 +105,17 @@ jobs:
           body="${body//'%'/'%25'}"
           body="${body//$'\n'/'%0A'}"
           body="${body//$'\r'/'%0D'}" 
+          echo ::set-output name=body::"$body"
+
+      - name: Dump Cookiecutter Parameters
+        id: dump-cookiecutter-parameters
+        run: |
+          set -f
+          body=$(cat planned-cookiecutter.json)
+          body="${body//'%'/'%25'}"
+          body="${body//$'\n'/'%0A'}"
+          body="${body//$'\r'/'%0D'}"
+          set +f
           echo ::set-output name=body::$body
 
       - name: Get Infrastructure Metadata
@@ -138,6 +152,12 @@ jobs:
             #### Form Validation Results
             
             ${{ steps.validation-message-response.outputs.body }}
+
+            #### All Cookiecutter Parameters
+
+            ```json
+            ${{ steps.dump-cookiecutter-parameters.outputs.body }}
+            ```
 
             ---
 

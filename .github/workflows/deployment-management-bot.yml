@@ -86,10 +86,12 @@ jobs:
       - name: Store Cookiecutter Options
         id: cookiecutter-options
         run: |
+          set -f
           content=$(cat planned-cookiecutter.json)
           content="${content//'%'/'%25'}"
           content="${content//$'\n'/'%0A'}"
           content="${content//$'\r'/'%0D'}" 
+          set +f
           echo ::set-output name=options::$content
 
       #########################################################################
