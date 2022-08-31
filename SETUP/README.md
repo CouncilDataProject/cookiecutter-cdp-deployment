@@ -57,7 +57,7 @@ There are additional tasks required after generating this repository.
     Run:
 
     ```bash
-    just init cdp-example-qnscglia
+    just init cdp-example-veaitsme
     ```
 
     This step will also generate a Google Service Account JSON file and store it
@@ -71,8 +71,8 @@ There are additional tasks required after generating this repository.
     ```
 
 1.  Create (or re-use) a
-    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-qnscglia)
-    and attach it to the newly created project (cdp-example-qnscglia).
+    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-veaitsme)
+    and attach it to the newly created project (cdp-example-veaitsme).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
@@ -89,7 +89,7 @@ There are additional tasks required after generating this repository.
     1. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
     -   Set the name to: **GOOGLE_CREDENTIALS**
-    -   Set the value to: the contents of the file `.keys/cdp-example-qnscglia.json`
+    -   Set the value to: the contents of the file `.keys/cdp-example-veaitsme.json`
     -   Click "Add secret"
 
     2. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
@@ -108,7 +108,7 @@ There are additional tasks required after generating this repository.
 
 1.  Initial Firebase Storage.
 
-    [Firestore Storage Page](https://console.firebase.google.com/u/0/project/cdp-example-qnscglia/storage)
+    [Firestore Storage Page](https://console.firebase.google.com/u/0/project/cdp-example-veaitsme/storage)
 
     The default settings ("Start in Production Mode" and default region) for setting up
     storage are fine.
@@ -160,7 +160,7 @@ There are additional tasks required after generating this repository.
     ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
     enable data-logging for the Google Speech-to-Text service.
 
-    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=cdp-example-qnscglia)
+    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=cdp-example-veaitsme)
 
     If the above direct link doesn't work, follow the instructions from
     [Google Documentation](https://cloud.google.com/speech-to-text/docs/enable-data-logging).
