@@ -305,7 +305,7 @@ jobs:
 
             * [ ] Copy the key generated from the prior `just init` process
             * [ ] Use the generated key as the [repository secret](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/secrets/actions) for `GOOGLE_CREDENTIALS`
-            * [ ] Rerun the [failed jobs](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions/workflows), then:
+            * [ ] Rerun the [failed jobs](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/actions), then:
             * [ ] Enable [Google Speech-to-Text Data Logging](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=${{ steps.infrastructure-slug.outputs.slug }})
             * [ ] Enable [GitHub Pages](${{ fromJSON(steps.cookiecutter-options.outputs.options).hosting_github_url }}/settings/pages)
             * [ ] Comment on this issue with "Deployment Status - Complete" and the instance URL
