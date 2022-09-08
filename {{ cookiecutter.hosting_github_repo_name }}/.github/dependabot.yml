@@ -9,6 +9,15 @@ updates:
     commit-message:
       prefix: "ci(dependabot):"
 
+  - package-ecosystem: "pip"
+    directory: "/infra"
+    schedule:
+      interval: "daily"
+    allow:
+      - dependency-name: "cdp-backend"
+    commit-message:
+      prefix: "ci(dependabot):"
+
   - package-ecosystem: "npm"
     directory: "/web"
     schedule:

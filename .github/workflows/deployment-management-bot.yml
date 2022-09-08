@@ -181,7 +181,7 @@ jobs:
 
       # Replace scraper with provided
       - name: Add cdp-scrapers as dependency
-        run: sed -i '14 i \    "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]",' ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
+        run: sed -i '10 i \    "cdp-scrapers[${{ steps.municipality-slug.outputs.python_slug }}]",' ${{ steps.municipality-slug.outputs.slug }}/python/setup.py
 
       # Get scraper path and update scraper function
       # The sed after param2 extract is to replace `/` with `\/` to escape the char

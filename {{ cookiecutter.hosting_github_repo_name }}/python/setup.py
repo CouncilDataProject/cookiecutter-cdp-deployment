@@ -6,18 +6,13 @@
 from setuptools import find_packages, setup
 
 requirements = [
-    "cdp-backend==3.2.0",
-]
-
-pipeline_requirements = [
-    "cdp-backend[pipeline]==3.2.0",
+    "cdp-backend[pipeline]==3.2.2",
 ]
 
 test_requirements = [
     "black>=19.10b0",
     "flake8>=3.8.3",
     "flake8-debugger>=3.2.1",
-    *pipeline_requirements,
 ]
 
 dev_requirements = [
@@ -26,12 +21,10 @@ dev_requirements = [
 ]
 
 extra_requirements = {
-    "pipeline": pipeline_requirements,
     "test": test_requirements,
     "dev": dev_requirements,
     "all": [
         *requirements,
-        *pipeline_requirements,
         *dev_requirements,
     ],
 }
