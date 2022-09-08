@@ -80,12 +80,12 @@ Before you begin, please note that you will need to install or have available th
 
 -   [gcloud](https://cloud.google.com/sdk/docs/install)
 -   [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
--   [Python 3.6+](https://www.python.org/downloads/) (Any Python version greater than or equal to 3.6)
+-   [Python 3.10+](https://www.python.org/downloads/) (Any Python version greater than or equal to 3.10)
 
 Once all tools are installed, the rest of the infrastructure setup process
 should take an hour or two.
 
-In a terminal with Python 3.6+ installed:
+In a terminal with Python 3.10+ installed:
 
 ```bash
 pip install cookiecutter

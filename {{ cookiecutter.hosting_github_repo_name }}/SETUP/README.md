@@ -7,8 +7,9 @@ This document outlines the steps necessary to finish initializing this CDP Insta
 Install the command line tools that will help shorten the setup process
 
 1. Install [gcloud](https://cloud.google.com/sdk/docs/install)
-2. Install [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
-3. Install [firebase-tools](https://firebase.google.com/docs/cli/)
+1. Install [gsutil](https://cloud.google.com/storage/docs/gsutil_install)
+1. Install [firebase-tools](https://firebase.google.com/docs/cli/)
+1. Install [just](https://github.com/casey/just)
 
 ## Initial Repository Setup
 
