@@ -104,7 +104,7 @@ There are additional tasks required after generating this repository.
     This step should be run while within the `SETUP` directory (`cd SETUP`)
 
     ```bash
-    just setup {{ cookiecutter.infrastructure_slug }} --region={{ cookiecutter.firestore_region }}
+    just setup {{ cookiecutter.infrastructure_slug }} {{ cookiecutter.firestore_region }}
     ```
 
 1.  Initial Firebase Storage.
