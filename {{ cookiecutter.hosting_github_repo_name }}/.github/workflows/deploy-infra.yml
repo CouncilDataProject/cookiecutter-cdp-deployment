@@ -52,7 +52,11 @@ jobs:
         cd infrastructure
         echo "$GOOGLE_CREDENTIALS" > google-creds.json
         export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-creds.json
-        just deploy {{ cookiecutter.infrastructure_slug }} ../cookiecutter.yaml
+        just deploy \
+          {{ cookiecutter.infrastructure_slug }} \
+          ../cookiecutter.yaml \
+          google-creds.json \
+          {{ cookiecutter.firestore_region }}
       env:
         FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
