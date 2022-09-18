@@ -78,8 +78,8 @@ jobs:
       {%- elif cookiecutter.enable_clipping == "false" -%}
 
       Disabled
-      - name: Run Clipping Deploy
-        run: |
-          echo "Will not deploy clipping"
+    - name: Run Clipping Deploy
+      run: |
+        echo "Will not deploy clipping"
 
       {% endif %}
