@@ -59,8 +59,6 @@ jobs:
         FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
 
-    #
-
     {%- if cookiecutter.enable_clipping == "true" -%}
 
     # Clipping Enabled
