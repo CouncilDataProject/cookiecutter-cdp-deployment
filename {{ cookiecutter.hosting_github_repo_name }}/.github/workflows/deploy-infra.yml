@@ -59,10 +59,13 @@ jobs:
         FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
 
+    #
+
+    {%- if cookiecutter.enable_clipping == "true" -%}
+
+    # Clipping Enabled
     - name: Run Clipping Deploy
-      run:
-      {%- if cookiecutter.enable_clipping == "true" -%}
-        |
+      run: |
         cd infrastructure
         echo "$GOOGLE_CREDENTIALS" > google-creds.json
         export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-creds.json
@@ -72,6 +75,12 @@ jobs:
       env:
         FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+
       {%- elif cookiecutter.enable_clipping == "false" -%}
-        echo "Will not deploy clipping"
+
+      # Clipping Disabled
+      - name: Run Clipping Deploy
+        run: |
+          echo "Will not deploy clipping"
+
       {% endif %}
