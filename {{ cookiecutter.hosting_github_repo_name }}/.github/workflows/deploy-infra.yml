@@ -59,9 +59,10 @@ jobs:
         FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
 
+    # Clipping Fill -- 
     {%- if cookiecutter.enable_clipping == "true" -%}
 
-    # Clipping Enabled
+    # Enabled
     - name: Run Clipping Deploy
       run: |
         cd infrastructure
@@ -76,7 +77,7 @@ jobs:
 
       {%- elif cookiecutter.enable_clipping == "false" -%}
 
-      # Clipping Disabled
+      # Disabled
       - name: Run Clipping Deploy
         run: |
           echo "Will not deploy clipping"
