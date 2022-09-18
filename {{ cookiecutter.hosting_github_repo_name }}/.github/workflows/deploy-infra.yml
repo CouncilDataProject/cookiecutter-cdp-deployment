@@ -60,6 +60,7 @@ jobs:
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
 
     {%- if cookiecutter.enable_clipping == "true" -%}
+
     - name: Run Clipping Deploy
       run: |
         cd infrastructure
@@ -71,4 +72,5 @@ jobs:
       env:
         FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+
     {% endif %}
