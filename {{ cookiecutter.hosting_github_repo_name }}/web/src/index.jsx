@@ -16,6 +16,9 @@ const config = {
         timeZone: "{{ cookiecutter.iana_timezone }}",
         footerLinksSections: [],
     },
+    features: {
+        enableClipping: {{ cookiecutter.enable_clipping }},
+    },
 }
 
 ReactDOM.render(
