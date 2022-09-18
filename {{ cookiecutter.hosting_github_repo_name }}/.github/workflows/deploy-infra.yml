@@ -62,7 +62,7 @@ jobs:
     # Clipping Fill -- 
     {%- if cookiecutter.enable_clipping == "true" -%}
 
-    # Enabled
+    Enabled
     - name: Run Clipping Deploy
       run: |
         cd infrastructure
@@ -77,7 +77,7 @@ jobs:
 
       {%- elif cookiecutter.enable_clipping == "false" -%}
 
-      # Disabled
+      Disabled
       - name: Run Clipping Deploy
         run: |
           echo "Will not deploy clipping"
