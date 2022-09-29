@@ -60,26 +60,26 @@ jobs:
         GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
 
     # Clipping Fill -- 
-    {%- if cookiecutter.enable_clipping == "true" -%}
+    # {%- if cookiecutter.enable_clipping == "true" -%}
 
-    Enabled
-    - name: Run Clipping Deploy
-      run: |
-        cd infrastructure
-        echo "$GOOGLE_CREDENTIALS" > google-creds.json
-        export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-creds.json
-        just deploy-clipping \
-          $(pwd)/google-creds.json \
-          {{ cookiecutter.firestore_region }}
-      env:
-        FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
-        GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+    # Enabled
+    # - name: Run Clipping Deploy
+    #   run: |
+    #     cd infrastructure
+    #     echo "$GOOGLE_CREDENTIALS" > google-creds.json
+    #     export GOOGLE_APPLICATION_CREDENTIALS=$(pwd)/google-creds.json
+    #     just deploy-clipping \
+    #       $(pwd)/google-creds.json \
+    #       {{ cookiecutter.firestore_region }}
+    #   env:
+    #     FIREBASE_TOKEN: {% raw %}${{ secrets.FIREBASE_TOKEN }}{% endraw %}
+    #     GOOGLE_CREDENTIALS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
 
-      {%- elif cookiecutter.enable_clipping == "false" -%}
+    #   {%- elif cookiecutter.enable_clipping == "false" -%}
 
-    Disabled
-    - name: Run Clipping Deploy
-      run: |
-        echo "Will not deploy clipping"
+    # Disabled
+    # - name: Run Clipping Deploy
+    #   run: |
+    #     echo "Will not deploy clipping"
 
-      {% endif %}
+    #   {% endif %}

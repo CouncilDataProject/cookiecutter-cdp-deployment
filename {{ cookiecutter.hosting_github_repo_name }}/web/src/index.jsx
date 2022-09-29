@@ -17,7 +17,7 @@ const config = {
         footerLinksSections: [],
     },
     features: {
-        enableClipping: {{ cookiecutter.enable_clipping }},
+        // enableClipping: {{ cookiecutter.enable_clipping }},
     },
 }
 
