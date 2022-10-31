@@ -1,1 +1,1 @@
-cdp-backend==3.2.7
+cdp-backend==3.2.8
