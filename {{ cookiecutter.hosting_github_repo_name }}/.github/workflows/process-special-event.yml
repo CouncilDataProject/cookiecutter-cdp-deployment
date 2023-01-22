@@ -1,9 +1,6 @@
 name: Process Special Event
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       event-details-json-string:
@@ -34,7 +31,7 @@ jobs:
             --idle-timeout=600
 
   process-events:
-    needs: [deploy-runner-gcp-gpu]
+    needs: [deploy-runner-on-gcp]
     runs-on: [self-hosted, gcp-cdp-runner]
 
     steps:

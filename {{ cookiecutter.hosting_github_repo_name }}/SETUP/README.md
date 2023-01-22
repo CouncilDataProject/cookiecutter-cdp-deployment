@@ -99,6 +99,12 @@ There are additional tasks required after generating this repository.
     -   Set the value to: the value of the token you created in the prior step.
     -   Click "Add secret"
 
+    3. Create a [new secret]({{ cookiecutter.hosting_github_url }}/settings/secrets/actions/new)
+    
+    -   Set the name to: **PERSONAL_ACCESS_TOKEN**
+    -   Set the value to: ....
+    -   Click "Add secret"
+
 1.  Build the basic project infrastructure.
 
     This step should be run while within the `SETUP` directory (`cd SETUP`)
@@ -142,7 +148,7 @@ There are additional tasks required after generating this repository.
     Finally, to push this repo to GitHub, run:
 
     ```bash
-     git push -u origin main
+    git push -u origin main
     ```
 
     Now refresh your repository's dashboard to ensure that all files were pushed.
@@ -157,14 +163,9 @@ There are additional tasks required after generating this repository.
     -   Set the folder to: `/ (root)`
     -   Click "Save"
 
-1.  Once the
-    ["Infrastructure" GitHub Action Successfully Completes]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22)
-    enable data-logging for the Google Speech-to-Text service.
+1. Once the ...
 
-    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project={{ cookiecutter.infrastructure_slug }})
-
-    If the above direct link doesn't work, follow the instructions from
-    [Google Documentation](https://cloud.google.com/speech-to-text/docs/enable-data-logging).
+    Request a quota increase!
 
 **If all steps complete successful your web application will be viewable at: {{ cookiecutter.hosting_web_app_address }}**
 

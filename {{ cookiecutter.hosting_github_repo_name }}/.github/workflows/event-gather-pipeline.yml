@@ -1,9 +1,6 @@
 name: Event Gather
 
 on:
-  push:
-    branches:
-      - main
   schedule:
     # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
     # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
@@ -20,7 +17,7 @@ on:
         default: ""  # Will get converted to now
 
 jobs:
-    deploy-runner-on-gcp:
+  deploy-runner-on-gcp:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -42,7 +39,7 @@ jobs:
             --idle-timeout=600
 
   process-events:
-    needs: [deploy-runner-gcp-gpu]
+    needs: [deploy-runner-on-gcp]
     runs-on: [self-hosted, gcp-cdp-runner]
 
     steps:
