@@ -166,6 +166,7 @@ There are additional tasks required after generating this repository.
 1. Once the ...
 
     Request a quota increase!
+    - gpus all regions -- seems like 2 is fine
 
 **If all steps complete successful your web application will be viewable at: {{ cookiecutter.hosting_web_app_address }}**
 
