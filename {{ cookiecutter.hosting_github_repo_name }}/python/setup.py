@@ -6,7 +6,7 @@
 from setuptools import find_packages, setup
 
 requirements = [
-    "cdp-backend[pipeline]==4.0.0.dev1",
+    "cdp-backend[pipeline]>=4.0.0.dev2",
 ]
 
 test_requirements = [
