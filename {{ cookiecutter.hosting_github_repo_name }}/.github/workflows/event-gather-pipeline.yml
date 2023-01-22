@@ -19,13 +19,34 @@ on:
         required: false
         default: ""  # Will get converted to now
 
-
 jobs:
-  process-events:
+    deploy-runner-on-gcp:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup CML
+        uses: iterative/setup-cml@v1
+      - name: Create Runner
+        env:
+          REPO_TOKEN: {% raw %}${{ secrets.PERSONAL_ACCESS_TOKEN }}{% endraw %}
+          GOOGLE_APPLICATION_CREDENTIALS_DATA: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        run: |
+          cml runner \
+            --single \
+            --labels=gcp-cdp-runner \
+            --cloud=gcp \
+            --cloud-region=us-west \
+            --cloud-type=n1-standard-4 \
+            --cloud-gpu=nvidia-tesla-t4 \
+            --cloud-hdd-size=30 \
+            --idle-timeout=600
+
+  process-events:
+    needs: [deploy-runner-gcp-gpu]
+    runs-on: [self-hosted, gcp-cdp-runner]
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: actions/setup-python@v1
       with:
         python-version: '3.10'
@@ -33,7 +54,9 @@ jobs:
     - name: Install Packages
       run: |
         sudo apt update
-        sudo apt-get install ffmpeg --fix-missing
+        sudo apt-get install -y --no-install-recommends \
+          libsndfile1 \
+          ffmpeg
 
     - name: Install Python Dependencies
       run: |
@@ -57,7 +80,7 @@ jobs:
       if: {% raw %}${{ github.event_name == 'schedule' }}{% endraw %}
       run: |
         cd python/
-        run_cdp_event_gather event-gather-config.json --parallel
+        run_cdp_event_gather event-gather-config.json
     
     - name: Gather and Process Requested Events - Manual
       if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}
@@ -65,5 +88,4 @@ jobs:
         cd python/
         {% raw %}run_cdp_event_gather event-gather-config.json \
           --from ${{ github.event.inputs.from }} \
-          --to ${{ github.event.inputs.to }} \
-          --parallel{% endraw %}
+          --to ${{ github.event.inputs.to }}{% endraw %}
