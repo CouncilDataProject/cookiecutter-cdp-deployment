@@ -45,7 +45,7 @@
         "small"
     ],
     "event_gather_timedelta_lookback_days": 2,
-    "event_gather_cron": "26 0,6,12,18 * * *",
+    "event_gather_cron": "26 2 * * *",
     "enable_clipping": ["true", "false"],
     "_extensions": ["cookiecutter.extensions.RandomStringExtension"]
 }
