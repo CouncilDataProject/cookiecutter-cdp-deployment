@@ -83,7 +83,25 @@ There are additional tasks required after generating this repository.
     firebase login:ci
     ```
 
-    Save this token for the next step!
+    Save the created token for a following next step!
+
+1.  Create a GitHub Personal Access Token.
+
+    Create a new (classic) GitHub Personal Access Token by navigating to
+    [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new).
+
+    -   Click the "Generate new token" dropdown.
+    -   Select "Generate new token (classic)".
+    -   Give the token a descriptive name / note. We recommend: `{{ cookiecutter.infrastructure-slug }}`
+    -   Set the expiration to "No expiration"
+        -   You can set a set expiration if you would like, you will simply have to update this token later.
+    -   Do **NOT** grant the token any scopes or privileges.
+    -   Click the "Generate token" button.
+
+    Save the created token for a following step.
+
+    For more documentation and assistance see
+    [GitHub's Documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic).
 
 1.  Attach the Google Service Account JSON as GitHub Repository Secret.
 
@@ -96,13 +114,13 @@ There are additional tasks required after generating this repository.
     2. Create a [new secret]({{ cookiecutter.hosting_github_url }}/settings/secrets/actions/new)
 
     -   Set the name to: **FIREBASE_TOKEN**
-    -   Set the value to: the value of the token you created in the prior step.
+    -   Set the value to: the value of the Firebase CI token you created in a prior step.
     -   Click "Add secret"
 
     3. Create a [new secret]({{ cookiecutter.hosting_github_url }}/settings/secrets/actions/new)
     
     -   Set the name to: **PERSONAL_ACCESS_TOKEN**
-    -   Set the value to: ....
+    -   Set the value to: the value of the GitHub Personal Access Token you created in a prior step.
     -   Click "Add secret"
 
 1.  Build the basic project infrastructure.
@@ -163,10 +181,21 @@ There are additional tasks required after generating this repository.
     -   Set the folder to: `/ (root)`
     -   Click "Save"
 
-1. Once the ...
+1. Once the ["Infrastructure" GitHub Action Successfully Completes]({{ cookiecutter.hosting_github_url }}/actions?query=workflow%3A%22Infrastructure%22) request a quota increase for `compute.googleapis.com/gpus_all_regions`.
 
-    Request a quota increase!
-    - gpus all regions -- seems like 2 is fine
+    [Direct Link to Quota](https://console.cloud.google.com/iam-admin/quotas?project={{ cookiecutter.infrastructure_slug }}&pageState=(%22allQuotasTable%22:(%22f%22:%22%255B%257B_22k_22_3A_22Metric_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22compute.googleapis.com%252Fgpus_all_regions_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22metricName_22%257D%255D%22)))
+
+    -   Click the checkbox for the "GPUs (all regions)"
+    -   Click the "EDIT QUOTAS" button
+    -   In the "New limit" text field, enter a value of: `2`.
+    -   In the "Request description" text field, enter a value of: speech-to-text
+        model application and downstream text tasks
+    -   Click the "NEXT" button
+    -   Enter your name and phone number into the contact fields.
+    -   Click the "SUBMIT REQUEST" button
+
+    If the above direct link doesn't work, follow the instructions from
+    [Google Documentation](https://cloud.google.com/docs/quota#requesting_higher_quota).
 
 **If all steps complete successful your web application will be viewable at: {{ cookiecutter.hosting_web_app_address }}**
 
