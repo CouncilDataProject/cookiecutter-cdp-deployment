@@ -83,7 +83,7 @@ There are additional tasks required after generating this repository.
     firebase login:ci
     ```
 
-    Save the created token for a following next step!
+    Save the created token for a following step!
 
 1.  Create a GitHub Personal Access Token.
 
@@ -92,7 +92,7 @@ There are additional tasks required after generating this repository.
 
     -   Click the "Generate new token" dropdown.
     -   Select "Generate new token (classic)".
-    -   Give the token a descriptive name / note. We recommend: `{{ cookiecutter.infrastructure-slug }}`
+    -   Give the token a descriptive name / note. We recommend: `{{ cookiecutter.infrastructure_slug }}`
     -   Set the expiration to "No expiration"
         -   You can set a set expiration if you would like, you will simply have to update this token later.
     -   Do **NOT** grant the token any scopes or privileges.
@@ -188,6 +188,8 @@ There are additional tasks required after generating this repository.
     -   Click the checkbox for the "GPUs (all regions)"
     -   Click the "EDIT QUOTAS" button
     -   In the "New limit" text field, enter a value of: `2`.
+        -   You can request more or less than `2` GPUs, however we have noticed that a
+            request of `2` is generally automatically accepted.
     -   In the "Request description" text field, enter a value of: speech-to-text
         model application and downstream text tasks
     -   Click the "NEXT" button

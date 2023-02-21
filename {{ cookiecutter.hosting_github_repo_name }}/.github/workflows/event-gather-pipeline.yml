@@ -16,6 +16,11 @@ on:
         required: false
         default: ""  # Will get converted to now
 
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
+
 jobs:
   deploy-runner-on-gcp:
     runs-on: ubuntu-latest
@@ -32,7 +37,7 @@ jobs:
             --single \
             --labels=gcp-cdp-runner \
             --cloud=gcp \
-            --cloud-region=us-west \
+            --cloud-region=us-central1-f \
             --cloud-type=n1-standard-4 \
             --cloud-gpu=nvidia-tesla-t4 \
             --cloud-hdd-size=30 \
@@ -44,7 +49,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v3
-    - uses: actions/setup-python@v1
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
@@ -59,6 +64,7 @@ jobs:
       run: |
         cd python/
         pip install .
+        pip install 'faster-whisper @ git+https://github.com/guillaumekln/faster-whisper.git'
 
     - name: Setup gcloud
       uses: google-github-actions/setup-gcloud@v0

@@ -45,7 +45,10 @@
         "small"
     ],
     "event_gather_timedelta_lookback_days": 2,
-    "event_gather_cron": "26 2 * * *",
+    "event_gather_cron": "{{ random_integer(0, 59) }} {{ random_integer(0, 23) }} * * *",
     "enable_clipping": ["true", "false"],
-    "_extensions": ["cookiecutter.extensions.RandomStringExtension"]
+    "_extensions": [
+        "cookiecutter.extensions.RandomStringExtension",
+        "local_extensions.RandomIntegerExtension"
+    ]
 }
