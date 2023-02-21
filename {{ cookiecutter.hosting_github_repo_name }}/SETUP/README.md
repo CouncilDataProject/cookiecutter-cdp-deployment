@@ -95,7 +95,7 @@ There are additional tasks required after generating this repository.
     -   Give the token a descriptive name / note. We recommend: `{{ cookiecutter.infrastructure_slug }}`
     -   Set the expiration to "No expiration"
         -   You can set a set expiration if you would like, you will simply have to update this token later.
-    -   Do **NOT** grant the token any scopes or privileges.
+    -   Select the `repo` checkbox to give access this token access to the repo.
     -   Click the "Generate token" button.
 
     Save the created token for a following step.
@@ -131,7 +131,7 @@ There are additional tasks required after generating this repository.
     just setup {{ cookiecutter.infrastructure_slug }} {{ cookiecutter.firestore_region }}
     ```
 
-1.  Initial Firebase Storage.
+1.  Initialize Firebase Storage.
 
     [Firestore Storage Page](https://console.firebase.google.com/u/0/project/{{ cookiecutter.infrastructure_slug }}/storage)
 
@@ -198,6 +198,9 @@ There are additional tasks required after generating this repository.
 
     If the above direct link doesn't work, follow the instructions from
     [Google Documentation](https://cloud.google.com/docs/quota#requesting_higher_quota).
+
+    You will need to wait until the quota increase has been approved before running any
+    event processing. From our experience, the quota is approved within 15 minutes.
 
 **If all steps complete successful your web application will be viewable at: {{ cookiecutter.hosting_web_app_address }}**
 
