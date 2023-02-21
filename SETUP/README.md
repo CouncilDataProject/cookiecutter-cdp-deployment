@@ -58,7 +58,7 @@ There are additional tasks required after generating this repository.
     Run:
 
     ```bash
-    just init cdp-example-npesfrhk
+    just init cdp-example-brwofmcb
     ```
 
     This step will also generate a Google Service Account JSON file and store it
@@ -72,8 +72,8 @@ There are additional tasks required after generating this repository.
     ```
 
 1.  Create (or re-use) a
-    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-npesfrhk)
-    and attach it to the newly created project (cdp-example-npesfrhk).
+    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-brwofmcb)
+    and attach it to the newly created project (cdp-example-brwofmcb).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
@@ -83,20 +83,44 @@ There are additional tasks required after generating this repository.
     firebase login:ci
     ```
 
-    Save this token for the next step!
+    Save the created token for a following step!
+
+1.  Create a GitHub Personal Access Token.
+
+    Create a new (classic) GitHub Personal Access Token by navigating to
+    [https://github.com/settings/tokens/new](https://github.com/settings/tokens/new).
+
+    -   Click the "Generate new token" dropdown.
+    -   Select "Generate new token (classic)".
+    -   Give the token a descriptive name / note. We recommend: `cdp-example-brwofmcb`
+    -   Set the expiration to "No expiration"
+        -   You can set a set expiration if you would like, you will simply have to update this token later.
+    -   Select the `repo` checkbox to give access this token access to the repo.
+    -   Click the "Generate token" button.
+
+    Save the created token for a following step.
+
+    For more documentation and assistance see
+    [GitHub's Documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token#creating-a-personal-access-token-classic).
 
 1.  Attach the Google Service Account JSON as GitHub Repository Secret.
 
     1. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
     -   Set the name to: **GOOGLE_CREDENTIALS**
-    -   Set the value to: the contents of the file `.keys/cdp-example-npesfrhk.json`
+    -   Set the value to: the contents of the file `.keys/cdp-example-brwofmcb.json`
     -   Click "Add secret"
 
     2. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
     -   Set the name to: **FIREBASE_TOKEN**
-    -   Set the value to: the value of the token you created in the prior step.
+    -   Set the value to: the value of the Firebase CI token you created in a prior step.
+    -   Click "Add secret"
+
+    3. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
+    
+    -   Set the name to: **PERSONAL_ACCESS_TOKEN**
+    -   Set the value to: the value of the GitHub Personal Access Token you created in a prior step.
     -   Click "Add secret"
 
 1.  Build the basic project infrastructure.
@@ -104,12 +128,12 @@ There are additional tasks required after generating this repository.
     This step should be run while within the `SETUP` directory (`cd SETUP`)
 
     ```bash
-    just setup cdp-example-npesfrhk us-central
+    just setup cdp-example-brwofmcb us-central
     ```
 
-1.  Initial Firebase Storage.
+1.  Initialize Firebase Storage.
 
-    [Firestore Storage Page](https://console.firebase.google.com/u/0/project/cdp-example-npesfrhk/storage)
+    [Firestore Storage Page](https://console.firebase.google.com/u/0/project/cdp-example-brwofmcb/storage)
 
     The default settings ("Start in Production Mode" and default region) for setting up
     storage are fine.
@@ -142,7 +166,7 @@ There are additional tasks required after generating this repository.
     Finally, to push this repo to GitHub, run:
 
     ```bash
-     git push -u origin main
+    git push -u origin main
     ```
 
     Now refresh your repository's dashboard to ensure that all files were pushed.
@@ -157,14 +181,26 @@ There are additional tasks required after generating this repository.
     -   Set the folder to: `/ (root)`
     -   Click "Save"
 
-1.  Once the
-    ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22)
-    enable data-logging for the Google Speech-to-Text service.
+1. Once the ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22) request a quota increase for `compute.googleapis.com/gpus_all_regions`.
 
-    [Direct Link to Enable](https://console.cloud.google.com/apis/api/speech.googleapis.com/data_logging?project=cdp-example-npesfrhk)
+    [Direct Link to Quota](https://console.cloud.google.com/iam-admin/quotas?project=cdp-example-brwofmcb&pageState=(%22allQuotasTable%22:(%22f%22:%22%255B%257B_22k_22_3A_22Metric_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22compute.googleapis.com%252Fgpus_all_regions_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22metricName_22%257D%255D%22)))
+
+    -   Click the checkbox for the "GPUs (all regions)"
+    -   Click the "EDIT QUOTAS" button
+    -   In the "New limit" text field, enter a value of: `2`.
+        -   You can request more or less than `2` GPUs, however we have noticed that a
+            request of `2` is generally automatically accepted.
+    -   In the "Request description" text field, enter a value of: speech-to-text
+        model application and downstream text tasks
+    -   Click the "NEXT" button
+    -   Enter your name and phone number into the contact fields.
+    -   Click the "SUBMIT REQUEST" button
 
     If the above direct link doesn't work, follow the instructions from
-    [Google Documentation](https://cloud.google.com/speech-to-text/docs/enable-data-logging).
+    [Google Documentation](https://cloud.google.com/docs/quota#requesting_higher_quota).
+
+    You will need to wait until the quota increase has been approved before running any
+    event processing. From our experience, the quota is approved within 15 minutes.
 
 **If all steps complete successful your web application will be viewable at: https://CouncilDataProject.github.io/example**
 

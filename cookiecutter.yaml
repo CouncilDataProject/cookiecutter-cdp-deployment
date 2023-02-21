@@ -4,7 +4,7 @@ default_context:
     governing_body_type: "city council"
     municipality_slug: "example"
     python_municipality_slug: "example"
-    infrastructure_slug: "cdp-example-npesfrhk"
+    infrastructure_slug: "cdp-example-brwofmcb"
     maintainer_or_org_full_name: "Council Data Project Contributors"
     hosting_github_username_or_org: "CouncilDataProject"
     hosting_github_repo_name: "example"
@@ -12,5 +12,5 @@ default_context:
     hosting_web_app_address: "https://CouncilDataProject.github.io/example"
     firestore_region: "us-central"
     event_gather_timedelta_lookback_days: 2
-    event_gather_cron: "26 0,6,12,18 * * *"
+    event_gather_cron: "2 4 * * *"
     enable_clipping: "true"
