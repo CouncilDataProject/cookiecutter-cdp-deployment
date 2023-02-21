@@ -14,3 +14,4 @@ default_context:
     event_gather_timedelta_lookback_days: {{ cookiecutter.event_gather_timedelta_lookback_days }}
     event_gather_cron: "{{ cookiecutter.event_gather_cron }}"
     enable_clipping: "{{ cookiecutter.enable_clipping }}"
+    speech_to_text_model_version: "{{ cookiecutter.speech_to_text_model_version }}"
