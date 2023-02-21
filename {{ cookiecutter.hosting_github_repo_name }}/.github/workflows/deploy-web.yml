@@ -1,5 +1,8 @@
 name: Web App
 
+permissions:
+  contents: write
+
 on:
   push:
     branches:

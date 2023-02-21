@@ -1,9 +1,6 @@
 name: Event Gather
 
 on:
-  push:
-    branches:
-      - main
   schedule:
     # <minute [0,59]> <hour [0,23]> <day of the month [1,31]> <month of the year [1,12]> <day of the week [0,6]>
     # https://pubs.opengroup.org/onlinepubs/9699919799/utilities/crontab.html#tag_20_25_07
@@ -19,26 +16,55 @@ on:
         required: false
         default: ""  # Will get converted to now
 
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
 
 jobs:
-  process-events:
+  deploy-runner-on-gcp:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup CML
+        uses: iterative/setup-cml@v1
+      - name: Create Runner
+        env:
+          REPO_TOKEN: {% raw %}${{ secrets.PERSONAL_ACCESS_TOKEN }}{% endraw %}
+          GOOGLE_APPLICATION_CREDENTIALS_DATA: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        run: |
+          cml runner \
+            --single \
+            --labels=gcp-cdp-runner \
+            --cloud=gcp \
+            --cloud-region=us-central1-f \
+            --cloud-type=n1-standard-4 \
+            --cloud-gpu=nvidia-tesla-t4 \
+            --cloud-hdd-size=30 \
+            --idle-timeout=600
+
+  process-events:
+    needs: [deploy-runner-on-gcp]
+    runs-on: [self-hosted, gcp-cdp-runner]
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
     - name: Install Packages
       run: |
         sudo apt update
-        sudo apt-get install ffmpeg --fix-missing
+        sudo apt-get install -y --no-install-recommends \
+          libsndfile1 \
+          ffmpeg
 
     - name: Install Python Dependencies
       run: |
         cd python/
         pip install .
+        pip install 'faster-whisper @ git+https://github.com/guillaumekln/faster-whisper.git'
 
     - name: Setup gcloud
       uses: google-github-actions/setup-gcloud@v0
@@ -57,7 +83,7 @@ jobs:
       if: {% raw %}${{ github.event_name == 'schedule' }}{% endraw %}
       run: |
         cd python/
-        run_cdp_event_gather event-gather-config.json --parallel
+        run_cdp_event_gather event-gather-config.json
     
     - name: Gather and Process Requested Events - Manual
       if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}
@@ -65,5 +91,4 @@ jobs:
         cd python/
         {% raw %}run_cdp_event_gather event-gather-config.json \
           --from ${{ github.event.inputs.from }} \
-          --to ${{ github.event.inputs.to }} \
-          --parallel{% endraw %}
+          --to ${{ github.event.inputs.to }}{% endraw %}

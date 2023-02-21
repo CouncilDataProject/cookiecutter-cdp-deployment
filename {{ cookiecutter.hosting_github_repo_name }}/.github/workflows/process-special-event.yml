@@ -1,35 +1,61 @@
 name: Process Special Event
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
     inputs:
       event-details-json-string:
         description: "Event details (see EventIngestionModel in cdp-backend) in JSON string form. The string must be free of any newline or tab characters."
         required: true
 
+permissions:
+  id-token: write
+  contents: write
+  pull-requests: write
 
 jobs:
-  process-events:
+  deploy-runner-on-gcp:
     runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup CML
+        uses: iterative/setup-cml@v1
+      - name: Create Runner
+        env:
+          REPO_TOKEN: {% raw %}${{ secrets.PERSONAL_ACCESS_TOKEN }}{% endraw %}
+          GOOGLE_APPLICATION_CREDENTIALS_DATA: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        run: |
+          cml runner \
+            --single \
+            --labels=gcp-cdp-runner \
+            --cloud=gcp \
+            --cloud-region=us-central1-f \
+            --cloud-type=n1-standard-4 \
+            --cloud-gpu=nvidia-tesla-t4 \
+            --cloud-hdd-size=30 \
+            --idle-timeout=600
+
+  process-events:
+    needs: [deploy-runner-on-gcp]
+    runs-on: [self-hosted, gcp-cdp-runner]
 
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-python@v1
+    - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
       with:
         python-version: '3.10'
 
     - name: Install Packages
       run: |
         sudo apt update
-        sudo apt-get install ffmpeg --fix-missing
+        sudo apt-get install -y --no-install-recommends \
+          libsndfile1 \
+          ffmpeg
 
     - name: Install Python Dependencies
       run: |
         cd python/
         pip install .
+        pip install 'faster-whisper @ git+https://github.com/guillaumekln/faster-whisper.git'
 
     - name: Setup gcloud
       uses: google-github-actions/setup-gcloud@v0

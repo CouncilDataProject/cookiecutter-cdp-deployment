@@ -2,7 +2,7 @@
     "google_credentials_file": "google-creds.json",
     "get_events_function_path": "cdp_{{ cookiecutter.python_municipality_slug }}_backend.scraper.get_events",
     "gcs_bucket_name": null,
-    "caption_new_speaker_turn_pattern": null,
-    "caption_confidence": null,
+    "whisper_model_name": "{{ cookiecutter.speech_to_text_model_version }}",
+    "whisper_model_confidence": null,
     "default_event_gather_from_days_timedelta": {{ cookiecutter.event_gather_timedelta_lookback_days }}
 }

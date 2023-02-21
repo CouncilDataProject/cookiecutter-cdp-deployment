@@ -149,7 +149,7 @@ to manage all services and applications.
 
 The only service that will require a billing account to manage payment for resources
 used, is [Google Cloud](#google-cloud). Google Cloud will manage all databases,
-file storage, and (if needed) [speech-to-text](#speech-to-text) for transcription.
+file storage, and heavy-compute such as [speech-to-text](#speech-to-text) for transcription.
 You can see more about the average monthly cost of running a
 CDP Instance in [Cost](#cost).
 
@@ -190,7 +190,9 @@ Google Cloud Platform (GCP).
 
 -   Your deployment's provided and generated data (meeting dates, committee names, councilmember details, etc) will live in [Firestore](https://cloud.google.com/firestore).
 -   Your deployment's generated files (audio clips, transcripts, etc.) will live in [Filestore](https://cloud.google.com/filestore).
--   When provided a video without closed captions, the audio from the provided video will be processed using [Speech-to-Text](https://cloud.google.com/speech-to-text).
+-   The audio from the provided video will be processed using [Whisper](https://github.com/openai/whisper)
+    on [Google Compute Engine](https://cloud.google.com/compute/).
+    -   We additionally use [Faster-Whisper](https://github.com/guillaumekln/faster-whisper).
 
 ## Cost
 
@@ -214,32 +216,17 @@ months of its existence so take these as close to upper-bounds.
 Billed Resources and Infrastructure:
 
 -   [Cloud Firestore Pricing](https://firebase.google.com/pricing/)
-    _CDP-Seattle monthly average: ~$19.00_
+    _CDP-Seattle monthly average: ~$40.00_
 -   [Google Storage Pricing](https://cloud.google.com/storage/pricing#price-tables)
     _CDP-Seattle monthly average: ~$1.00_
--   [Google Speech-to-Text Pricing](https://cloud.google.com/speech-to-text/pricing)
-    _CDP-Seattle monthly average: ~$40.00_
+-   [Google Compute Engine Pricing](https://cloud.google.com/compute/all-pricing) (Using n1-standard-4 in us-central)
+    _CDP-Seattle monthly average: ~$20.00_
 
-**Total Average Monthly Cost**: $60.00
+**Total Average Monthly Cost**: $61.00
 
 This is the ongoing cost of storing new meetings as they occur once your instance is deployed.
 You may have an additonal upfront cost if you are seeding your database with older videos and
-using speech-to-text to transcribe them. At the time of this writing, it cost around $1.25 per
-2 hours of video to transcribe and store.
-
-### Speech-to-Text
-
-You may not need to use speech-to-text! In the case your municipality provides closed
-caption files in a format we support parsing and cleaning, we can use those files
-instead of using speech-to-text. When using closed caption files for transcription
-generation, CDP-Seattle speech-to-text costs dropped to ~$2.00 / month.
-
-To use closed captions files instead of generating a transcript from audio,
-your event gather function can attach a
-[`closed_caption_uri`](https://councildataproject.org/cdp-backend/cdp_backend.pipeline.html#cdp_backend.pipeline.ingestion_models.Session)
-to the `Session` object.
-
-With speech-to-text cost removed, total average monthly cost for CDP-Seattle is ~$22.00.
+using speech-to-text to transcribe them.
 
 ### Future Processing Features
 
