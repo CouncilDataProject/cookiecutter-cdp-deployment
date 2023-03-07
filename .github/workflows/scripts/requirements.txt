@@ -1,4 +1,4 @@
-cdp-backend>=4.0.7
+cdp-backend>=4.0.8
 cdp-scrapers[test]~=0.4
 cookiecutter~=1.7
 requests~=2.25
