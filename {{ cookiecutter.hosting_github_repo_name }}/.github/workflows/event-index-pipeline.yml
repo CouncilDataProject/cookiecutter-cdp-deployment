@@ -48,7 +48,7 @@ jobs:
       uses: jsdaniell/create-json@v1.2.2
       with:
         name: "google-creds.json"
-        json: {{ secrets.GOOGLE_CREDENTIALS }}
+        json: ${{ secrets.GOOGLE_CREDENTIALS }}
         dir: "python/"
 
     # Installs
