@@ -38,10 +38,11 @@ jobs:
         export_default_credentials: true
 
     - name: Dump Credentials to JSON
-      run: |
-        echo "$GOOGLE_CREDS" > python/google-creds.json
-      env:
-        GOOGLE_CREDS: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "google-creds.json"
+        json: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        dir: "python/"
     
     - name: Run Command
       if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}

@@ -43,11 +43,13 @@ jobs:
         project_id: {% endraw %}{{ cookiecutter.infrastructure_slug }}{% raw %}
         service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
         export_default_credentials: true
+  
     - name: Dump Credentials to JSON
-      run: |
-        echo "$GOOGLE_CREDS" > python/google-creds.json
-      env:
-        GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "google-creds.json"
+        json: {{ secrets.GOOGLE_CREDENTIALS }}
+        dir: "python/"
 
     # Installs
     - name: Install Python Dependencies
@@ -117,10 +119,11 @@ jobs:
         service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
         export_default_credentials: true
     - name: Dump Credentials to JSON
-      run: |
-        echo "$GOOGLE_CREDS" > python/google-creds.json
-      env:
-        GOOGLE_CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
+      uses: jsdaniell/create-json@v1.2.2
+      with:
+        name: "google-creds.json"
+        json: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
+        dir: "python/"
 
     # Installs
     - name: Install Python Dependencies
