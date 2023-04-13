@@ -50,5 +50,8 @@
     "_extensions": [
         "cookiecutter.extensions.RandomStringExtension",
         "local_extensions.RandomIntegerExtension"
-    ]
+    ],
+    "event_gather_runner_timeout_minutes": 15,
+    "event_gather_runner_max_attempts": 8,
+    "event_gather_runner_retry_wait_seconds": 600
 }

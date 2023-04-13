@@ -15,3 +15,6 @@ default_context:
     event_gather_cron: "{{ cookiecutter.event_gather_cron }}"
     enable_clipping: "{{ cookiecutter.enable_clipping }}"
     speech_to_text_model_version: "{{ cookiecutter.speech_to_text_model_version }}"
+    event_gather_runner_timeout_minutes: "{{ cookiecutter.event_gather_runner_timeout_minutes }}"
+    event_gather_runner_max_attempts: "{{ cookiecutter.event_gather_runner_max_attempts }}"
+    event_gather_runner_retry_wait_seconds: "{{ cookiecutter.event_gather_runner_retry_wait_seconds }}"

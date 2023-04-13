@@ -140,6 +140,9 @@ You can also see an example generated repository and the full steps listed
 | firestore_region               | The desired region to host the firestore instance. ([Firestore docs](https://firebase.google.com/docs/firestore/locations))                 | us-west1                                       | europe-central2                                   |
 | event_gather_timedelta_lookback_days               | The number of days to look back from the current date every time the event scraper runs.                  | 2                                       | 6                                   |
 | event_gather_cron               | The event gather CRON configuration. ([GitHub Actions CRON Details](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule))                 | 26 0,6,12,18 * * *                                       | 17 3,9,15,21 * * *                                   |
+| event_gather_runner_timeout_minutes | Minutes to wait before creating a CML runner attempt will fail. | 15 | 16 |
+| event_gather_runner_max_attempts | Number of times to attempt to create a CML runner. | 8 | 36 |
+| event_gather_runner_retry_wait_seconds | Number of seconds to wait between CML runner create attempts. | 600 | 600 |
 
 ### Things to Know
 
