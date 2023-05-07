@@ -29,19 +29,24 @@ jobs:
       - name: Setup CML
         uses: iterative/setup-cml@v1
       - name: Create Runner
+        uses: nick-fields/retry@v2
         env:
           REPO_TOKEN: {% raw %}${{ secrets.PERSONAL_ACCESS_TOKEN }}{% endraw %}
           GOOGLE_APPLICATION_CREDENTIALS_DATA: {% raw %}${{ secrets.GOOGLE_CREDENTIALS }}{% endraw %}
-        run: |
-          cml runner \
-            --single \
-            --labels=gcp-cdp-runner \
-            --cloud=gcp \
-            --cloud-region=us-central1-f \
-            --cloud-type=n1-standard-4 \
-            --cloud-gpu=nvidia-tesla-t4 \
-            --cloud-hdd-size=30 \
-            --idle-timeout=600
+        with:
+          timeout_minutes: {{ cookiecutter.event_gather_runner_timeout_minutes }}
+          max_attempts: {{ cookiecutter.event_gather_runner_max_attempts }}
+          retry_wait_seconds: {{ cookiecutter.event_gather_runner_retry_wait_seconds }}
+          command: |
+            cml runner \
+              --single \
+              --labels=gcp-cdp-runner \
+              --cloud=gcp \
+              --cloud-region=us-central1-f \
+              --cloud-type=n1-standard-4 \
+              --cloud-gpu=nvidia-tesla-t4 \
+              --cloud-hdd-size=30 \
+              --idle-timeout=600 \
 
   process-events:
     needs: [deploy-runner-on-gcp]
@@ -55,7 +60,7 @@ jobs:
     - uses: actions/setup-python@v4
       with:
         python-version: '3.11'
-    
+
     - name: Check GPU Drivers
       run: |
         nvidia-smi
@@ -92,7 +97,7 @@ jobs:
       run: |
         cd python/
         run_cdp_event_gather event-gather-config.json
-    
+
     - name: Gather and Process Requested Events - Manual
       if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}
       run: |
