@@ -37,7 +37,7 @@ jobs:
           timeout_minutes: {{ cookiecutter.event_gather_runner_timeout_minutes }}
           max_attempts: {{ cookiecutter.event_gather_runner_max_attempts }}
           retry_wait_seconds: {{ cookiecutter.event_gather_runner_retry_wait_seconds }}
-          command: |
+          command: >-
             cml runner \
               --single \
               --labels=gcp-cdp-runner \
@@ -46,7 +46,7 @@ jobs:
               --cloud-type=n1-standard-4 \
               --cloud-gpu=nvidia-tesla-t4 \
               --cloud-hdd-size=30 \
-              --idle-timeout=600 \
+              --idle-timeout=600
 
   process-events:
     needs: [deploy-runner-on-gcp]
