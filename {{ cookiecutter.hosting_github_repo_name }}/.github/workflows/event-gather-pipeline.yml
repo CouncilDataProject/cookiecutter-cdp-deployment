@@ -100,10 +100,10 @@ jobs:
       if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}
       run: |
         cd python/
-        CDP_FROM_USER=${{ github.event.inputs.from }}
+        CDP_FROM_USER={% raw %}${{ github.event.inputs.from }}{% endraw %}
         CDP_FROM_DEFAULT=$(date -Iseconds -d "2 days ago")
         CDP_FROM=${CDP_FROM_USER:-$CDP_FROM_DEFAULT}
-        CDP_TO_USER=${{ github.event.inputs.to }}
+        CDP_TO_USER={% raw %}${{ github.event.inputs.to }}{% endraw %}
         CDP_TO_DEFAULT=$(date -Iseconds)
         CDP_TO=${CDP_TO_USER:-$CDP_TO_DEFAULT}
         run_cdp_event_gather event-gather-config.json \
