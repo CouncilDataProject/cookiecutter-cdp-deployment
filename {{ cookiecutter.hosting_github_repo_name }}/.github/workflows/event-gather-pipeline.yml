@@ -10,11 +10,9 @@ on:
       from:
         description: "Optional ISO formatted string for datetime to begin event gather from."
         required: false
-        default: ""  # Will get converted to N (default 2) days prior
       to:
         description: "Optional ISO formatted string for datetime to end event gather at."
         required: false
-        default: ""  # Will get converted to now
 
 permissions:
   id-token: write
@@ -102,6 +100,12 @@ jobs:
       if: {% raw %}${{ github.event_name == 'workflow_dispatch' }}{% endraw %}
       run: |
         cd python/
-        {% raw %}run_cdp_event_gather event-gather-config.json \
-          --from ${{ github.event.inputs.from }} \
-          --to ${{ github.event.inputs.to }}{% endraw %}
+        CDP_FROM_USER={% raw %}${{ github.event.inputs.from }}{% endraw %}
+        CDP_FROM_DEFAULT=$(date -Iseconds -d "2 days ago")
+        CDP_FROM=${CDP_FROM_USER:-$CDP_FROM_DEFAULT}
+        CDP_TO_USER={% raw %}${{ github.event.inputs.to }}{% endraw %}
+        CDP_TO_DEFAULT=$(date -Iseconds)
+        CDP_TO=${CDP_TO_USER:-$CDP_TO_DEFAULT}
+        run_cdp_event_gather event-gather-config.json \
+          --from $CDP_FROM \
+          --to $CDP_TO
