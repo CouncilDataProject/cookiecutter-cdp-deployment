@@ -58,7 +58,7 @@ There are additional tasks required after generating this repository.
     Run:
 
     ```bash
-    just init cdp-example-jbcbcqzp
+    just init cdp-example-pyufoitb
     ```
 
     This step will also generate a Google Service Account JSON file and store it
@@ -72,8 +72,8 @@ There are additional tasks required after generating this repository.
     ```
 
 1.  Create (or re-use) a
-    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-jbcbcqzp)
-    and attach it to the newly created project (cdp-example-jbcbcqzp).
+    [Google Cloud billing account](https://console.cloud.google.com/billing/linkedaccount?project=cdp-example-pyufoitb)
+    and attach it to the newly created project (cdp-example-pyufoitb).
 
     For more details on the cost of maintaining a CDP Instance, see our [estimated cost breakdown](https://github.com/CouncilDataProject/cookiecutter-cdp-deployment#cost).
 
@@ -92,7 +92,7 @@ There are additional tasks required after generating this repository.
 
     -   Click the "Generate new token" dropdown.
     -   Select "Generate new token (classic)".
-    -   Give the token a descriptive name / note. We recommend: `cdp-example-jbcbcqzp`
+    -   Give the token a descriptive name / note. We recommend: `cdp-example-pyufoitb`
     -   Set the expiration to "No expiration"
         -   You can set a set expiration if you would like, you will simply have to update this token later.
     -   Select the `repo` checkbox to give access this token access to the repo.
@@ -108,7 +108,7 @@ There are additional tasks required after generating this repository.
     1. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
 
     -   Set the name to: **GOOGLE_CREDENTIALS**
-    -   Set the value to: the contents of the file `.keys/cdp-example-jbcbcqzp.json`
+    -   Set the value to: the contents of the file `.keys/cdp-example-pyufoitb.json`
     -   Click "Add secret"
 
     2. Create a [new secret](https://github.com/CouncilDataProject/example/settings/secrets/actions/new)
@@ -128,12 +128,12 @@ There are additional tasks required after generating this repository.
     This step should be run while within the `SETUP` directory (`cd SETUP`)
 
     ```bash
-    just setup cdp-example-jbcbcqzp us-central
+    just setup cdp-example-pyufoitb us-central
     ```
 
 1.  Initialize Firebase Storage.
 
-    [Firestore Storage Page](https://console.firebase.google.com/u/0/project/cdp-example-jbcbcqzp/storage)
+    [Firestore Storage Page](https://console.firebase.google.com/u/0/project/cdp-example-pyufoitb/storage)
 
     The default settings ("Start in Production Mode" and default region) for setting up
     storage are fine.
@@ -183,7 +183,7 @@ There are additional tasks required after generating this repository.
 
 1. Once the ["Infrastructure" GitHub Action Successfully Completes](https://github.com/CouncilDataProject/example/actions?query=workflow%3A%22Infrastructure%22) request a quota increase for `compute.googleapis.com/gpus_all_regions`.
 
-    [Direct Link to Quota](https://console.cloud.google.com/iam-admin/quotas?project=cdp-example-jbcbcqzp&pageState=(%22allQuotasTable%22:(%22f%22:%22%255B%257B_22k_22_3A_22Metric_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22compute.googleapis.com%252Fgpus_all_regions_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22metricName_22%257D%255D%22)))
+    [Direct Link to Quota](https://console.cloud.google.com/iam-admin/quotas?project=cdp-example-pyufoitb&pageState=(%22allQuotasTable%22:(%22f%22:%22%255B%257B_22k_22_3A_22Metric_22_2C_22t_22_3A10_2C_22v_22_3A_22_5C_22compute.googleapis.com%252Fgpus_all_regions_5C_22_22_2C_22s_22_3Atrue_2C_22i_22_3A_22metricName_22%257D%255D%22)))
 
     -   Click the checkbox for the "GPUs (all regions)"
     -   Click the "EDIT QUOTAS" button
