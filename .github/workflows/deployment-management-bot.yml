@@ -138,7 +138,7 @@ jobs:
 
       - name: Get Prior Infrastructure Slug
         id: get-infra-slug-comment
-        uses: peter-evans/find-comment@v2
+        uses: peter-evans/find-comment@v3
         with:
           issue-number: ${{ github.event.issue.number }}
           comment-author: 'github-actions[bot]'
