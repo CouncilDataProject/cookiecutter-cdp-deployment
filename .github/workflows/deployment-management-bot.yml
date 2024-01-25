@@ -37,7 +37,7 @@ jobs:
             steps.cdp-members.outputs.members,
             steps.safe-username.outputs.username
           )
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
@@ -103,7 +103,7 @@ jobs:
           echo "::set-output name=content::$content"
 
       - name: Error Early - Message
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         if: |
           fromJSON(steps.generation-options.outputs.content).scraper_options == null ||
           fromJSON(steps.generation-options.outputs.content).maintainer_name == null ||
@@ -281,7 +281,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Log Success
-        uses: peter-evans/create-or-update-comment@v3
+        uses: peter-evans/create-or-update-comment@v4
         with:
           issue-number: ${{ github.event.issue.number }}
           body: |
